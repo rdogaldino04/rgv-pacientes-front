@@ -7,6 +7,7 @@ import { ItemMenu } from './item-menu';
 })
 export class HeaderComponent {
 
+  isCollapse = false;
   public itemsMenus: ItemMenu[] = [
     { id: 1, name: 'Home', active: true, url: '' },
     { id: 2, name: 'Pacientes', active: false, url: 'pacientes' },
@@ -18,4 +19,7 @@ export class HeaderComponent {
     });
   }
 
+  toCollapse(): void {
+    this.isCollapse = !this.isCollapse;
+  }
 }
