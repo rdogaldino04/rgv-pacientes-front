@@ -71,9 +71,9 @@ export class KzMaskDirective implements ControlValueAccessor {
   @HostListener('blur', ['$event'])
   onBlur($event: any) {
     // codigo
-    if ($event.target.value.length === this.kzMask.length) {
-      return;
-    }
+    //if ($event.target.value.length === this.kzMask.length) {
+      //return;
+    //}
     //this.onChange('');
     $event.target.value = '';
     this.retornoKzMask.emit($event.target.value);
