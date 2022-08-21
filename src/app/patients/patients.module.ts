@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientsComponent } from './patients.component';
 import { PatientsRoutingModule } from './patients.routing.module';
 import { PatientService } from './patient.service';
-import { KzMaskModule } from '../shared/directives/kz-mask-module';
+import { PatientFormModule } from './patient-form/patient-form.module';
 
 @NgModule({
   declarations: [PatientsComponent],
@@ -16,7 +16,7 @@ import { KzMaskModule } from '../shared/directives/kz-mask-module';
     ReactiveFormsModule,
     PatientsRoutingModule,
     HttpClientModule,
-    KzMaskModule
+    PatientFormModule
   ],
 
   providers: [PatientService]

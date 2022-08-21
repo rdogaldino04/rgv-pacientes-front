@@ -7,22 +7,33 @@
 </div>
 
 <div class="container-fluid">
-  <form  >
+  <form #form="ngForm" [formGroup]="patientNewForm" (submit)="salvar()"
+    [ngClass]="{'was-validated': patientNewForm.touched}">
     <div class="row">
 
-      <div class="form-group  col-sm-2">
+      <div class="form-group  col-sm-3">
         <label for="cpf">CPF</label>
-        <input type="text" class="form-control" id="cpf" [maxLength]="14"  />
+        <input type="text" class="form-control" id="cpf" [maxLength]="14" formControlName="cpf" required autofocus />
+        <ap-vmessage text="Por favor, informe o CPF"
+          *ngIf="patientNewForm.get('cpf').errors?.required && (form.submitted || patientNewForm.get('cpf').touched)">
+        </ap-vmessage>
       </div>
 
-      <div class="form-group  col-sm-8">
+      <div class="form-group  col-sm-7">
         <label for="nome">Nome</label>
-        <input type="text" class="form-control" id="nome" [maxLength]="100"  />
+        <input type="text" class="form-control" id="nome" [maxLength]="100" formControlName="name" required />
+        <ap-vmessage text="Por favor, informe o Nome"
+          *ngIf="patientNewForm.get('name').errors?.required && (form.submitted || patientNewForm.get('name').touched)">
+        </ap-vmessage>
+        <ap-vmessage
+          *ngIf="patientNewForm.get('name').errors?.minlength && (form.submitted || patientNewForm.get('name').touched)"
+          text="Deve possuir no mínimo 5 letras">
+        </ap-vmessage>
       </div>
 
       <div class="form-group  col-sm-2">
         <label for="telefone">Telefone</label>
-        <input type="text" class="form-control" id="telefone" [maxLength]="20" />
+        <input type="text" class="form-control" id="telefone" [maxLength]="20" formControlName="phone" />
       </div>
 
     </div>
@@ -31,12 +42,12 @@
 
       <div class="form-group  col-sm-10">
         <label for="endereco">Endereço</label>
-        <input type="text" class="form-control" id="endereco" [maxLength]="200" />
+        <input type="text" class="form-control" id="endereco" [maxLength]="200" formControlName="addressName" />
       </div>
 
       <div class="form-group  col-sm-2">
         <label for="numero">Número</label>
-        <input type="text" class="form-control" id="numero" [maxLength]="20" />
+        <input type="text" class="form-control" id="numero" [maxLength]="20" formControlName="number" />
       </div>
 
     </div>
@@ -44,17 +55,19 @@
     <div class="row">
 
       <div class="form-group  col-sm-4">
-        <label for="numero">Bairro</label>
-        <input type="text" class="form-control" id="numero" [maxLength]="20" />
+        <label for="bairro">Bairro</label>
+        <input type="text" class="form-control" id="bairro" [maxLength]="20" formControlName="district" />
       </div>
 
       <div class="form-group  col-sm-8">
         <label for="complemento">Complemento</label>
-        <input type="text" class="form-control" id="complemento" [maxLength]="50" />
+        <input type="text" class="form-control" id="complemento" [maxLength]="50" formControlName="complement" />
       </div>
 
     </div>
 
-    <button class="btn btn-primary mt-3">Salvar</button>
+    <button class="btn btn-primary mt-3" [disabled]="patientNewForm.invalid" type="submit">Salvar</button>
   </form>
+  {{patientNewForm.pristine}}
+  {{patientNewForm.touched}}
 </div>

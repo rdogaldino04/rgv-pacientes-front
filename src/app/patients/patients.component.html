@@ -19,12 +19,12 @@
       <div class="form-group  col-sm-3">
         <label for="cpf">CPF</label>
         <input type="text" class="form-control" formControlName="cpf" id="cpf" kzMask="999.999.999-99"
-          [maxLength]="14" />
+          [maxLength]="14" autofocus />
       </div>
 
     </div>
 
-    <button class="btn  btn-primary mt-3" [disabled]="patientForm.invalid">Pesquisar</button>
+    <button class="btn  btn-primary mt-3" [disabled]="patientForm.invalid" type="submit">Pesquisar</button>
   </form>
 </div>
 
