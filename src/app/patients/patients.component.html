@@ -28,21 +28,33 @@
 
     <button class="btn  btn-primary mt-3" [disabled]="patientForm.invalid">Pesquisar</button>
   </form>
+</div>
 
-  <div *ngIf="showData">
+<div class="container-fluid mt-3">
+  <div *ngIf="showData; else dataNotFound">
     <dl class="row" style="margin-top: 40px;">
       <dt class="col-sm-2">CPF</dt>
-      <dd class="col-sm-10">{{getCpf(patient.cpf)}}</dd>
+      <dd class="col-sm-10">{{getCpf(patient?.cpf)}}</dd>
 
       <dt class="col-sm-2">Nome</dt>
-      <dd class="col-sm-10">{{patient.name}}</dd>
+      <dd class="col-sm-10">{{patient?.name}}</dd>
 
       <dt class="col-sm-2">Endereço</dt>
-      <dd class="col-sm-10">Av João pessoa 155, bl 44 ap 55, Montese</dd>
+      <dd class="col-sm-10">{{getAddress(patient?.address)}}</dd>
 
       <dt class="col-sm-2">Telefone</dt>
-      <dd class="col-sm-10">{{patient.phone}}</dd>
+      <dd class="col-sm-10">{{patient?.phone}}</dd>
     </dl>
   </div>
+
+  <ng-template #dataNotFound>
+    <div class="row" *ngIf="patientNotfoundActive">
+      <div class="form-group  col-sm-12">
+        <div class="alert alert-warning" role="alert">
+          Paciente não encontrado
+        </div>
+      </div>
+    </div>
+  </ng-template>
 
 </div>
