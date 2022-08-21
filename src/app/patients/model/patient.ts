@@ -1,4 +1,4 @@
-import { Address } from './model/address';
+import { Address } from './address';
 export interface Patient {
 
   cpf: number;

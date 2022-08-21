@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientService } from './patient.service';
-import { Patient } from './patient';
+import { Patient } from './model/patient';
 import { Address } from './model/address';
 
 @Component({
