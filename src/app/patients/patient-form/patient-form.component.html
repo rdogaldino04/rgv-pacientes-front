@@ -1,0 +1,60 @@
+<div class="container-fluid mt-3">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>Cadastro de pacientes</h3>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <form  >
+    <div class="row">
+
+      <div class="form-group  col-sm-2">
+        <label for="cpf">CPF</label>
+        <input type="text" class="form-control" id="cpf" [maxLength]="14"  />
+      </div>
+
+      <div class="form-group  col-sm-8">
+        <label for="nome">Nome</label>
+        <input type="text" class="form-control" id="nome" [maxLength]="100"  />
+      </div>
+
+      <div class="form-group  col-sm-2">
+        <label for="telefone">Telefone</label>
+        <input type="text" class="form-control" id="telefone" [maxLength]="20" />
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="form-group  col-sm-10">
+        <label for="endereco">Endereço</label>
+        <input type="text" class="form-control" id="endereco" [maxLength]="200" />
+      </div>
+
+      <div class="form-group  col-sm-2">
+        <label for="numero">Número</label>
+        <input type="text" class="form-control" id="numero" [maxLength]="20" />
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <div class="form-group  col-sm-4">
+        <label for="numero">Bairro</label>
+        <input type="text" class="form-control" id="numero" [maxLength]="20" />
+      </div>
+
+      <div class="form-group  col-sm-8">
+        <label for="complemento">Complemento</label>
+        <input type="text" class="form-control" id="complemento" [maxLength]="50" />
+      </div>
+
+    </div>
+
+    <button class="btn btn-primary mt-3">Salvar</button>
+  </form>
+</div>
