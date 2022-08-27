@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { CoreModule } from './core/core.module';
+import { KzMaskModule } from './shared/directives/kz-mask-module';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { CoreModule } from './core/core.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CoreModule
+    CoreModule,
+    KzMaskModule
   ],
   providers: [],
   bootstrap: [AppComponent]

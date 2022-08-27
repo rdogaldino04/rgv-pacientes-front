@@ -4,6 +4,7 @@ import { Patient } from '../model/patient';
 import { PatientService } from '../patient.service';
 import { AlertService } from '../../shared/components/alert/alert.service';
 import { Router } from '@angular/router';
+import { RgvValidations } from '../../shared/validation/rgv-validations';
 
 @Component({
   selector: 'app-patient',
@@ -22,7 +23,10 @@ export class PatientFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.patientNewForm = this.formBuilder.group({
-      cpf: ['', Validators.required],
+      cpf: ['', Validators.compose([
+        Validators.required,
+        RgvValidations.ValidaCpf
+      ])],
       name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       phone: [''],
       addressName: [''],

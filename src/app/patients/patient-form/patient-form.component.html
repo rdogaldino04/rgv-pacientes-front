@@ -13,9 +13,12 @@
 
       <div class="form-group  col-sm-3">
         <label for="cpf">CPF</label>
-        <input type="text" class="form-control" id="cpf" [maxLength]="14" formControlName="cpf" required autofocus />
+        <input type="text" class="form-control" id="cpf" formControlName="cpf" required kzMask="999.999.999-99" />
         <app-vmessage text="Por favor, informe o CPF"
           *ngIf="patientNewForm.get('cpf').errors?.required && (form.submitted || patientNewForm.get('cpf').touched)">
+        </app-vmessage>
+        <app-vmessage text="Digite um CPF válido"
+          *ngIf="patientNewForm.get('cpf').errors?.cpfInvalido && (form.submitted || patientNewForm.get('cpf').touched || !patientNewForm.get('cpf').pristine)">
         </app-vmessage>
       </div>
 
@@ -68,6 +71,5 @@
 
     <button class="btn btn-primary mt-3" [disabled]="patientNewForm.invalid" type="submit">Salvar</button>
   </form>
-  {{patientNewForm.pristine}}
-  {{patientNewForm.touched}}
+
 </div>

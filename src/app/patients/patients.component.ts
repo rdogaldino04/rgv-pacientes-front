@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientService } from './patient.service';
 import { Patient } from './model/patient';
 import { Address } from './model/address';
+import { AlertService } from '../shared/components/alert/alert.service';
 
 @Component({
   selector: 'app-patients',
@@ -13,7 +14,6 @@ export class PatientsComponent implements OnInit {
   patientForm: FormGroup;
   showData = false;
   patient: Patient;
-  cpfFormatadoValue: string;
   patientNotfoundActive = false;
 
   constructor(
@@ -40,12 +40,6 @@ export class PatientsComponent implements OnInit {
           this.patientForm.reset();
         });
 
-  }
-
-  getCpf(cpf: number): string {
-    const cpfStr = cpf.toString();
-    const cpfResult = `${cpfStr.substring(0, 3)}.${cpfStr.substring(3, 6)}.${cpfStr.substring(6, 9)}.${cpfStr.substring(9, 11)}`;
-    return cpfResult;
   }
 
   getAddress(address: Address): string {
