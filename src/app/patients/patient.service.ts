@@ -15,4 +15,8 @@ export class PatientService {
     return this.http.get<Patient>(`${API}/patients/${cpf}`);
   }
 
+  save(patient: Patient): Observable<Patient> {
+    return this.http.post<Patient>(`${API}/patients`, patient);
+  }
+
 }

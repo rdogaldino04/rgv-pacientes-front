@@ -14,21 +14,21 @@
       <div class="form-group  col-sm-3">
         <label for="cpf">CPF</label>
         <input type="text" class="form-control" id="cpf" [maxLength]="14" formControlName="cpf" required autofocus />
-        <ap-vmessage text="Por favor, informe o CPF"
+        <app-vmessage text="Por favor, informe o CPF"
           *ngIf="patientNewForm.get('cpf').errors?.required && (form.submitted || patientNewForm.get('cpf').touched)">
-        </ap-vmessage>
+        </app-vmessage>
       </div>
 
       <div class="form-group  col-sm-7">
         <label for="nome">Nome</label>
-        <input type="text" class="form-control" id="nome" [maxLength]="100" formControlName="name" required />
-        <ap-vmessage text="Por favor, informe o Nome"
+        <input type="text" class="form-control text-uppercase" id="nome" [maxLength]="100" formControlName="name" required />
+        <app-vmessage text="Por favor, informe o Nome"
           *ngIf="patientNewForm.get('name').errors?.required && (form.submitted || patientNewForm.get('name').touched)">
-        </ap-vmessage>
-        <ap-vmessage
+        </app-vmessage>
+        <app-vmessage
           *ngIf="patientNewForm.get('name').errors?.minlength && (form.submitted || patientNewForm.get('name').touched)"
           text="Deve possuir no mínimo 5 letras">
-        </ap-vmessage>
+        </app-vmessage>
       </div>
 
       <div class="form-group  col-sm-2">
@@ -42,7 +42,7 @@
 
       <div class="form-group  col-sm-10">
         <label for="endereco">Endereço</label>
-        <input type="text" class="form-control" id="endereco" [maxLength]="200" formControlName="addressName" />
+        <input type="text" class="form-control text-uppercase" id="endereco" [maxLength]="200" formControlName="addressName" />
       </div>
 
       <div class="form-group  col-sm-2">
@@ -56,12 +56,12 @@
 
       <div class="form-group  col-sm-4">
         <label for="bairro">Bairro</label>
-        <input type="text" class="form-control" id="bairro" [maxLength]="20" formControlName="district" />
+        <input type="text" class="form-control text-uppercase" id="bairro" [maxLength]="20" formControlName="district" />
       </div>
 
       <div class="form-group  col-sm-8">
         <label for="complemento">Complemento</label>
-        <input type="text" class="form-control" id="complemento" [maxLength]="50" formControlName="complement" />
+        <input type="text" class="form-control text-uppercase" id="complemento" [maxLength]="50" formControlName="complement" />
       </div>
 
     </div>
