@@ -5,7 +5,7 @@
     </div>
 
     <div class="col-sm-3">
-      <a class="btn btn-outline-secondary mt-2" [routerLink]="['cadastro']">
+      <a class="btn btn-outline-secondary mt-2" [routerLink]="['novo']">
         <i class="glyphicon glyphicon-plus-sign"></i> <span class="hidden-xs  hidden-sm">Cadastrar paciente</span>
       </a>
     </div>
@@ -34,10 +34,10 @@
       <dd class="col-sm-10">{{patient?.cpf | cpf}}</dd>
 
       <dt class="col-sm-2">Nome</dt>
-      <dd class="col-sm-10">{{patient?.name}}</dd>
+      <dd class="col-sm-10">{{patient?.name | uppercase}}</dd>
 
       <dt class="col-sm-2">Endereço</dt>
-      <dd class="col-sm-10">{{getAddress(patient?.address)}}</dd>
+      <dd class="col-sm-10">{{getAddress(patient?.address) | uppercase}}</dd>
 
       <dt class="col-sm-2">Telefone</dt>
       <dd class="col-sm-10">{{patient?.phone}}</dd>

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PatientService } from './patient.service';
+import { PatientService } from './service/patient.service';
 import { Patient } from './model/patient';
 import { Address } from './model/address';
 import { AlertService } from '../shared/components/alert/alert.service';
+import { PatientDataService } from './service/patient-data.service';
 
 @Component({
   selector: 'app-patients',
   templateUrl: './patients.component.html'
 })
-export class PatientsComponent implements OnInit {
+export class PatientsComponent implements OnInit, OnDestroy {
 
   patientForm: FormGroup;
   showData = false;
@@ -18,13 +19,22 @@ export class PatientsComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private patientDataService: PatientDataService
   ) { }
 
   ngOnInit(): void {
     this.patientForm = this.formBuilder.group({
       cpf: ['', Validators.required]
     });
+    this.patientDataService.getPatient().subscribe(patient => {
+      this.showData = patient != null;
+      this.patient = patient;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.patientDataService.setPatient(null);
   }
 
   search(): void {

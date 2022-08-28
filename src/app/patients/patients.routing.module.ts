@@ -11,7 +11,7 @@ const routes: Routes = [
     component: PatientsComponent
   },
   {
-    path: 'cadastro',
+    path: 'novo',
     component: PatientFormComponent
   },
 ];
