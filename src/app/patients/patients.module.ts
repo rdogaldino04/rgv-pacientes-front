@@ -7,7 +7,6 @@ import { PatientsRoutingModule } from './patients.routing.module';
 import { PatientService } from './service/patient.service';
 import { PatientFormModule } from './patient-form/patient-form.module';
 import { CpfPipeModule } from '../shared/pipe/cpf.pipe.module';
-import { KzMaskModule } from '../shared/directives/kz-mask-module';
 import { PatientResolver } from './patient.resolver';
 import { NgxMaskModule } from 'ngx-mask';
 
@@ -22,7 +21,6 @@ import { NgxMaskModule } from 'ngx-mask';
     HttpClientModule,
     PatientFormModule,
     CpfPipeModule,
-    KzMaskModule,
     NgxMaskModule.forChild()
   ],
 

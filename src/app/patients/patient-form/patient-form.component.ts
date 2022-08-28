@@ -51,10 +51,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
 
   private patientFormBuilder(): void {
     this.patientNewForm = this.formBuilder.group({
-      cpf: ['', Validators.compose([
-        Validators.required,
-        RgvValidations.validaCpf
-      ])],
+      cpf: ['', Validators.required],
       name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       phone: [''],
       addressName: [''],

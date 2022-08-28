@@ -4,8 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { CoreModule } from './core/core.module';
-import { KzMaskModule } from './shared/directives/kz-mask-module';
-import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -17,8 +16,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    NgxMaskModule.forRoot(),
-    KzMaskModule
+    NgxMaskModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

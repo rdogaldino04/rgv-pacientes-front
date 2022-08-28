@@ -6,7 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { PatientService } from '../service/patient.service';
 import { PatientFormComponent } from './patient-form.component';
 import { VMessageModule } from 'src/app/shared/components/vmessage/vmessage.module';
-import { KzMaskModule } from '../../shared/directives/kz-mask-module';
 import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
@@ -19,7 +18,6 @@ import { NgxMaskModule } from 'ngx-mask';
     ReactiveFormsModule,
     HttpClientModule,
     VMessageModule,
-    KzMaskModule,
     NgxMaskModule.forChild()
   ],
 
