@@ -5,6 +5,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { CoreModule } from './core/core.module';
 import { KzMaskModule } from './shared/directives/kz-mask-module';
+import { NgxMaskModule, IConfig } from 'ngx-mask'
+
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   declarations: [
@@ -14,6 +17,7 @@ import { KzMaskModule } from './shared/directives/kz-mask-module';
     BrowserModule,
     AppRoutingModule,
     CoreModule,
+    NgxMaskModule.forRoot(),
     KzMaskModule
   ],
   providers: [],

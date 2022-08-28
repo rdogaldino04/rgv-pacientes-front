@@ -9,6 +9,7 @@ import { PatientFormModule } from './patient-form/patient-form.module';
 import { CpfPipeModule } from '../shared/pipe/cpf.pipe.module';
 import { KzMaskModule } from '../shared/directives/kz-mask-module';
 import { PatientResolver } from './patient.resolver';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [PatientsComponent],
@@ -21,7 +22,8 @@ import { PatientResolver } from './patient.resolver';
     HttpClientModule,
     PatientFormModule,
     CpfPipeModule,
-    KzMaskModule
+    KzMaskModule,
+    NgxMaskModule.forChild()
   ],
 
   providers: [PatientService, PatientResolver]
