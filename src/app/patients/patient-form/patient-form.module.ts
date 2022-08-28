@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { PatientService } from '../service/patient.service';
 import { PatientFormComponent } from './patient-form.component';
@@ -16,7 +15,6 @@ import { NgxMaskModule } from 'ngx-mask';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule,
     VMessageModule,
     NgxMaskModule.forChild()
   ],

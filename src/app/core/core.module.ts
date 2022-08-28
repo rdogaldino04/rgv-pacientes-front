@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { AlertModule } from '../shared/components/alert/alert.module';
+import { LoadingModule } from '../shared/components/loading/loading.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RequestInterceptor } from './auth/request.interceptor';
 
 @NgModule({
     declarations: [HeaderComponent],
@@ -10,8 +13,16 @@ import { AlertModule } from '../shared/components/alert/alert.module';
     imports: [
         CommonModule,
         RouterModule,
-        AlertModule
+        AlertModule,
+        LoadingModule
     ],
+    providers: [
+      {
+          provide: HTTP_INTERCEPTORS,
+          useClass: RequestInterceptor,
+          multi: true
+      }
+  ]
 
 })
 export class CoreModule { }

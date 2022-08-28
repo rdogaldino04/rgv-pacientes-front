@@ -15,10 +15,10 @@ import { NgxMaskModule } from 'ngx-mask';
 
   imports: [
     CommonModule,
+
     FormsModule,
     ReactiveFormsModule,
     PatientsRoutingModule,
-    HttpClientModule,
     PatientFormModule,
     CpfPipeModule,
     NgxMaskModule.forChild()
