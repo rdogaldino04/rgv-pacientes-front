@@ -9,17 +9,26 @@ import { PatientResolver } from './patient.resolver';
 const routes: Routes = [
   {
     path: '',
-    component: PatientsComponent
+    component: PatientsComponent,
+    data: {
+      title: 'Pesquisa de pacientes'
+    }
   },
   {
     path: 'novo',
-    component: PatientFormComponent
+    component: PatientFormComponent,
+    data: {
+      title: 'Cadastro de pacientes'
+    }
   },
   {
     path: ':cpf/editar',
     component: PatientFormComponent,
     resolve: {
       patient: PatientResolver
+    },
+    data: {
+      title: 'Editar pacientes'
     }
   },
 ];
