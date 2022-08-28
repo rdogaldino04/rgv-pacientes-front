@@ -38,18 +38,18 @@ export class PatientsComponent implements OnInit, OnDestroy {
   }
 
   search(): void {
-    this.patientNotfoundActive = true;
     this.patientService.findByCpf(this.patientForm.get('cpf').value)
       .subscribe(patient => {
         this.patient = patient;
         this.showData = true;
         this.patientForm.reset();
-      },
+        this.patientNotfoundActive = true;
+        },
         error => {
           this.showData = false;
           this.patientForm.reset();
+          this.patientNotfoundActive = true;
         });
-
   }
 
   getAddress(address: Address): string {
