@@ -60,13 +60,13 @@ export class PatientFormComponent implements OnInit {
   private buildPatientObject(): Patient {
     return {
       cpf: this.patientNewForm.get('cpf').value,
-      name: this.patientNewForm.get('name').value,
+      name: this.patientNewForm.get('name').value.toUpperCase(),
       phone: this.patientNewForm.get('phone').value,
       address: {
-        addressName: this.patientNewForm.get('addressName').value,
+        addressName: this.patientNewForm.get('addressName').value.toUpperCase(),
         number: this.patientNewForm.get('number').value,
-        district: this.patientNewForm.get('district').value,
-        complement: this.patientNewForm.get('complement').value,
+        district: this.patientNewForm.get('district').value.toUpperCase(),
+        complement: this.patientNewForm.get('complement').value.toUpperCase(),
       }
     } as Patient;
   }
