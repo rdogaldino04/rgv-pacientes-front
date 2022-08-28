@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientService } from './service/patient.service';
 import { Patient } from './model/patient';
 import { Address } from './model/address';
-import { AlertService } from '../shared/components/alert/alert.service';
 import { PatientDataService } from './service/patient-data.service';
 
 @Component({
@@ -47,7 +46,6 @@ export class PatientsComponent implements OnInit, OnDestroy {
         },
         error => {
           this.showData = false;
-          this.patientForm.reset();
           this.patientNotfoundActive = true;
         });
   }
