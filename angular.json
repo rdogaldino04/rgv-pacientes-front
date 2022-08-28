@@ -104,7 +104,8 @@
             ],
             "exclude": [
               "**/node_modules/**",
-              "**/*kz-mask-directive.ts"
+              "**/*kz-mask-directive.ts",
+              "**/*rgv-validations.ts"
             ]
           }
         },

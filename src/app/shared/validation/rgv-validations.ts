@@ -1,7 +1,7 @@
 import { AbstractControl } from '@angular/forms';
 
 export class RgvValidations {
-  static ValidaCpf(controle: AbstractControl) {
+  static validaCpf(controle: AbstractControl): any {
     const cpf = controle.value;
 
     let soma: number = 0;

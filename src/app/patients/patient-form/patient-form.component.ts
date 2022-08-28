@@ -27,7 +27,7 @@ export class PatientFormComponent implements OnInit {
     this.patientNewForm = this.formBuilder.group({
       cpf: ['', Validators.compose([
         Validators.required,
-        RgvValidations.ValidaCpf
+        RgvValidations.validaCpf
       ])],
       name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       phone: [''],
@@ -48,8 +48,8 @@ export class PatientFormComponent implements OnInit {
         if (error.error.objects) {
           const errors = error.error.objects
             .map(o => o.userMessage);
-          errors.forEach(error => {
-            this.alertService.danger(error, true);
+          errors.forEach(e => {
+            this.alertService.danger(e, true);
           });
         } else {
           this.alertService.danger('Ocorreu um erro interno inesperado no sistema. Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.', true);
