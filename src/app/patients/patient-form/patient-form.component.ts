@@ -1,29 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Patient } from '../model/patient';
 import { PatientService } from '../service/patient.service';
 import { AlertService } from '../../shared/components/alert/alert.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RgvValidations } from '../../shared/validation/rgv-validations';
 import { PatientDataService } from '../service/patient-data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-patient',
   templateUrl: './patient-form.component.html'
 })
-export class PatientFormComponent implements OnInit {
+export class PatientFormComponent implements OnInit, OnDestroy {
 
   patientNewForm: FormGroup;
+  subscription: Subscription;
 
   constructor(
     private formBuilder: FormBuilder,
     private patientService: PatientService,
     private alertService: AlertService,
     private router: Router,
-    private patientDataService: PatientDataService
+    private patientDataService: PatientDataService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    this.patientFormBuilder();
+    this.subscription = this.route.data.subscribe((info: {patient: Patient}) => {
+      if (info.patient) {
+        this.setPatientform(info);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  private setPatientform(info: { patient: Patient; }): void {
+    this.patientNewForm.get('cpf').setValue(info.patient.cpf);
+    this.patientNewForm.get('name').setValue(info.patient.name);
+    this.patientNewForm.get('phone').setValue(info.patient.phone);
+    this.patientNewForm.get('addressName').setValue(info.patient?.address?.addressName);
+    this.patientNewForm.get('number').setValue(info.patient?.address?.number);
+    this.patientNewForm.get('complement').setValue(info.patient?.address?.complement);
+    this.patientNewForm.get('district').setValue(info.patient?.address?.district);
+  }
+
+  private patientFormBuilder(): void {
     this.patientNewForm = this.formBuilder.group({
       cpf: ['', Validators.compose([
         Validators.required,

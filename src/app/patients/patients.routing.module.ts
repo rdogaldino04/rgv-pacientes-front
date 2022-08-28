@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { PatientsComponent } from './patients.component';
 import { PatientFormComponent } from './patient-form/patient-form.component';
+import { PatientResolver } from './patient.resolver';
 
 
 const routes: Routes = [
@@ -13,6 +14,13 @@ const routes: Routes = [
   {
     path: 'novo',
     component: PatientFormComponent
+  },
+  {
+    path: ':cpf/editar',
+    component: PatientFormComponent,
+    resolve: {
+      patient: PatientResolver
+    }
   },
 ];
 
