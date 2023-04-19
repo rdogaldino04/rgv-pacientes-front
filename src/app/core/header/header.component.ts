@@ -14,7 +14,8 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.menus = this.menuService.getAll();
+    this.menuService.getAll()
+      .subscribe(menus => this.menus = menus);
   }
 
 }

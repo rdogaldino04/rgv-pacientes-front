@@ -33,7 +33,7 @@ export class RgvNavbarComponent implements OnInit {
         });
 
         if (item.subMenus.length === 0) {
-            this.router.navigate([item.url]);
+            this.router.navigate([item.url ? item.url : '']);
             this.showSubMenus = false;
             return;
         }
@@ -43,7 +43,7 @@ export class RgvNavbarComponent implements OnInit {
 
     navegateChildTo(item: Menu): void {        
         if (item.subMenus.length === 0) {
-            this.router.navigate([item.url]);
+            this.router.navigate([item.url ? item.url : '']);
             this.showSubMenus = false;
             return;
         }
