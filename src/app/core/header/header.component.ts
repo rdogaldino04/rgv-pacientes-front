@@ -1,25 +1,20 @@
-import { Component } from '@angular/core';
-import { ItemMenu } from './item-menu';
+import { Component, OnInit } from '@angular/core';
+import { ItemMenu } from '../../shared/components/rgv-navbar/item-menu';
+import { ItemMenuService } from './item-menu.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
-  isCollapse = false;
-  public itemsMenus: ItemMenu[] = [
-    { id: 1, name: 'Home', active: true, url: '' },
-    { id: 2, name: 'Pacientes', active: false, url: 'pacientes' },
-  ];
+  public itemMenus: ItemMenu[] = [];
 
-  navegateTo(item: ItemMenu): void {
-    this.itemsMenus.forEach(i => {
-      i.active = i.id === item.id;
-    });
+  constructor(private itemMenuService: ItemMenuService) {
   }
 
-  toCollapse(): void {
-    this.isCollapse = !this.isCollapse;
+  ngOnInit(): void {
+    this.itemMenus = this.itemMenuService.getAll();
   }
+
 }

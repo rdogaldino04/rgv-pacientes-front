@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" [routerLink]="['']" (click)="navegateTo(itemMenus[0])">
+            <img [src]="logo" alt="" width="30" height="24">
+            {{ brand }}
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" [attr.aria-expanded]="isCollapse" aria-label="Toggle navigation"
+            (click)="toCollapse()">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div [ngClass]="{'show': isCollapse}" class="navbar-collapse collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item" *ngFor="let item of itemMenus">
+                    <a class="nav-link nav-link dropdown-toggle" [routerLink]="" role="button"
+                        [ngClass]="{'active': item.active, 'dropdown-toggle': item.itemMenus.length > 0, 'show': showSubMenus}"
+                        data-bs-toggle="dropdown" aria-expanded="showSubMenus" aria-current="page"
+                        (click)="navegateTo(item)">{{item.name}}</a>
+                    <ul class="dropdown-menu" [ngClass]="{'show': showSubMenus && (item.itemMenus.length > 0)}">
+                        <li *ngFor="let itemChild of item.itemMenus"><a class="dropdown-item" [routerLink]=""
+                                (click)="navegateChildTo(itemChild)">{{itemChild.name}}</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

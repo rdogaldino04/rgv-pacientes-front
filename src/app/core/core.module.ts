@@ -6,6 +6,7 @@ import { AlertModule } from '../shared/components/alert/alert.module';
 import { LoadingModule } from '../shared/components/loading/loading.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './auth/request.interceptor';
+import { RgvNavbarModule } from '../shared/components/rgv-navbar/rgv-navbar.module';
 
 @NgModule({
     declarations: [HeaderComponent],
@@ -14,7 +15,8 @@ import { RequestInterceptor } from './auth/request.interceptor';
         CommonModule,
         RouterModule,
         AlertModule,
-        LoadingModule
+        LoadingModule,
+        RgvNavbarModule
     ],
     providers: [
       {

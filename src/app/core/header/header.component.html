@@ -1,26 +1,8 @@
 <header class="fixed-top">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" [routerLink]="['']">
-        <img src="../../../assets/img/hospital-logo.svg" alt="" width="30" height="24">
-        Controle de pacientes
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" [attr.aria-expanded]="isCollapse" aria-label="Toggle navigation" (click)="toCollapse()">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div [ngClass]="{'show': isCollapse}" class="navbar-collapse collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item" *ngFor="let item of itemsMenus">
-            <a class="nav-link" [routerLink]="[item.url]" [ngClass]="{'active': item.active}" aria-current="page"
-              (click)="navegateTo(item)">{{item.name}}</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <rgv-navbar [logo]="'../../../assets/img/hospital-logo.svg'" [brand]="'Controle de pacientes'"
+    [itemMenus]="itemMenus"></rgv-navbar>
   <div class="fixed-top">
     <app-loading></app-loading>
     <app-alert></app-alert>
-</div>
+  </div>
 </header>
