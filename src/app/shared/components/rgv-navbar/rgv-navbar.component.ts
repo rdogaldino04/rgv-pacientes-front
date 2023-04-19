@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ItemMenu } from 'src/app/shared/components/rgv-navbar/item-menu';
+import { Menu } from 'src/app/shared/components/rgv-navbar/menu';
 
 @Component({
     selector: 'rgv-navbar',
@@ -10,7 +10,7 @@ export class RgvNavbarComponent implements OnInit {
 
     @Input() brand = '';
     @Input() logo = '';
-    @Input() itemMenus: ItemMenu[] = [];
+    @Input() menus: Menu[] = [];
     isCollapse = false;
     showSubMenus = false;
     opened = false;
@@ -18,8 +18,8 @@ export class RgvNavbarComponent implements OnInit {
     constructor(private router: Router) { }
 
     ngOnInit(): void {
-        this.itemMenus.forEach(item => {
-            if (item.itemMenus.length > 0) {
+        this.menus.forEach(item => {
+            if (item.subMenus.length > 0) {
                 console.log('tem filhos')
             } else {
                 console.log('no filhos')
@@ -27,12 +27,12 @@ export class RgvNavbarComponent implements OnInit {
         })
     }
 
-    navegateTo(item: ItemMenu): void {
-        this.itemMenus.forEach(i => {
+    navegateTo(item: Menu): void {
+        this.menus.forEach(i => {
             i.active = i.id === item.id;
         });
 
-        if (item.itemMenus.length === 0) {
+        if (item.subMenus.length === 0) {
             this.router.navigate([item.url]);
             this.showSubMenus = false;
             return;
@@ -41,8 +41,8 @@ export class RgvNavbarComponent implements OnInit {
         this.showSubMenus = !this.showSubMenus;
     }
 
-    navegateChildTo(item: ItemMenu): void {        
-        if (item.itemMenus.length === 0) {
+    navegateChildTo(item: Menu): void {        
+        if (item.subMenus.length === 0) {
             this.router.navigate([item.url]);
             this.showSubMenus = false;
             return;

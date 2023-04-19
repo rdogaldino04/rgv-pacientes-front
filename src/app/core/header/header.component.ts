@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemMenu } from '../../shared/components/rgv-navbar/item-menu';
-import { ItemMenuService } from './item-menu.service';
+import { Menu } from '../../shared/components/rgv-navbar/menu';
+import { MenuService } from './menu.service';
 
 @Component({
   selector: 'app-header',
@@ -8,13 +8,13 @@ import { ItemMenuService } from './item-menu.service';
 })
 export class HeaderComponent implements OnInit {
 
-  public itemMenus: ItemMenu[] = [];
+  public menus: Menu[] = [];
 
-  constructor(private itemMenuService: ItemMenuService) {
+  constructor(private menuService: MenuService) {
   }
 
   ngOnInit(): void {
-    this.itemMenus = this.itemMenuService.getAll();
+    this.menus = this.menuService.getAll();
   }
 
 }
