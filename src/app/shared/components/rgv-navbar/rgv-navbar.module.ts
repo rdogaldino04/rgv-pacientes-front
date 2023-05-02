@@ -6,6 +6,6 @@ import { RouterModule } from '@angular/router';
 @NgModule({
     declarations: [RgvNavbarComponent],
     exports: [RgvNavbarComponent],
-    imports: [CommonModule, RouterModule],    
+    imports: [CommonModule, RouterModule]
 })
 export class RgvNavbarModule { }
