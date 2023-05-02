@@ -1,8 +1,6 @@
-<header class="fixed-top">
-  <rgv-navbar [logo]="'../../../assets/img/hospital-logo.svg'" [brand]="'Controle de pacientes'"
-    [menus]="menus"></rgv-navbar>
-  <div class="fixed-top">
-    <app-loading></app-loading>
-    <app-alert></app-alert>
-  </div>
-</header>
+<ng-container *ngFor="let i of menus">
+  <button mat-button [matMenuTriggerFor]="aboveMenu">{{i.name}}</button>
+  <mat-menu #aboveMenu="matMenu" yPosition="above">
+    <button mat-menu-item *ngFor="let ism of i.subMenus" (click)="navegateTo(ism.url)">{{ism.name}}</button>
+  </mat-menu>
+</ng-container>

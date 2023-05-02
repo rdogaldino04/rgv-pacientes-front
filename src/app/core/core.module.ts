@@ -7,6 +7,8 @@ import { LoadingModule } from '../shared/components/loading/loading.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './auth/request.interceptor';
 import { RgvNavbarModule } from '../shared/components/rgv-navbar/rgv-navbar.module';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
     declarations: [HeaderComponent],
@@ -14,6 +16,8 @@ import { RgvNavbarModule } from '../shared/components/rgv-navbar/rgv-navbar.modu
     imports: [
         CommonModule,
         RouterModule,
+        MatMenuModule,
+        MatButtonModule,
         AlertModule,
         LoadingModule,
         RgvNavbarModule
