@@ -1,13 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PatientService } from './service/patient.service';
+import { PatientService } from '../service/patient.service';
 import { Patient } from './model/patient';
 import { Address } from './model/address';
 import { PatientDataService } from './service/patient-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patients',
-  templateUrl: './patients.component.html'
+  templateUrl: './patients.component.html',
+  styleUrls: ['./patients.component.scss']
 })
 export class PatientsComponent implements OnInit, OnDestroy {
 
@@ -19,7 +21,8 @@ export class PatientsComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private patientService: PatientService,
-    private patientDataService: PatientDataService
+    private patientDataService: PatientDataService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +55,10 @@ export class PatientsComponent implements OnInit, OnDestroy {
 
   getAddress(address: Address): string {
     return `${address?.addressName}, ${address?.number} ${address?.complement ? address?.complement : ''} ${address?.district}`;
+  }
+
+  newPatient(): void {
+    this.router.navigate(['pacientes', 'novo']);
   }
 
 }

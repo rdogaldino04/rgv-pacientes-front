@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Patient } from '../model/patient';
-import { PatientService } from '../service/patient.service';
+import { PatientService } from '../../service/patient.service';
 import { AlertService } from '../../shared/components/alert/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RgvValidations } from '../../shared/validation/rgv-validations';
 import { PatientDataService } from '../service/patient-data.service';
 import { Subscription } from 'rxjs';
 
