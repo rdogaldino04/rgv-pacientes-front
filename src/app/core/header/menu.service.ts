@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Menu } from '../../shared/components/rgv-navbar/menu';
+import { Menu } from '../menu';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';

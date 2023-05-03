@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Menu } from '../../shared/components/rgv-navbar/menu';
+import { Menu } from '../menu';
 import { MenuService } from './menu.service';
 import { Router } from '@angular/router';
 

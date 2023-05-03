@@ -6,7 +6,6 @@ import { AlertModule } from '../shared/components/alert/alert.module';
 import { LoadingModule } from '../shared/components/loading/loading.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './auth/request.interceptor';
-import { RgvNavbarModule } from '../shared/components/rgv-navbar/rgv-navbar.module';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 
@@ -19,8 +18,7 @@ import {MatButtonModule} from '@angular/material/button';
         MatMenuModule,
         MatButtonModule,
         AlertModule,
-        LoadingModule,
-        RgvNavbarModule
+        LoadingModule
     ],
     providers: [
       {
