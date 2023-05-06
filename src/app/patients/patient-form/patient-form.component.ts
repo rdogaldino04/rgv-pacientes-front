@@ -1,15 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Patient } from '../model/patient';
+import { Patient } from '../../model/patient';
 import { PatientService } from '../../service/patient.service';
 import { AlertService } from '../../shared/components/alert/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PatientDataService } from '../service/patient-data.service';
+import { PatientDataService } from '../patient-data.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-patient',
-  templateUrl: './patient-form.component.html'
+  templateUrl: './patient-form.component.html',
+  styleUrls: ['./patient-form.component.scss']
 })
 export class PatientFormComponent implements OnInit, OnDestroy {
 

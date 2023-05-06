@@ -1,75 +1,65 @@
-<div class="container-fluid mt-3">
-  <div class="row">
-    <div class="col-sm-12">
-      <h3>Cadastro de pacientes</h3>
-    </div>
-  </div>
-</div>
+<mat-card>
+  <mat-toolbar color="primary">Cadastro de pacientes</mat-toolbar>
 
-<div class="container-fluid">
-  <form #form="ngForm" [formGroup]="patientNewForm" (submit)="salvar()"
-    [ngClass]="{'was-validated': patientNewForm.touched}">
-    <div class="row">
+  <mat-card-content>
 
-      <div class="form-group  col-sm-3">
-        <label for="cpf">CPF</label>
-        <input type="text" class="form-control" id="cpf" formControlName="cpf"  mask="000.000.000-00" [validation]="false" required />
-        <app-vmessage text="Por favor, informe o CPF"
+    <form [formGroup]="patientNewForm" class="min-width">
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>CPF</mat-label>
+        <input matInput type="text" formControlName="cpf" mask="000.000.000-00" [validation]="false" required />
+      </mat-form-field>
+
+
+      <!-- <app-vmessage text="Por favor, informe o CPF"
           *ngIf="patientNewForm.get('cpf').errors?.required && (form.submitted || patientNewForm.get('cpf').touched)">
         </app-vmessage>
         <app-vmessage text="Digite um CPF válido"
           *ngIf="patientNewForm.get('cpf').errors?.cpfInvalido && (form.submitted || patientNewForm.get('cpf').touched)">
-        </app-vmessage>
-      </div>
+        </app-vmessage> -->
 
-      <div class="form-group  col-sm-7">
-        <label for="nome">Nome</label>
-        <input type="text" class="form-control text-uppercase" id="nome" [maxLength]="100" formControlName="name" required />
-        <app-vmessage text="Por favor, informe o Nome"
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Nome</mat-label>
+          <input matInput type="text" [maxLength]="100" formControlName="name" required class="text-uppercase"/>
+        </mat-form-field>
+       
+         <!-- <app-vmessage text="Por favor, informe o Nome"
           *ngIf="patientNewForm.get('name').errors?.required && (form.submitted || patientNewForm.get('name').touched)">
         </app-vmessage>
         <app-vmessage
           *ngIf="patientNewForm.get('name').errors?.minlength && (form.submitted || patientNewForm.get('name').touched)"
           text="Deve possuir no mínimo 5 letras">
-        </app-vmessage>
-      </div>
+        </app-vmessage> -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Telefone</mat-label>
+          <input matInput type="text" formControlName="phone" mask="(00)00000.0000||(00)0000.0000" [validation]="false" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Endereço</mat-label>
+          <input matInput type="text" class="text-uppercase" [maxLength]="200" formControlName="addressName" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Número</mat-label>
+          <input matInput type="text" [maxLength]="20" formControlName="number" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Bairro</mat-label>
+          <input matInput type="text" class="text-uppercase" [maxLength]="20" formControlName="district" />
+        </mat-form-field>
+  
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Complemento</mat-label>
+          <input matInput type="text" class="text-uppercase" [maxLength]="50" formControlName="complement" />
+        </mat-form-field>
+    
+    </form>
 
-      <div class="form-group  col-sm-2">
-        <label for="telefone">Telefone</label>
-        <input type="text" class="form-control" id="telefone" formControlName="phone" mask="(00)00000.0000||(00)0000.0000" [validation]="false" />
-      </div>
+    <mat-card-actions class="actions-center">
+      <button mat-raised-button color="primary" [disabled]="patientNewForm.invalid" (click)="salvar()">Salvar</button> 
+    </mat-card-actions>
 
-    </div>
-
-    <div class="row">
-
-      <div class="form-group  col-sm-10">
-        <label for="endereco">Endereço</label>
-        <input type="text" class="form-control text-uppercase" id="endereco" [maxLength]="200" formControlName="addressName" />
-      </div>
-
-      <div class="form-group  col-sm-2">
-        <label for="numero">Número</label>
-        <input type="text" class="form-control" id="numero" [maxLength]="20" formControlName="number" />
-      </div>
-
-    </div>
-
-    <div class="row">
-
-      <div class="form-group  col-sm-4">
-        <label for="bairro">Bairro</label>
-        <input type="text" class="form-control text-uppercase" id="bairro" [maxLength]="20" formControlName="district" />
-      </div>
-
-      <div class="form-group  col-sm-8">
-        <label for="complemento">Complemento</label>
-        <input type="text" class="form-control text-uppercase" id="complemento" [maxLength]="50" formControlName="complement" />
-      </div>
-
-    </div>
-
-    <button class="btn btn-primary mt-3" [disabled]="patientNewForm.invalid" type="submit">Salvar</button>
-  </form>
-
-</div>
+  </mat-card-content>
+</mat-card>

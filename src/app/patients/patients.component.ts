@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientService } from '../service/patient.service';
-import { Patient } from './model/patient';
-import { Address } from './model/address';
-import { PatientDataService } from './service/patient-data.service';
+import { Patient } from '../model/patient';
+import { Address } from '../model/address';
+import { PatientDataService } from './patient-data.service';
 import { Router } from '@angular/router';
 
 @Component({

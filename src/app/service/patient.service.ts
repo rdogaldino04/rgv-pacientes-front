@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { Patient } from '../patients/model/patient';
+import { Patient } from '../model/patient';
 import { Observable } from 'rxjs';
 
 const API = environment.ApiUrl;
