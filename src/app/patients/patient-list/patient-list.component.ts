@@ -15,8 +15,7 @@ export class PatientListComponent implements OnInit {
 
     length = 9;
     pageSize = 6;
-    
-    pageSizeOptions = [6, 10, 25];
+    pageSizeOptions = [10, 50, 100];
 
     hidePageSize = false;
     showPageSizeOptions = true;
@@ -31,9 +30,7 @@ export class PatientListComponent implements OnInit {
 
     constructor() { }
 
-    ngOnInit(): void {
-        
-    }
+    ngOnInit(): void { }
 
     onAdd(): void {
         this.add.emit();
@@ -43,12 +40,11 @@ export class PatientListComponent implements OnInit {
         this.edit.emit(patient);
     }
 
-    onDelete(patient: Patient) {
+    onDelete(patient: Patient): void {
         this.remove.emit(patient);
     }
 
-    onPageInfo(pageEvent: PageEvent) {
-        console.log('pageEvent:', pageEvent)
+    onPageInfo(pageEvent: PageEvent): void {
         this.pageInfo.emit(pageEvent);
     }
 

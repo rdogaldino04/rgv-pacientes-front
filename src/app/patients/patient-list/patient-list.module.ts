@@ -1,7 +1,7 @@
-import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
-import { PatientListComponent } from "./patient-list.component";
-import { AppMaterialModule } from "src/app/shared/app-material/app-material.module";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { PatientListComponent } from './patient-list.component';
+import { AppMaterialModule } from 'src/app/shared/app-material/app-material.module';
 
 @NgModule({
     declarations: [PatientListComponent],

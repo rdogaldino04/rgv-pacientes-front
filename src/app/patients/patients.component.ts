@@ -21,7 +21,7 @@ export class PatientsComponent implements OnInit {
 
   patientPage$: Observable<PatientPage> | null = null;
   filter?: PatientFilter;
-  
+
   constructor(
     private patientService: PatientService,
     private router: Router,
@@ -40,8 +40,8 @@ export class PatientsComponent implements OnInit {
     this.filter = filter;
     this.patientPage$ = this.patientService.getAllWithPaginate(this.filter)
       .pipe(catchError(error => {
-        console.log(error)
-        return of(new PatientPage);
+        console.log(error);
+        return of(new PatientPage());
       }));
   }
 
@@ -60,7 +60,7 @@ export class PatientsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this.patientService.delete(patient.cpf).subscribe(() => {          
+        this.patientService.delete(patient.cpf).subscribe(() => {
           this.onRefresh(this.filter);
           this.snackBar.open('Paciente removido com sucesso!', 'X', {
             duration: 5000,
@@ -82,7 +82,7 @@ export class PatientsComponent implements OnInit {
   onPageInfo(pageEvent: PageEvent): void {
     this.filter.size = pageEvent.pageSize;
     this.filter.page = pageEvent.pageIndex;
-    this.onRefresh(this.filter)
+    this.onRefresh(this.filter);
   }
 
 }

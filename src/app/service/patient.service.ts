@@ -22,13 +22,13 @@ export class PatientService {
     return this.http.post<Patient>(`${API}/patients`, patient);
   }
 
-  getAllWithPaginate(filter?: PatientFilter): Observable<PatientPage> {
+  getAllWithPaginate(patientFilter?: PatientFilter): Observable<PatientPage> {
     let params = new HttpParams();
-    if (filter) {
-      params = params.set('cpf', filter.cpf ? String(filter.cpf) : '')
-      params = params.set('name', filter.name ? filter.name : '');
-      params = params.set('size', filter.size ? String(filter.size) : '')
-      params = params.set('page', filter.size ? String(filter.page) : '')
+    if (patientFilter) {
+      params = params.set('cpf', patientFilter.cpf ? String(patientFilter.cpf) : '');
+      params = params.set('name', patientFilter.name ? patientFilter.name : '');
+      params = params.set('size', patientFilter.size ? String(patientFilter.size) : '');
+      params = params.set('page', patientFilter.size ? String(patientFilter.page) : '');
     }
     return this.http.get<PatientPage>(`${API}/patients`, { params });
   }
