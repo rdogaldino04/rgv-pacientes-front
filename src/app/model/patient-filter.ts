@@ -4,4 +4,7 @@ export interface PatientFilter {
   name?: string;
   phone?: string;
 
+  size?: number;
+  page?: number;
+
 }

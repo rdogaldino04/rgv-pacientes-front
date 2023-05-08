@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Patient } from '../model/patient';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { PatientPage } from '../model/patient-page';
 import { PatientFilter } from '../model/patient-filter';
 import { filter } from 'rxjs/operators';
@@ -23,12 +23,18 @@ export class PatientService {
   }
 
   getAllWithPaginate(filter?: PatientFilter): Observable<PatientPage> {
-    const params = filter
-      ? new HttpParams()
-        .set('cpf', String(filter.cpf))
-        .set('name', filter.name)
-      : new HttpParams();
+    let params = new HttpParams();
+    if (filter) {
+      params = params.set('cpf', filter.cpf ? String(filter.cpf) : '')
+      params = params.set('name', filter.name ? filter.name : '');
+      params = params.set('size', filter.size ? String(filter.size) : '')
+      params = params.set('page', filter.size ? String(filter.page) : '')
+    }
     return this.http.get<PatientPage>(`${API}/patients`, { params });
+  }
+
+  delete(cpf: number): Observable<void> {
+    return this.http.delete<void>(`${API}/patients/${cpf}`);
   }
 
 }

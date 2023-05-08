@@ -15,14 +15,14 @@ const routes: Routes = [
     }
   },
   {
-    path: 'novo',
+    path: 'new',
     component: PatientFormComponent,
     data: {
       title: 'Cadastro de pacientes'
     }
   },
   {
-    path: ':cpf/editar',
+    path: 'edit/:cpf',
     component: PatientFormComponent,
     resolve: {
       patient: PatientResolver

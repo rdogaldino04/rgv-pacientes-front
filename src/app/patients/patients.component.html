@@ -1,5 +1,6 @@
 <mat-card>
     <app-patient-filter (refresh)="onRefresh($event)"></app-patient-filter>
-    <app-patient-list *ngIf="patientPage$ | async as patientPage" [patientPage]="patientPage">
+    <app-patient-list *ngIf="patientPage$ | async as patientPage" [patientPage]="patientPage" (add)="onAdd()"
+        (edit)="onEdit($event)" (remove)="onRemove($event)" (pageInfo)="onPageInfo($event)">
     </app-patient-list>
 </mat-card>

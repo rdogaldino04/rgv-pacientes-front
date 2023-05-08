@@ -8,6 +8,7 @@ import { PatientResolver } from './patient.resolver';
 import { PatientFilterModule } from './patient-filter/patient-filter.module';
 import { PatientListModule } from './patient-list/patient-list.module';
 import { AppMaterialModule } from '../shared/app-material/app-material.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [PatientsComponent],
@@ -18,7 +19,8 @@ import { AppMaterialModule } from '../shared/app-material/app-material.module';
     PatientFormModule,
     PatientFilterModule,
     PatientListModule,
-    AppMaterialModule
+    AppMaterialModule,
+    SharedModule
   ],
 
   providers: [PatientService, PatientResolver]
