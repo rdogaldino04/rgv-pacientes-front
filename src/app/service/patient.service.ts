@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Patient } from '../model/patient';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PatientPage } from '../model/patient-page';
 import { PatientFilter } from '../model/patient-filter';
-import { filter } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 const API = environment.ApiUrl;
 
@@ -19,7 +19,7 @@ export class PatientService {
   }
 
   save(patient: Patient): Observable<Patient> {
-    return this.http.post<Patient>(`${API}/patients`, patient);
+    return this.http.post<Patient>(`${API}/patients`, patient).pipe(first());
   }
 
   getAllWithPaginate(patientFilter?: PatientFilter): Observable<PatientPage> {
@@ -34,7 +34,7 @@ export class PatientService {
   }
 
   delete(cpf: number): Observable<void> {
-    return this.http.delete<void>(`${API}/patients/${cpf}`);
+    return this.http.delete<void>(`${API}/patients/${cpf}`).pipe(first());
   }
 
 }

@@ -1,6 +1,8 @@
-<ng-container *ngFor="let i of menus">
-  <button mat-button [matMenuTriggerFor]="aboveMenu">{{i.name}}</button>
-  <mat-menu #aboveMenu="matMenu" yPosition="above">
-    <button mat-menu-item *ngFor="let ism of i.subMenus" (click)="navegateTo(ism.url)">{{ism.name}}</button>
-  </mat-menu>
-</ng-container>
+<mat-toolbar color="primary">
+  <ng-container *ngFor="let i of menus">
+    <button mat-button [matMenuTriggerFor]="aboveMenu" (click)="navegateTo(i)">{{i.name}}</button>
+    <mat-menu #aboveMenu="matMenu" yPosition="above">
+      <button mat-menu-item *ngFor="let ism of i.subMenus" (click)="navegateTo(ism)">{{ism.name}}</button>
+    </mat-menu>
+  </ng-container>
+</mat-toolbar>

@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Patient } from '../../model/patient';
 import { PatientService } from '../../service/patient.service';
-import { AlertService } from '../../shared/components/alert/alert.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PatientDataService } from '../patient-data.service';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-patient',
@@ -20,15 +20,14 @@ export class PatientFormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private patientService: PatientService,
-    private alertService: AlertService,
-    private router: Router,
-    private patientDataService: PatientDataService,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
+    private location: Location,
   ) { }
 
   ngOnInit(): void {
     this.patientFormBuilder();
-    this.subscription = this.route.data.subscribe((info: {patient: Patient}) => {
+    this.subscription = this.route.data.subscribe((info: { patient: Patient }) => {
       if (info.patient) {
         this.setPatientform(info);
       }
@@ -61,23 +60,9 @@ export class PatientFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  salvar(): void {
+  onSave(): void {
     this.patientService.save(this.buildPatientObject())
-      .subscribe(patient => {
-        this.patientDataService.setPatient(patient);
-        this.alertService.success(`Paciente ${patient.name} salvo com sucesso.`, true);
-        this.router.navigate(['pacientes']);
-      }, error => {
-        if (error.error.objects) {
-          const errors = error.error.objects
-            .map(o => o.userMessage);
-          errors.forEach(e => {
-            this.alertService.danger(e, true);
-          });
-        } else {
-          this.alertService.danger('Ocorreu um erro interno inesperado no sistema. Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.', true);
-        }
-      });
+      .subscribe(() => this.onSuccess(), () => this.onError());
   }
 
   private buildPatientObject(): Patient {
@@ -92,6 +77,19 @@ export class PatientFormComponent implements OnInit, OnDestroy {
         complement: this.patientNewForm.get('complement').value.toUpperCase(),
       }
     } as Patient;
+  }
+
+  private onSuccess(): void {
+    this.snackBar.open('Paciente salvo com sucesso!', '', { duration: 5000 });
+    this.onCancel();
+  }
+
+  private onError(): void {
+    this.snackBar.open('Erro ao salvar paciente.', '', { duration: 5000 });
+  }
+
+  onCancel(): void {
+    this.location.back();
   }
 
 }

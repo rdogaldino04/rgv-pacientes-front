@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Menu } from '../menu';
 import { MenuService } from '../../service/menu.service';
 import { Router } from '@angular/router';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
+
+  @ViewChild(MatMenuTrigger) aboveMenu!: MatMenuTrigger;
 
   public menus: Menu[] = [];
 
@@ -19,8 +22,16 @@ export class HeaderComponent implements OnInit {
       .subscribe(menus => this.menus = menus);
   }
 
-  navegateTo(url: string): void {
-    this.router.navigate([url]);
+  navegateTo(menu: Menu): void {
+    if (!menu.menuParent) {
+      const HOME = 1;
+      if (menu.id === HOME) {
+        this.aboveMenu.closeMenu();
+        this.router.navigate(['']);
+      }
+      return;
+    }
+    this.router.navigate([menu.url ? menu.url : '']);
   }
 
 }

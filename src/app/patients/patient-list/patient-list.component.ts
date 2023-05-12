@@ -11,11 +11,11 @@ import { PatientPage } from 'src/app/model/patient-page';
 })
 export class PatientListComponent implements OnInit {
 
-    readonly displayedColumns = ['CPF', 'Name', 'actions'];
+    readonly displayedColumns = ['CPF', 'Nome', 'ações'];
 
     length = 9;
     pageSize = 6;
-    pageSizeOptions = [10, 50, 100];
+    pageSizeOptions = [5, 10, 50, 100];
 
     hidePageSize = false;
     showPageSizeOptions = true;
