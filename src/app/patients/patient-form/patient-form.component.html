@@ -10,55 +10,40 @@
         <input matInput type="text" formControlName="cpf" mask="000.000.000-00" [validation]="false" required />
       </mat-form-field>
 
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nome</mat-label>
+        <input matInput type="text" [maxLength]="100" formControlName="name" required class="text-uppercase" />
+      </mat-form-field>
 
-      <!-- <app-vmessage text="Por favor, informe o CPF"
-          *ngIf="patientNewForm.get('cpf').errors?.required && (form.submitted || patientNewForm.get('cpf').touched)">
-        </app-vmessage>
-        <app-vmessage text="Digite um CPF válido"
-          *ngIf="patientNewForm.get('cpf').errors?.cpfInvalido && (form.submitted || patientNewForm.get('cpf').touched)">
-        </app-vmessage> -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Telefone</mat-label>
+        <input matInput type="text" formControlName="phone" mask="(00)00000.0000||(00)0000.0000" [validation]="false" />
+      </mat-form-field>
 
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Nome</mat-label>
-          <input matInput type="text" [maxLength]="100" formControlName="name" required class="text-uppercase"/>
-        </mat-form-field>
-       
-         <!-- <app-vmessage text="Por favor, informe o Nome"
-          *ngIf="patientNewForm.get('name').errors?.required && (form.submitted || patientNewForm.get('name').touched)">
-        </app-vmessage>
-        <app-vmessage
-          *ngIf="patientNewForm.get('name').errors?.minlength && (form.submitted || patientNewForm.get('name').touched)"
-          text="Deve possuir no mínimo 5 letras">
-        </app-vmessage> -->
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Telefone</mat-label>
-          <input matInput type="text" formControlName="phone" mask="(00)00000.0000||(00)0000.0000" [validation]="false" />
-        </mat-form-field>
-  
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Endereço</mat-label>
-          <input matInput type="text" class="text-uppercase" [maxLength]="200" formControlName="addressName" />
-        </mat-form-field>
-  
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Número</mat-label>
-          <input matInput type="text" [maxLength]="20" formControlName="number" />
-        </mat-form-field>
-  
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Bairro</mat-label>
-          <input matInput type="text" class="text-uppercase" [maxLength]="20" formControlName="district" />
-        </mat-form-field>
-  
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Complemento</mat-label>
-          <input matInput type="text" class="text-uppercase" [maxLength]="50" formControlName="complement" />
-        </mat-form-field>
-    
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Endereço</mat-label>
+        <input matInput type="text" class="text-uppercase" [maxLength]="200" formControlName="addressName" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Número</mat-label>
+        <input matInput type="text" [maxLength]="20" formControlName="number" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Bairro</mat-label>
+        <input matInput type="text" class="text-uppercase" [maxLength]="20" formControlName="district" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Complemento</mat-label>
+        <input matInput type="text" class="text-uppercase" [maxLength]="50" formControlName="complement" />
+      </mat-form-field>
+
     </form>
 
     <mat-card-actions class="actions-center">
-      <button mat-raised-button color="primary" [disabled]="patientNewForm.invalid" (click)="onSave()">Salvar</button> 
+      <button mat-raised-button color="primary" [disabled]="patientNewForm.invalid" (click)="onSave()">Salvar</button>
     </mat-card-actions>
 
   </mat-card-content>
