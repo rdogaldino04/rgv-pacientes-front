@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: 'pacientes',
-    loadChildren: () => import('./patients/patients.module').then(p => p.PatientsModule)
+    loadChildren: () => import('./modules/cadastre/patients/patients.module').then(p => p.PatientsModule)
   },
   {
     path: 'cadastros',

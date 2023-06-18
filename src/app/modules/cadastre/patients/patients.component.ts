@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { PatientService } from '../service/patient.service';
-import { PatientPage } from '../model/patient-page';
+import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PatientFilter } from '../model/patient-filter';
-import { Patient } from '../model/patient';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ErrorDialogComponent } from '../shared/components/error-dialog/error-dialog.component';
-import { PageEvent } from '@angular/material/paginator';
+import { Patient } from 'src/app/model/patient';
+import { PatientFilter } from 'src/app/model/patient-filter';
+import { PatientPage } from 'src/app/model/patient-page';
+import { PatientService } from 'src/app/service/patient.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-patients',

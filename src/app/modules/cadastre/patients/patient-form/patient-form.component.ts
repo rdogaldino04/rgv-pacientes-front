@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Patient } from '../../model/patient';
-import { PatientService } from '../../service/patient.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Location } from '@angular/common';
+import { Patient } from 'src/app/model/patient';
+import { PatientService } from 'src/app/service/patient.service';
 
 @Component({
   selector: 'app-patient',

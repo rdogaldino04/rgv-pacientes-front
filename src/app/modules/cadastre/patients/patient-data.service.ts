@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Patient } from '../model/patient';
+import { Patient } from 'src/app/model/patient';
 
 @Injectable({providedIn: 'root'})
 export class PatientDataService {
