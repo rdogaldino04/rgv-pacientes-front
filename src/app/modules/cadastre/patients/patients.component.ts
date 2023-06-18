@@ -46,7 +46,7 @@ export class PatientsComponent implements OnInit {
   }
 
   onAdd(): void {
-    this.router.navigate(['pacientes', 'new']);
+    this.router.navigate(['cadastros/pacientes', 'new']);
   }
 
   onEdit(patient: Patient): void {
