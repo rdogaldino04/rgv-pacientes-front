@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Patient } from 'src/app/model/patient';
 import { PatientService } from 'src/app/service/patient.service';
+import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
+import { FormValidations } from 'src/app/shared/validation/form-validations';
 
 @Component({
   selector: 'app-patient',
@@ -23,6 +25,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private location: Location,
+    public formUtils: FormUtilsService
   ) { }
 
   ngOnInit(): void {
@@ -50,7 +53,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
 
   private patientFormBuilder(): void {
     this.patientNewForm = this.formBuilder.group({
-      cpf: ['', Validators.required],
+      cpf: ['', [Validators.required, FormValidations.cpfValidator]],
       name: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       phone: [''],
       addressName: [''],
@@ -61,6 +64,11 @@ export class PatientFormComponent implements OnInit, OnDestroy {
   }
 
   onSave(): void {
+    if (this.patientNewForm.invalid) {      
+      this.patientNewForm.setErrors({});
+      this.formUtils.validateAllFormFields(this.patientNewForm);
+      return;
+    }
     this.patientService.save(this.buildPatientObject())
       .subscribe(() => this.onSuccess(), () => this.onError());
   }
@@ -90,6 +98,10 @@ export class PatientFormComponent implements OnInit, OnDestroy {
 
   onCancel(): void {
     this.location.back();
+  }
+
+  getErrorMessage(fieldName: string): string {
+    return this.formUtils.getFieldErrorMessage(this.patientNewForm, fieldName);
   }
 
 }
