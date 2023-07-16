@@ -1,1 +1,6 @@
-<h1>medicamentos..........</h1>
+<mat-card>
+    <h1>medicamentos..........</h1>
+    <app-medicament-list *ngIf="medicaments$ | async as medicaments" [medicaments]="medicaments">
+
+    </app-medicament-list>
+</mat-card>

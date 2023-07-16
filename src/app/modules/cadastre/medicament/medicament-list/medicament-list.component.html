@@ -1,0 +1,11 @@
+<mat-table [dataSource]="medicaments">
+    <!-- ID Column -->
+    <ng-container matColumnDef="ID">
+        <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+        <mat-cell *matCellDef="let medicament">{{medicament.id}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+</mat-table>
