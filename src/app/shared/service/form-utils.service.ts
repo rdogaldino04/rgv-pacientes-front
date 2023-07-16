@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
     AbstractControl,
-    FormControl,
-    FormGroup,
+    UntypedFormControl,
+    UntypedFormGroup,
    // UntypedFormArray,
    // UntypedFormControl,
    // UntypedFormGroup
@@ -13,7 +13,7 @@ import {
 })
 export class FormUtilsService {
 
-    validateAllFormFields(formGroup: FormGroup) {
+    validateAllFormFields(formGroup: UntypedFormGroup) {
         Object.keys(formGroup.controls).forEach(field => {
           const control = formGroup.get(field);
           //if (control instanceof UntypedFormControl) {
@@ -28,12 +28,12 @@ export class FormUtilsService {
         });
     }
 
-    getFieldErrorMessage(formGroup: FormGroup, fieldName: string): string {
-        const field = formGroup.get(fieldName) as FormControl;
+    getFieldErrorMessage(formGroup: UntypedFormGroup, fieldName: string): string {
+        const field = formGroup.get(fieldName) as UntypedFormControl;
         return this.getErrorMessageFromField(field);
     }
 
-    getErrorMessageFromField(field: FormControl): string {
+    getErrorMessageFromField(field: UntypedFormControl): string {
         if (field?.hasError('required')) {
           return 'Field is required.';
         }
