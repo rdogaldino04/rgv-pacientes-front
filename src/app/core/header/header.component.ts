@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Menu } from '../menu';
 import { MenuService } from '../../service/menu.service';
 import { Router } from '@angular/router';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header',
