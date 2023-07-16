@@ -1,11 +1,8 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Patient } from 'src/app/model/patient';
-import { PatientService } from 'src/app/service/patient.service';
 import { PatientDataService } from '../patient-data.service';
 import { Address } from 'src/app/model/address';
-import { PatientFilter } from 'src/app/model/patient-filter';
 
 @Component({
     selector: 'app-patient-filter',
@@ -23,10 +20,7 @@ export class PatientFilterComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private patientService: PatientService,
-        private patientDataService: PatientDataService,
-        private router: Router
-    ) { }
+        private patientDataService: PatientDataService    ) { }
 
     ngOnInit(): void {
         this.patientForm = this.formBuilder.group({
