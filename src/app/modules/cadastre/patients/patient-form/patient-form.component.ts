@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Patient } from 'src/app/model/patient';
@@ -16,11 +16,11 @@ import { FormValidations } from 'src/app/shared/validation/form-validations';
 })
 export class PatientFormComponent implements OnInit, OnDestroy {
 
-  patientNewForm: FormGroup;
+  patientNewForm: UntypedFormGroup;
   subscription: Subscription;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private patientService: PatientService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,

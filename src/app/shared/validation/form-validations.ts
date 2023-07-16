@@ -1,9 +1,9 @@
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { isValidCPF } from "./cpf-validation";
 
 export class FormValidations {
 
-    static cpfValidator(control: FormControl) {
+    static cpfValidator(control: UntypedFormControl) {
 
         const cpf = control.value;
         const isCpfInvalido = isValidCPF(cpf);
