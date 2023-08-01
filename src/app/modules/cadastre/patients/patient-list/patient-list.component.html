@@ -3,7 +3,7 @@
   <!-- CPF Column -->
   <ng-container matColumnDef="CPF">
     <mat-header-cell *matHeaderCellDef>CPF</mat-header-cell>
-    <mat-cell *matCellDef="let patient">{{patient.cpf}}</mat-cell>
+    <mat-cell *matCellDef="let patient">{{formatCpf(patient.cpf)}}</mat-cell>
   </ng-container>
 
   <!-- CPF Column -->

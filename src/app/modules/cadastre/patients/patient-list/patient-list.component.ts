@@ -3,6 +3,7 @@ import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator
 import { Router } from '@angular/router';
 import { Patient } from 'src/app/model/patient';
 import { PatientPage } from 'src/app/model/patient-page';
+import { formatCpf } from 'src/app/shared/utils/cpf-utils';
 
 @Component({
     selector: 'app-patient-list',
@@ -46,6 +47,11 @@ export class PatientListComponent implements OnInit {
 
     onPageInfo(pageEvent: PageEvent): void {
         this.pageInfo.emit(pageEvent);
+    }
+
+    formatCpf(cpf: number): string {
+        return formatCpf(cpf);
+
     }
 
 }
