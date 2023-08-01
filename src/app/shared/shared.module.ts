@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 import { AppMaterialModule } from './app-material/app-material.module';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
+import { CpfMaskDirective } from './directives/cpf-mask.directive';
 
 @NgModule({
     declarations: [
         ConfirmationDialogComponent,
-        ErrorDialogComponent
+        ErrorDialogComponent,
+        CpfMaskDirective
     ],
     imports: [
         CommonModule,
@@ -15,7 +17,8 @@ import { ErrorDialogComponent } from './components/error-dialog/error-dialog.com
     ],
     exports: [
         ConfirmationDialogComponent,
-        ErrorDialogComponent
+        ErrorDialogComponent,
+        CpfMaskDirective
     ]
 })
 export class SharedModule { }
