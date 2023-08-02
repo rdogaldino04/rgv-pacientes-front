@@ -24,7 +24,10 @@
 
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Telefone</mat-label>
-        <input matInput type="text" formControlName="phone" mask="(00)00000.0000||(00)0000.0000" />
+        <input matInput type="text" formControlName="phone" appPhoneMask maxlength="15" />
+        <mat-error *ngIf="patientNewForm.get('phone')?.invalid">
+          {{ getErrorMessage('phone') }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="full-width">
