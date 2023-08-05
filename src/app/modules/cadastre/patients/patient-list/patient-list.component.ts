@@ -12,7 +12,7 @@ import { formatCpf } from 'src/app/shared/utils/cpf-utils';
 })
 export class PatientListComponent implements OnInit {
 
-    readonly displayedColumns = ['CPF', 'Nome', 'ações'];
+    readonly displayedColumns = ['CPF', 'Nome', 'Telefone', 'ações'];
 
     length = 9;
     pageSize = 6;
@@ -51,7 +51,6 @@ export class PatientListComponent implements OnInit {
 
     formatCpf(cpf: number): string {
         return formatCpf(cpf);
-
     }
 
 }

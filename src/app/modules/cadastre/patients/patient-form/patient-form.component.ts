@@ -89,7 +89,7 @@ export class PatientFormComponent implements OnInit, OnDestroy {
       id: this.patientNewForm.get('id').value,
       cpf: Number(unformatCpf(this.patientNewForm.get('cpf').value)),
       name: this.patientNewForm.get('name').value.toUpperCase(),
-      phone: this.patientNewForm.get('phone').value,
+      phone: this.formatPhoneNumber(this.patientNewForm.get('phone').value),
       address: {
         addressName: this.patientNewForm.get('addressName').value.toUpperCase(),
         number: this.patientNewForm.get('number').value,

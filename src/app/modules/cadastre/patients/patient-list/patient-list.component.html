@@ -12,6 +12,12 @@
     <mat-cell *matCellDef="let patient">{{patient.name}}</mat-cell>
   </ng-container>
 
+  <!-- CPF Column -->
+  <ng-container matColumnDef="Telefone">
+    <mat-header-cell *matHeaderCellDef>Telefone</mat-header-cell>
+    <mat-cell *matCellDef="let patient">{{patient.phone}}</mat-cell>
+  </ng-container>
+
   <!-- Actions Column -->
   <ng-container matColumnDef="ações">
     <mat-header-cell *matHeaderCellDef class="action-column">
