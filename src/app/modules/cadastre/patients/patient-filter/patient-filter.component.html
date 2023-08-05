@@ -5,16 +5,16 @@
   <form [formGroup]="patientForm" class="min-width">
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>CPF</mat-label>
-      <input matInput type="text" mask="000.000.000-00" formControlName="cpf">
+      <input matInput type="text" formControlName="cpf" appCpfMask maxlength="14" />
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Nome</mat-label>
-      <input matInput type="text" [maxLength]="100" formControlName="name" class="text-uppercase"/>
+      <input matInput type="text" [maxLength]="100" formControlName="name" class="text-uppercase" />
     </mat-form-field>
   </form>
 
-  <mat-card-actions [align]="'end'" >
+  <mat-card-actions [align]="'end'">
     <button mat-raised-button color="primary" (click)="search()">Pesquisar</button>
   </mat-card-actions>
 

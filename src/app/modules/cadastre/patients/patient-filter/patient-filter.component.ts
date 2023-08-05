@@ -1,8 +1,9 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Patient } from 'src/app/model/patient';
 import { PatientDataService } from '../patient-data.service';
 import { Address } from 'src/app/model/address';
+import { unformatCpf } from 'src/app/shared/utils/cpf-utils';
 
 @Component({
     selector: 'app-patient-filter',
@@ -24,7 +25,7 @@ export class PatientFilterComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.patientForm = this.formBuilder.group({
-            cpf: [''],
+            cpf: ['', [Validators.minLength(14), Validators.maxLength(14)]],
             name: ['']
         });
         this.patientDataService.getPatient().subscribe(patient => {
@@ -39,7 +40,7 @@ export class PatientFilterComponent implements OnInit, OnDestroy {
 
     search(): void {
         this.refresh.emit({
-            cpf: this.patientForm.get('cpf').value,
+            cpf: unformatCpf(this.patientForm.get('cpf').value),
             name: this.patientForm.get('name').value
         });
     }

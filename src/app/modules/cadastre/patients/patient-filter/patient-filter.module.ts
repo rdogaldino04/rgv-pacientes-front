@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientFilterComponent } from './patient-filter.component';
 import { AppMaterialModule } from 'src/app/shared/app-material/app-material.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
     declarations: [PatientFilterComponent],
@@ -12,6 +13,7 @@ import { AppMaterialModule } from 'src/app/shared/app-material/app-material.modu
         FormsModule,
         ReactiveFormsModule,
         AppMaterialModule,
+        SharedModule
     ],
 })
 export class PatientFilterModule {
