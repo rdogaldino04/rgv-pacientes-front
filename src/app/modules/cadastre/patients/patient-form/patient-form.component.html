@@ -7,7 +7,7 @@
 
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>CPF</mat-label>
-        <input matInput type="text" formControlName="cpf" appCpfMask maxlength="14"/>
+        <input matInput type="text" formControlName="cpf" appCpfMask maxlength="14" />
         <mat-error *ngIf="patientNewForm.get('cpf')?.invalid">
           {{ getErrorMessage('cpf') }}
         </mat-error>
