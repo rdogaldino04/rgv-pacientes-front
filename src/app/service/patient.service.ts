@@ -37,4 +37,8 @@ export class PatientService {
     return this.http.delete<void>(`${API}/patients/${cpf}`).pipe(first());
   }
 
+  update(patient: Patient): Observable<Patient> {
+    return this.http.put<Patient>(`${API}/patients/${patient.id}`, patient).pipe(first());
+  }
+
 }
