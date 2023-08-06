@@ -15,6 +15,10 @@ const routes: Routes = [
     path: 'cadastros',
     loadChildren: () => import('./modules/cadastre/cadastre.module').then(c => c.CadastreModule)
   },
+  {
+    path: 'movimentacoes',
+    loadChildren: () => import('./modules/movements/movements.module').then(c => c.MovimentsModule)
+  },
 ];
 @NgModule({
   imports: [
