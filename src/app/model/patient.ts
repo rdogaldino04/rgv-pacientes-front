@@ -1,10 +1,10 @@
 import { Address } from './address';
 export interface Patient {
 
-  id: number;
+  id?: number;
   cpf: number;
   name: string;
-  phone: string;
-  address: Address;
+  phone?: string;
+  address?: Address;
 
 }

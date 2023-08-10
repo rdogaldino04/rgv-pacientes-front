@@ -1,74 +1,101 @@
 <mat-card>
     <mat-toolbar color="primary" class="mat-toolbar">Saída para paciente</mat-toolbar>
-    <form>
-        <div class="grid-container">
-            <div class="col-2">
-                <mat-form-field class="field">
-                    <input matInput placeholder="CPF">
-                </mat-form-field>
-            </div>
-            <div class="col-10">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Nome">
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="grid-container">
-            <div class="col-2">
-                <mat-form-field class="field">
-                    <input matInput placeholder="CNPJ">
-                </mat-form-field>
-            </div>
-            <div class="col-10">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Empresa">
-                </mat-form-field>
+    <form [formGroup]="movementForm">
+        <div formGroupName="patient">
+            <div class="grid-container">
+                <div class="col-2">
+                    <mat-form-field class="field">
+                        <input matInput placeholder="CPF" formControlName="cpf">
+                    </mat-form-field>
+                </div>
+                <div class="col-10">
+                    <mat-form-field class="field">
+                        <input matInput placeholder="Nome" formControlName="name">
+                    </mat-form-field>
+                </div>
             </div>
         </div>
 
-        <div class="grid-container">
-            <div class="col-2">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Código">
-                </mat-form-field>
-            </div>
-            <div class="col-10">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Setor">
-                </mat-form-field>
-            </div>
-        </div>
-
-        <div class="grid-container">
-            <div class="col-2">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Código">
-                </mat-form-field>
-            </div>
-            <div class="col-10">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Estoque">
-                </mat-form-field>
+        <div formGroupName="company">
+            <div class="grid-container">
+                <div class="col-2">
+                    <mat-form-field class="field">
+                        <input matInput placeholder="CNPJ" formControlName="cnpj">
+                    </mat-form-field>
+                </div>
+                <div class="col-10">
+                    <mat-form-field class="field">
+                        <input matInput placeholder="Empresa" formControlName="name">
+                    </mat-form-field>
+                </div>
             </div>
         </div>
 
-        <div class="grid-container">
-            <div class="col-2">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Código">
-                </mat-form-field>
+        <div formGroupName="sector">
+            <div class="grid-container">
+                <div class="col-2">
+                    <mat-form-field class="field">
+                        <input matInput placeholder="Código" formControlName="id">
+                    </mat-form-field>
+                </div>
+                <div class="col-10">
+                    <mat-form-field class="field">
+                        <input matInput placeholder="Setor" formControlName="name">
+                    </mat-form-field>
+                </div>
             </div>
-            <div class="col-8">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Medicamento">
-                </mat-form-field>
+        </div>
+
+        <div formGroupName="stock">
+            <div class="grid-container">
+                <div class="col-2">
+                    <mat-form-field class="field">
+                        <input matInput placeholder="Código" formControlName="id">
+                    </mat-form-field>
+                </div>
+                <div class="col-10">
+                    <mat-form-field class="field">
+                        <input matInput placeholder="Estoque" formControlName="name">
+                    </mat-form-field>
+                </div>
             </div>
-            <div class="col-2">
-                <mat-form-field class="field">
-                    <input matInput placeholder="Quantidade">
-                </mat-form-field>
+        </div>
+
+        <mat-toolbar>
+            <span>Itens</span>
+            <button mat-icon-button color="accent" (click)="addNewItem()">
+                <mat-icon aria-label="Adicionar um novo item">add</mat-icon>
+            </button>
+        </mat-toolbar>
+
+        <mat-error *ngIf="formUtils.isFormArrayRequired(movementForm, 'items')" class="form-array-error">Adicione pelo menos um
+            item.
+        </mat-error>
+
+        <div formArrayName="items" *ngFor="let item of getItemsFormArray(); let ind = index">
+            <div [formGroupName]="ind">
+                <div class="grid-container">
+                    <div class="col-2">
+                        <mat-form-field class="field">
+                            <input matInput placeholder="Código" formControlName="id">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-8">
+                        <mat-form-field class="field">
+                            <input matInput placeholder="Medicamento" formControlName="name">
+                        </mat-form-field>
+                    </div>
+                    <div class="col-2">
+                        <mat-form-field class="field">
+                            <input matInput placeholder="Quantidade" formControlName="amount">
+                        </mat-form-field>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
+
+    <mat-card-actions class="actions-center">
+        <button mat-raised-button color="primary" (click)="onSubmit()">Salvar</button>
+      </mat-card-actions>
 </mat-card>
