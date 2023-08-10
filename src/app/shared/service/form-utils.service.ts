@@ -22,6 +22,11 @@ export class FormUtilsService {
     });
   }
 
+  getErrorMessage(formGroup: UntypedFormGroup, fieldName: string) {
+    const field = formGroup.get(fieldName) as UntypedFormControl;
+    return this.getErrorMessageFromField(field);
+  }
+
   getFieldErrorMessage(formGroup: UntypedFormGroup, fieldName: string): string {
     const field = formGroup.get(fieldName) as UntypedFormControl;
     return this.getErrorMessageFromField(field);
@@ -29,24 +34,31 @@ export class FormUtilsService {
 
   getErrorMessageFromField(field: UntypedFormControl): string {
     if (field?.hasError('required')) {
-      return 'Field is required.';
+      return 'Campo obrigatório';
     }
 
-    if (field?.hasError('maxlength') && field.errors) {
-      const requiredLength = field.errors['maxlength']['requiredLength'];
-      return `Field cannot be more than ${requiredLength} characters long.`;
+    if (field?.hasError('minlength')) {
+      const requiredLength: number = field.errors ? field.errors['minlength']['requiredLength'] : 5;
+      return `Tamanho mínimo precisa ser de ${requiredLength} caracteres.`;
     }
 
-    if (field?.hasError('minlength') && field.errors) {
-      const requiredLength = field.errors['minlength']['requiredLength'];
-      return `Field cannot be less than ${requiredLength} characters long.`;
+    if (field?.hasError('maxlength')) {
+      const requiredLength: number = field.errors ? field.errors['maxlength']['requiredLength'] : 200;
+      return `Tamanho máximo excedido de ${requiredLength} caracteres.`;
     }
 
     if (field?.hasError('cpfInvalido')) {
-      return 'Field CPF is invalid.';
+      return 'Campo CPF inválido';
     }
 
-    return field['errors'] ? 'Error' : '';
+    return 'Campo inválido';
+  }
+
+  getFormArrayFieldErrorMessage(formGroup: UntypedFormGroup, formArrayName: string,
+    fieldName: string, index: number) {
+    const formArray = formGroup.get(formArrayName) as UntypedFormArray;
+    const field = formArray.controls[index].get(fieldName) as UntypedFormControl;
+    return this.getErrorMessageFromField(field);
   }
 
   isFormArrayRequired(formGroup: UntypedFormGroup, formArrayName: string) {

@@ -72,22 +72,41 @@
             item.
         </mat-error>
 
-        <div formArrayName="items" *ngFor="let item of getItemsFormArray(); let ind = index">
-            <div [formGroupName]="ind">
+        <div formArrayName="items" *ngFor="let item of getItemsFormArray(); let i = index">
+            <div [formGroupName]="i">
                 <div class="grid-container">
-                    <div class="col-2">
-                        <mat-form-field class="field">
-                            <input matInput placeholder="Código" formControlName="id">
-                        </mat-form-field>
-                    </div>
                     <div class="col-8">
                         <mat-form-field class="field">
-                            <input matInput placeholder="Medicamento" formControlName="name">
+                            <mat-label>Nome</mat-label>
+                            <input matInput formControlName="name">
+                            <mat-error
+                                *ngIf="getItemsFormArray()[i].get('name')?.invalid"
+                                >{{
+                                formUtils.getFormArrayFieldErrorMessage(
+                                    movementForm,
+                                    "items",
+                                    "name",
+                                    i
+                                )
+                                }}</mat-error
+                            >
                         </mat-form-field>
                     </div>
                     <div class="col-2">
                         <mat-form-field class="field">
-                            <input matInput placeholder="Quantidade" formControlName="amount">
+                            <mat-label>Quantidade</mat-label>
+                            <input matInput formControlName="amount">
+                            <mat-error
+                                *ngIf="getItemsFormArray()[i].get('amount')?.invalid"
+                                >{{
+                                formUtils.getFormArrayFieldErrorMessage(
+                                    movementForm,
+                                    "items",
+                                    "amount",
+                                    i
+                                )
+                                }}</mat-error
+                            >
                         </mat-form-field>
                     </div>
                 </div>
