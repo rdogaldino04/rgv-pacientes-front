@@ -3,6 +3,8 @@ import { FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from 
 import { Item, Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
+import { formatCpf } from 'src/app/shared/utils/cpf-utils';
+import { FormValidations } from 'src/app/shared/validation/form-validations';
 
 @Component({
   templateUrl: './supply-patient.component.html',
@@ -31,8 +33,8 @@ export class SupplyPatientComponent implements OnInit {
 
     this.movementForm = this.formBuilder.group({
       patient: this.formBuilder.group({
-        cpf: movement.patient.cpf,
-        name: movement.patient.name
+        cpf: [formatCpf(movement.patient.cpf), [Validators.required, FormValidations.cpfValidator, Validators.maxLength(14)]],
+        name: [movement.patient.name, [Validators.required]]
       }),
       company: this.formBuilder.group({
         cnpj: movement.company.cnpj,
@@ -83,6 +85,10 @@ export class SupplyPatientComponent implements OnInit {
   addNewItem() {
     const items = this.movementForm.get('items') as UntypedFormArray;
     items.push(this.createItem());
+  }
+
+  getErrorMessage(fieldName: string): string {
+    return this.formUtils.getFieldErrorMessage(this.movementForm, fieldName);
   }
 
 }

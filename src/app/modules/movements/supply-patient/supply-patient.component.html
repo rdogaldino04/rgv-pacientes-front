@@ -3,14 +3,22 @@
     <form [formGroup]="movementForm">
         <div formGroupName="patient">
             <div class="grid-container">
-                <div class="col-2">
+                <div class="col-2">                    
                     <mat-form-field class="field">
-                        <input matInput placeholder="CPF" formControlName="cpf">
+                        <mat-label>CPF</mat-label>
+                        <input matInput type="text" formControlName="cpf" appCpfMask maxlength="14" >
+                        <mat-error *ngIf="movementForm.get('patient.cpf')?.invalid">
+                            {{ getErrorMessage('patient.cpf') }}
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <div class="col-10">
                     <mat-form-field class="field">
-                        <input matInput placeholder="Nome" formControlName="name">
+                        <mat-label>Nome</mat-label>
+                        <input matInput type="text" formControlName="name" class="text-uppercase" maxlength="200">
+                        <mat-error *ngIf="movementForm.get('patient.name')?.invalid">
+                            {{ getErrorMessage('patient.name') }}
+                        </mat-error>
                     </mat-form-field>
                 </div>
             </div>
