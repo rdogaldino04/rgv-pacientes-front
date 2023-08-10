@@ -14,6 +14,7 @@ import { MatPaginatorModule} from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   exports: [
@@ -32,7 +33,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatPaginatorModule,
     MatMenuModule,
     MatSidenavModule,
-    MatGridListModule
+    MatGridListModule,
+    MatAutocompleteModule
   ],
 })
 export class AppMaterialModule { }
