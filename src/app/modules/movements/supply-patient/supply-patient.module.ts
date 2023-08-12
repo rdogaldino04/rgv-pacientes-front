@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SupplyPatientRoutingModule } from './supply-patient.routing.module';
-import { SupplyPatientComponent } from './supply-patient.component';
-import { AppMaterialModule } from 'src/app/shared/app-material/app-material.module';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AppMaterialModule } from 'src/app/shared/app-material/app-material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MovementResolver } from '../movement.resolver';
+import { SupplyPatientComponent } from './supply-patient.component';
+import { SupplyPatientRoutingModule } from './supply-patient.routing.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,9 @@ import { SharedModule } from 'src/app/shared/shared.module';
     AppMaterialModule,
     SupplyPatientRoutingModule,
     SharedModule
+  ],
+  providers: [
+    MovementResolver
   ]
 })
 export class SupplyPatientModule { }

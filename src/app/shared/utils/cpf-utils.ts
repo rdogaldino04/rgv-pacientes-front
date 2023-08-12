@@ -1,4 +1,7 @@
 export function formatCpf(cpf: number): string {
+    if (!cpf) {
+        return '';
+    }
     const cpfString = cpf.toString().padStart(11, '0');
     return cpfString.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
 }
