@@ -16,8 +16,8 @@
                     <mat-form-field class="field">
                         <mat-label>Nome</mat-label>
                         <input matInput type="text" formControlName="name" class="text-uppercase" [matAutocomplete]="auto" maxlength="200">
-                        <mat-autocomplete  #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onOptionSelected($event)">
-                            <mat-option *ngFor="let patient of filteredOptions | async" [value]="patient">
+                        <mat-autocomplete  #auto="matAutocomplete" [displayWith]="displayFnPatient" (optionSelected)="onOptionSelectedPatient($event)">
+                            <mat-option *ngFor="let patient of patients$ | async" [value]="patient">
                                 {{ patient.name }}                              
                             </mat-option>
                         </mat-autocomplete>

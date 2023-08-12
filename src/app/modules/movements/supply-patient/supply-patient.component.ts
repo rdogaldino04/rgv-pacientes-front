@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, merge, switchMap, tap } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subscription, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, mergeAll, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Item, Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
 import { PatientService } from 'src/app/service/patient.service';
@@ -12,6 +12,7 @@ import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
 
 const EXPECTED_DIGITATION = 300;
+const SIZE = 50;
 
 @Component({
   templateUrl: './supply-patient.component.html',
@@ -21,15 +22,17 @@ export class SupplyPatientComponent implements OnInit {
 
   movementForm!: FormGroup;
   subscription: Subscription;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   filteredOptions$: Observable<Patient[]>;
 
-  patientsAll$ = this.patientService.getAllWithPaginate({size: 20}).pipe(
+  patientsAll$ = this.patientService.getAllWithPaginate({size: SIZE}).pipe(
     tap(() => {
       console.log('Fluxo inicial')
-    })
+    }),
+    map(o => o.content)
   );
-  patients$: any;
+  patients$: Observable<Patient[]>;
 
   patientsOptions: Patient[] = [
     { id: 1, name: 'Manoel Regufe Gonçalves Geraldo', cpf: 83623124087 },
@@ -38,7 +41,7 @@ export class SupplyPatientComponent implements OnInit {
     { id: 4, name: 'Monique Amorim Fundão Rangel', cpf: 94139254025 },
     { id: 5, name: 'IVONE LUCIO MENDES BATISTA', cpf: 82423862776 },
   ];
-
+    
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private route: ActivatedRoute,
@@ -46,23 +49,27 @@ export class SupplyPatientComponent implements OnInit {
     private patientService: PatientService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.subscription = this.route.data.subscribe((info: { movement: Movement }) => {      
       this.movementFormBuilder(info.movement || {} as Movement);
     });
 
-    this.filteredOptions = this.movementForm.get('patient.name').valueChanges.pipe(
-      //startWith(''),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name ? this._filter(name as string) : this.patientsOptions.slice();
-      })
+    this.filteredOptions$ = this.movementForm.get('patient.name').valueChanges.pipe(
+      takeUntil(this.destroyed$),
+      startWith(''),
+      debounceTime(EXPECTED_DIGITATION),
+      //tap(console.log),
+      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
+      distinctUntilChanged(),
+      switchMap((valueDigited => this.patientService.getAllWithPaginate({size: 50, name: valueDigited}).pipe(map(o => o.content)))),      
     );
-
+    this.patients$ = of(this.patientsAll$, this.filteredOptions$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   private movementFormBuilder(movement: Movement) {
@@ -127,17 +134,11 @@ export class SupplyPatientComponent implements OnInit {
     return this.formUtils.getFieldErrorMessage(this.movementForm, fieldName);
   }
 
-  displayFn(patient: Patient): string {
+  displayFnPatient(patient: Patient): string {
     return patient && patient.name ? patient.name : '';
   }
 
-  private _filter(name: string): Patient[] {
-    const filterValue = name.toLowerCase();
-
-    return this.patientsOptions.filter(option => option.name.toLowerCase().includes(filterValue));
-  }
-
-  onOptionSelected(event: MatAutocompleteSelectedEvent): void {
+  onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
     const selectedItemPatient = event.option.value as Patient;
     this.movementForm.get('patient.cpf').patchValue(formatCpf(selectedItemPatient.cpf));
   }
