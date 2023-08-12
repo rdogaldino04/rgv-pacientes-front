@@ -4,8 +4,10 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, ReplaySubject, Subscription, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mergeAll, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Company } from 'src/app/model/company';
 import { Item, Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
+import { CompanyService } from 'src/app/service/company.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
@@ -24,38 +26,32 @@ export class SupplyPatientComponent implements OnInit {
   subscription: Subscription;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
-  filteredOptions$: Observable<Patient[]>;
-
+  filteredOptionsPatients$: Observable<Patient[]>;
   patientsAll$ = this.patientService.getAllWithPaginate({size: SIZE}).pipe(
-    tap(() => {
-      console.log('Fluxo inicial')
-    }),
+    tap(() => {console.log('Fluxo inicial patient')}),
     map(o => o.content)
   );
   patients$: Observable<Patient[]>;
+
+  filteredOptionsCompany$: Observable<Company[]>;
+  companiesAll$ = this.companyService.findByName('').pipe(
+    tap(() => {console.log('Fluxo inicial company')}),
+    tap(console.log)
+  );
+  companies$: Observable<Company[]>;
     
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private route: ActivatedRoute,
     public formUtils: FormUtilsService,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private companyService: CompanyService,
   ) { }
 
   ngOnInit(): void {    
-    this.subscription = this.route.data.subscribe((info: { movement: Movement }) => {      
-      this.movementFormBuilder(info.movement || {} as Movement);
-    });
-
-    this.filteredOptions$ = this.movementForm.get('patient').valueChanges.pipe(
-      takeUntil(this.destroyed$),
-      startWith(''),
-      debounceTime(EXPECTED_DIGITATION),
-      //tap(console.log),
-      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
-      distinctUntilChanged(),
-      switchMap((valueDigited => this.patientService.getAllWithPaginate({size: 50, name: valueDigited}).pipe(map(o => o.content)))),      
-    );
-    this.patients$ = of(this.patientsAll$, this.filteredOptions$).pipe(takeUntil(this.destroyed$), mergeAll());
+    this.subscription = this.route.data.subscribe((info: { movement: Movement }) => this.movementFormBuilder(info.movement || {} as Movement));
+    this.configAutocompletePatient();
+    this.configAutocompleteCompany();
   }
 
   ngOnDestroy(): void {
@@ -70,7 +66,7 @@ export class SupplyPatientComponent implements OnInit {
       patientCpf: [formatCpf(movement?.patient?.cpf), [Validators.required, FormValidations.cpfValidator, Validators.maxLength(14)]],
       patient: [movement.patient, [Validators.required]],
       companyCnpj: [movement?.company?.cnpj, [Validators.required]],
-      company: [movement?.company?.name, [Validators.required]],
+      company: [movement?.company, [Validators.required]],
       sector: this.formBuilder.group({
         id: null,
         name: ''
@@ -126,9 +122,18 @@ export class SupplyPatientComponent implements OnInit {
     return patient && patient.name ? patient.name : '';
   }
 
+  displayFnCompany(company: Company): string {
+    return company && company.name ? company.name : '';
+  }
+
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
     const selectedItemPatient = event.option.value as Patient;
     this.movementForm.get('patientCpf').patchValue(formatCpf(selectedItemPatient.cpf));
+  }
+
+  onOptionSelectedCompany(event: MatAutocompleteSelectedEvent): void {
+    const selectedItemCompany = event.option.value as Company;
+    this.movementForm.get('companyCnpj').patchValue(selectedItemCompany.cnpj);
   }
 
   onBlurPatientCpf(): void {
@@ -148,6 +153,33 @@ export class SupplyPatientComponent implements OnInit {
           this.movementForm.get('patientCpf').reset();
           this.movementForm.get('patient').reset();
       });
+  }
+
+  private configAutocompletePatient() {
+    this.filteredOptionsPatients$ = this.movementForm.get('patient').valueChanges.pipe(
+      takeUntil(this.destroyed$),
+      startWith(''),
+      debounceTime(EXPECTED_DIGITATION),
+      //tap(console.log),
+      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
+      distinctUntilChanged(),
+      switchMap((valueDigited => this.patientService.getAllWithPaginate({ size: 50, name: valueDigited }).pipe(map(o => o.content))))
+    );
+    this.patients$ = of(this.patientsAll$, this.filteredOptionsPatients$).pipe(takeUntil(this.destroyed$), mergeAll());
+  }
+
+  private configAutocompleteCompany() {
+    this.filteredOptionsCompany$ = this.movementForm.get('company').valueChanges.pipe(
+      takeUntil(this.destroyed$),
+      startWith(''),
+      debounceTime(EXPECTED_DIGITATION),
+      map(c => c.name),
+      tap(console.log),
+      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
+      distinctUntilChanged(),
+      switchMap(valueDigited => this.companyService.findByName(valueDigited).pipe(tap(console.log)))
+    );
+    this.companies$ = of(this.companiesAll$, this.filteredOptionsCompany$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
 
 }
