@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map, startWith, tap } from 'rxjs/operators';
 import { Item, Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
+import { PatientService } from 'src/app/service/patient.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
@@ -31,6 +32,8 @@ export class SupplyPatientComponent implements OnInit {
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private route: ActivatedRoute,
+    public formUtils: FormUtilsService,
+    private patientService: PatientService
   ) { }
 
   ngOnInit(): void {
@@ -127,6 +130,15 @@ export class SupplyPatientComponent implements OnInit {
   onOptionSelected(event: MatAutocompleteSelectedEvent): void {
     const selectedItemPatient = event.option.value as Patient;
     this.movementForm.get('patient.cpf').patchValue(formatCpf(selectedItemPatient.cpf));
+  }
+
+  onBlurPatientCpf(): void {
+    const cpf = Number(unformatCpf(this.movementForm.get('patient.cpf').getRawValue()));
+    if (!cpf) {
+      return;
+    }
+    this.subscription = this.patientService.findByCpf(cpf)
+      .subscribe(patient => this.movementForm.get('patient.name').patchValue(patient));
   }
 
 }
