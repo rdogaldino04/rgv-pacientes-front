@@ -5,13 +5,15 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { CpfMaskDirective } from './directives/cpf-mask.directive';
 import { PhoneMaskDirective } from './directives/phone-mask.directive';
+import { FormDebugComponent } from './components/form-debug/form-debug.component';
 
 @NgModule({
     declarations: [
         ConfirmationDialogComponent,
         ErrorDialogComponent,
         CpfMaskDirective,
-        PhoneMaskDirective
+        PhoneMaskDirective,
+        FormDebugComponent
     ],
     imports: [
         CommonModule,
@@ -21,7 +23,8 @@ import { PhoneMaskDirective } from './directives/phone-mask.directive';
         ConfirmationDialogComponent,
         ErrorDialogComponent,
         CpfMaskDirective,
-        PhoneMaskDirective
+        PhoneMaskDirective,
+        FormDebugComponent
     ]
 })
 export class SharedModule { }
