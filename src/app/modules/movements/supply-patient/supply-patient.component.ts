@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { map, startWith, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, merge, switchMap, tap } from 'rxjs/operators';
 import { Item, Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
 import { PatientService } from 'src/app/service/patient.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
-import { ActivatedRoute } from '@angular/router';
+
+const EXPECTED_DIGITATION = 300;
 
 @Component({
   templateUrl: './supply-patient.component.html',
@@ -20,6 +22,15 @@ export class SupplyPatientComponent implements OnInit {
   movementForm!: FormGroup;
   subscription: Subscription;
 
+  filteredOptions$: Observable<Patient[]>;
+
+  patientsAll$ = this.patientService.getAllWithPaginate({size: 20}).pipe(
+    tap(() => {
+      console.log('Fluxo inicial')
+    })
+  );
+  patients$: any;
+
   patientsOptions: Patient[] = [
     { id: 1, name: 'Manoel Regufe Gonçalves Geraldo', cpf: 83623124087 },
     { id: 2, name: 'Kevin Luques Furtunato Salles', cpf: 77120788078 },
@@ -27,7 +38,6 @@ export class SupplyPatientComponent implements OnInit {
     { id: 4, name: 'Monique Amorim Fundão Rangel', cpf: 94139254025 },
     { id: 5, name: 'IVONE LUCIO MENDES BATISTA', cpf: 82423862776 },
   ];
-  filteredOptions: Observable<Patient[]>;
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -133,12 +143,22 @@ export class SupplyPatientComponent implements OnInit {
   }
 
   onBlurPatientCpf(): void {
+    if (this.movementForm.get('patient.cpf').value === '') {
+      this.movementForm.get('patient.name').reset();
+      return;
+    }
+    
     const cpf = Number(unformatCpf(this.movementForm.get('patient.cpf').getRawValue()));
     if (!cpf) {
       return;
     }
     this.subscription = this.patientService.findByCpf(cpf)
-      .subscribe(patient => this.movementForm.get('patient.name').patchValue(patient));
+      .subscribe(patient => 
+        this.movementForm.get('patient.name').patchValue(patient), 
+        error => {
+          this.movementForm.get('patient.cpf').reset();
+          this.movementForm.get('patient.name').reset();
+      });
   }
 
 }
