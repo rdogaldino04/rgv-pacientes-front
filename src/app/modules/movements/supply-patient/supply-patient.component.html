@@ -29,19 +29,25 @@
                 </mat-form-field>
             </div>
         </div>
-
-        <div formGroupName="company">
-            <div class="grid-container">
-                <div class="col-2">
-                    <mat-form-field class="field">
-                        <input matInput placeholder="CNPJ" formControlName="cnpj">
-                    </mat-form-field>
-                </div>
-                <div class="col-10">
-                    <mat-form-field class="field">
-                        <input matInput placeholder="Empresa" formControlName="name">
-                    </mat-form-field>
-                </div>
+        
+        <div class="grid-container">
+            <div class="col-2">
+                <mat-form-field class="field">
+                    <mat-label>CNPJ</mat-label>
+                    <input matInput formControlName="companyCnpj">
+                    <mat-error *ngIf="movementForm.get('companyCnpj')?.invalid">
+                        {{ getErrorMessage('patient?.companyCnpj') }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-10">
+                <mat-form-field class="field">
+                    <mat-label>Empresa</mat-label>
+                    <input matInput formControlName="company">
+                    <mat-error *ngIf="movementForm.get('company')?.invalid">
+                        {{ getErrorMessage('patient?.company') }}
+                    </mat-error>
+                </mat-form-field>
             </div>
         </div>
 

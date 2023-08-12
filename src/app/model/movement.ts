@@ -1,10 +1,11 @@
+import { Company } from "./company";
 import { Patient } from "./patient";
 
 export interface Movement {
 
     id?: number;
     patient?: Patient;
-    company?: any;
+    company?: Company;
     sector?: any;
     stock?: any;
     items?: Item[];

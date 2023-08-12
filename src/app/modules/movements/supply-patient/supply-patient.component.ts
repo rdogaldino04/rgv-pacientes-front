@@ -69,10 +69,8 @@ export class SupplyPatientComponent implements OnInit {
       id: [movement?.id],
       patientCpf: [formatCpf(movement?.patient?.cpf), [Validators.required, FormValidations.cpfValidator, Validators.maxLength(14)]],
       patient: [movement.patient, [Validators.required]],
-      company: this.formBuilder.group({
-        cnpj: '',
-        name: ''
-      }),
+      companyCnpj: [movement?.company?.cnpj, [Validators.required]],
+      company: [movement?.company?.name, [Validators.required]],
       sector: this.formBuilder.group({
         id: null,
         name: ''
