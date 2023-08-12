@@ -1,31 +1,32 @@
 <mat-card>
     <mat-toolbar color="primary" class="mat-toolbar">Saída para paciente</mat-toolbar>
     <form [formGroup]="movementForm">
-        <div formGroupName="patient">
-            <div class="grid-container">
-                <div class="col-2">                    
-                    <mat-form-field class="field">
-                        <mat-label>CPF</mat-label>
-                        <input matInput type="text" formControlName="cpf" appCpfMask maxlength="14" (blur)="onBlurPatientCpf()">
-                        <mat-error *ngIf="movementForm.get('patient.cpf')?.invalid">
-                            {{ getErrorMessage('patient.cpf') }}
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <div class="col-10">
-                    <mat-form-field class="field">
-                        <mat-label>Nome</mat-label>
-                        <input matInput type="text" formControlName="name" class="text-uppercase" [matAutocomplete]="auto" maxlength="200">
-                        <mat-autocomplete  #auto="matAutocomplete" [displayWith]="displayFnPatient" (optionSelected)="onOptionSelectedPatient($event)">
-                            <mat-option *ngFor="let patient of patients$ | async" [value]="patient">
-                                {{ patient.name }}                              
-                            </mat-option>
-                        </mat-autocomplete>
-                        <mat-error *ngIf="movementForm.get('patient.name')?.invalid">
-                            {{ getErrorMessage('patient.name') }}
-                        </mat-error>
-                    </mat-form-field>
-                </div>
+
+        <div class="grid-container">
+            <div class="col-2">
+                <mat-form-field class="field">
+                    <mat-label>CPF</mat-label>
+                    <input matInput type="text" formControlName="patientCpf" appCpfMask maxlength="14" (blur)="onBlurPatientCpf()">
+                    <mat-error *ngIf="movementForm.get('patientCpf')?.invalid">
+                        {{ getErrorMessage('patient.cpf') }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-10">
+                <mat-form-field class="field">
+                    <mat-label>Nome</mat-label>
+                    <input matInput type="text" formControlName="patient" class="text-uppercase" [matAutocomplete]="auto"
+                        maxlength="200">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnPatient"
+                        (optionSelected)="onOptionSelectedPatient($event)">
+                        <mat-option *ngFor="let patient of patients$ | async" [value]="patient">
+                            {{ patient.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="movementForm.get('patient')?.invalid">
+                        {{ getErrorMessage('patient.name') }}
+                    </mat-error>
+                </mat-form-field>
             </div>
         </div>
 
@@ -129,5 +130,8 @@
 
     <mat-card-actions class="actions-center">
         <button mat-raised-button color="primary" (click)="onSubmit()">Salvar</button>
-      </mat-card-actions>
+    </mat-card-actions>
+
+    <app-form-debug [form]="movementForm"></app-form-debug>
+
 </mat-card>

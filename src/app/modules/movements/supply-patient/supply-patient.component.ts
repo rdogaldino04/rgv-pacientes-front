@@ -33,14 +33,6 @@ export class SupplyPatientComponent implements OnInit {
     map(o => o.content)
   );
   patients$: Observable<Patient[]>;
-
-  patientsOptions: Patient[] = [
-    { id: 1, name: 'Manoel Regufe Gonçalves Geraldo', cpf: 83623124087 },
-    { id: 2, name: 'Kevin Luques Furtunato Salles', cpf: 77120788078 },
-    { id: 3, name: 'José Milton Dias Texeira Medeiros', cpf: 87746348793 },
-    { id: 4, name: 'Monique Amorim Fundão Rangel', cpf: 94139254025 },
-    { id: 5, name: 'IVONE LUCIO MENDES BATISTA', cpf: 82423862776 },
-  ];
     
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -54,7 +46,7 @@ export class SupplyPatientComponent implements OnInit {
       this.movementFormBuilder(info.movement || {} as Movement);
     });
 
-    this.filteredOptions$ = this.movementForm.get('patient.name').valueChanges.pipe(
+    this.filteredOptions$ = this.movementForm.get('patient').valueChanges.pipe(
       takeUntil(this.destroyed$),
       startWith(''),
       debounceTime(EXPECTED_DIGITATION),
@@ -75,10 +67,8 @@ export class SupplyPatientComponent implements OnInit {
   private movementFormBuilder(movement: Movement) {
     this.movementForm = this.formBuilder.group({
       id: [movement?.id],
-      patient: this.formBuilder.group({
-        cpf: [formatCpf(movement?.patient?.cpf), [Validators.required, FormValidations.cpfValidator, Validators.maxLength(14)]],
-        name: [movement.patient, [Validators.required]]
-      }),
+      patientCpf: [formatCpf(movement?.patient?.cpf), [Validators.required, FormValidations.cpfValidator, Validators.maxLength(14)]],
+      patient: [movement.patient, [Validators.required]],
       company: this.formBuilder.group({
         cnpj: '',
         name: ''
@@ -140,25 +130,25 @@ export class SupplyPatientComponent implements OnInit {
 
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
     const selectedItemPatient = event.option.value as Patient;
-    this.movementForm.get('patient.cpf').patchValue(formatCpf(selectedItemPatient.cpf));
+    this.movementForm.get('patientCpf').patchValue(formatCpf(selectedItemPatient.cpf));
   }
 
   onBlurPatientCpf(): void {
-    if (this.movementForm.get('patient.cpf').value === '') {
-      this.movementForm.get('patient.name').reset();
+    if (this.movementForm.get('patientCpf').value === '') {
+      this.movementForm.get('patient').reset();
       return;
     }
     
-    const cpf = Number(unformatCpf(this.movementForm.get('patient.cpf').getRawValue()));
+    const cpf = Number(unformatCpf(this.movementForm.get('patientCpf').getRawValue()));
     if (!cpf) {
       return;
     }
     this.subscription = this.patientService.findByCpf(cpf)
       .subscribe(patient => 
-        this.movementForm.get('patient.name').patchValue(patient), 
+        this.movementForm.get('patient').patchValue(patient), 
         error => {
-          this.movementForm.get('patient.cpf').reset();
-          this.movementForm.get('patient.name').reset();
+          this.movementForm.get('patientCpf').reset();
+          this.movementForm.get('patient').reset();
       });
   }
 
