@@ -36,7 +36,6 @@ export class SupplyPatientComponent implements OnInit {
   filteredOptionsCompany$: Observable<Company[]>;
   companiesAll$ = this.companyService.findByName('').pipe(
     tap(() => {console.log('Fluxo inicial company')}),
-    tap(console.log)
   );
   companies$: Observable<Company[]>;
     
@@ -173,11 +172,13 @@ export class SupplyPatientComponent implements OnInit {
       takeUntil(this.destroyed$),
       startWith(''),
       debounceTime(EXPECTED_DIGITATION),
-      map(c => c.name),
-      tap(console.log),
       filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
       distinctUntilChanged(),
-      switchMap(valueDigited => this.companyService.findByName(valueDigited).pipe(tap(console.log)))
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.name;
+        return name;        
+      }),
+      switchMap(valueDigited => this.companyService.findByName(valueDigited)),
     );
     this.companies$ = of(this.companiesAll$, this.filteredOptionsCompany$).pipe(takeUntil(this.destroyed$), mergeAll());
   }

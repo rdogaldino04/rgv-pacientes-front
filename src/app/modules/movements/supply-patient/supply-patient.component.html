@@ -43,7 +43,7 @@
             <div class="col-10">
                 <mat-form-field class="field">
                     <mat-label>Empresa</mat-label>
-                    <input matInput formControlName="company" class="text-uppercase" [matAutocomplete]="autoCompany">
+                    <input matInput type="text" formControlName="company" class="text-uppercase" [matAutocomplete]="autoCompany">
                     <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="displayFnCompany"
                         (optionSelected)="onOptionSelectedCompany($event)">
                         <mat-option *ngFor="let company of companies$ | async" [value]="company">
