@@ -17,6 +17,10 @@ export class CompanyService {
         { id: 4, cnpj: 16218879000182, name: 'Rodrigues Meyer Bar ME' },
     ];
 
+    findByCnpj(cnpj: number): Observable<Company> {
+        return of(this.companies.filter(c => c.cnpj === cnpj)[0]);
+    }
+
     constructor(private http: HttpClient) { }
 
     findByName(name: string): Observable<Company[]> {

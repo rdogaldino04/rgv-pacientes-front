@@ -154,6 +154,25 @@ export class SupplyPatientComponent implements OnInit {
       });
   }
 
+  onBlurCompanyCnpj(): void {
+    if (this.movementForm.get('companyCnpj').value === '') {
+      this.movementForm.get('company').reset();
+      return;
+    }
+    
+    const cnpj = Number(this.movementForm.get('companyCnpj').getRawValue());
+    if (!cnpj) {
+      return;
+    }
+    this.subscription = this.companyService.findByCnpj(cnpj)
+      .subscribe(company => 
+        this.movementForm.get('company').patchValue(company), 
+        error => {
+          this.movementForm.get('companyCnpj').reset();
+          this.movementForm.get('company').reset();
+      });
+  }
+
   private configAutocompletePatient() {
     this.filteredOptionsPatients$ = this.movementForm.get('patient').valueChanges.pipe(
       takeUntil(this.destroyed$),
