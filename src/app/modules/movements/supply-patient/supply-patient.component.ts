@@ -7,6 +7,7 @@ import { debounceTime, distinctUntilChanged, filter, map, mergeAll, startWith, s
 import { Company } from 'src/app/model/company';
 import { Item, Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
+import { Sector } from 'src/app/model/sector';
 import { CompanyService } from 'src/app/service/company.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { SectorService } from 'src/app/service/sector.service';
@@ -40,6 +41,12 @@ export class SupplyPatientComponent implements OnInit {
   );
   companies$: Observable<Company[]>;
     
+  filteredOptionsSector$: Observable<Sector[]>;
+  sectorsAll$ = this.sectorService.findByName('').pipe(
+    tap(() => {console.log('Fluxo inicial sctor')}),
+  );
+  sectors$: Observable<Sector[]>;
+
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private route: ActivatedRoute,
@@ -53,6 +60,7 @@ export class SupplyPatientComponent implements OnInit {
     this.subscription = this.route.data.subscribe((info: { movement: Movement }) => this.movementFormBuilder(info.movement || {} as Movement));
     this.configAutocompletePatient();
     this.configAutocompleteCompany();
+    this.configAutocompleteSector();
   }
 
   ngOnDestroy(): void {
@@ -125,6 +133,10 @@ export class SupplyPatientComponent implements OnInit {
     return company && company.name ? company.name : '';
   }
 
+  displayFnSector(sector: Sector) {
+    return sector && sector.name ? sector.name : '';
+  }
+
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
     const selectedItemPatient = event.option.value as Patient;
     this.movementForm.get('patientCpf').patchValue(formatCpf(selectedItemPatient.cpf));
@@ -133,6 +145,11 @@ export class SupplyPatientComponent implements OnInit {
   onOptionSelectedCompany(event: MatAutocompleteSelectedEvent): void {
     const selectedItemCompany = event.option.value as Company;
     this.movementForm.get('companyCnpj').patchValue(selectedItemCompany.cnpj);
+  }
+
+  onOptionSelectedSector(event: MatAutocompleteSelectedEvent): void {
+    const selectedItemSector = event.option.value as Sector;
+    this.movementForm.get('sectorId').patchValue(selectedItemSector.id);
   }
 
   onBlurPatientCpf(): void {
@@ -220,6 +237,22 @@ export class SupplyPatientComponent implements OnInit {
       switchMap(valueDigited => this.companyService.findByName(valueDigited)),
     );
     this.companies$ = of(this.companiesAll$, this.filteredOptionsCompany$).pipe(takeUntil(this.destroyed$), mergeAll());
+  }
+
+  private configAutocompleteSector() {
+    this.filteredOptionsSector$ = this.movementForm.get('sector').valueChanges.pipe(
+      takeUntil(this.destroyed$),
+      startWith(''),
+      debounceTime(EXPECTED_DIGITATION),
+      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
+      distinctUntilChanged(),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.name;
+        return name;        
+      }),
+      switchMap(valueDigited => this.sectorService.findByName(valueDigited)),
+    );
+    this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
 
 }

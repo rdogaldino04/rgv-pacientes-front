@@ -70,7 +70,13 @@
             <div class="col-10">
                 <mat-form-field class="field">
                     <mat-label>Setor</mat-label>
-                    <input matInput formControlName="sector" class="text-uppercase">
+                    <input matInput formControlName="sector" class="text-uppercase" [matAutocomplete]="autoCompSector">
+                    <mat-autocomplete #autoCompSector="matAutocomplete" [displayWith]="displayFnSector"
+                        (optionSelected)="onOptionSelectedSector($event)">
+                        <mat-option *ngFor="let sector of sectors$ | async" [value]="sector">
+                            {{ sector.name }}
+                        </mat-option>
+                    </mat-autocomplete>
                     <mat-error *ngIf="movementForm.get('sector')?.invalid">
                         {{ getErrorMessage('sector') }}
                     </mat-error>
