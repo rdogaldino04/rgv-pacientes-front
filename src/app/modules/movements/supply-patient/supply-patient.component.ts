@@ -9,6 +9,7 @@ import { Item, Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
 import { CompanyService } from 'src/app/service/company.service';
 import { PatientService } from 'src/app/service/patient.service';
+import { SectorService } from 'src/app/service/sector.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
@@ -45,6 +46,7 @@ export class SupplyPatientComponent implements OnInit {
     public formUtils: FormUtilsService,
     private patientService: PatientService,
     private companyService: CompanyService,
+    private sectorService: SectorService,
   ) { }
 
   ngOnInit(): void {    
@@ -66,10 +68,8 @@ export class SupplyPatientComponent implements OnInit {
       patient: [movement.patient, [Validators.required]],
       companyCnpj: [movement?.company?.cnpj, [Validators.required]],
       company: [movement?.company, [Validators.required]],
-      sector: this.formBuilder.group({
-        id: null,
-        name: ''
-      }),
+      sectorId: [movement?.sector?.id, [Validators.required]],
+      sector: [movement?.sector?.name, [Validators.required]],
       stock: this.formBuilder.group({
         id: null,
         name: ''
@@ -171,6 +171,26 @@ export class SupplyPatientComponent implements OnInit {
           this.movementForm.get('companyCnpj').reset();
           this.movementForm.get('company').reset();
       });
+  }
+
+  onBlurSectorId() {
+    if (this.movementForm.get('sectorId').value === '') {
+      this.movementForm.get('sector').reset();
+      return;
+    }
+
+    const id = Number(this.movementForm.get('sectorId').getRawValue());
+    if (!id) {
+      return;
+    }
+
+    this.subscription = this.sectorService.findById(id)
+      .subscribe(sector =>
+        this.movementForm.get('sector').patchValue(sector.name),
+        error => {
+          this.movementForm.get('sectorId').reset();
+          this.movementForm.get('sector').reset();
+        });
   }
 
   private configAutocompletePatient() {

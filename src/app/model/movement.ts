@@ -1,12 +1,13 @@
 import { Company } from "./company";
 import { Patient } from "./patient";
+import { Sector } from "./sector";
 
 export interface Movement {
 
     id?: number;
     patient?: Patient;
     company?: Company;
-    sector?: any;
+    sector?: Sector;
     stock?: any;
     items?: Item[];
 

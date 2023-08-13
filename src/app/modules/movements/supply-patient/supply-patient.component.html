@@ -56,19 +56,25 @@
                 </mat-form-field>
             </div>
         </div>
-
-        <div formGroupName="sector">
-            <div class="grid-container">
-                <div class="col-2">
-                    <mat-form-field class="field">
-                        <input matInput placeholder="Código" formControlName="id">
-                    </mat-form-field>
-                </div>
-                <div class="col-10">
-                    <mat-form-field class="field">
-                        <input matInput placeholder="Setor" formControlName="name">
-                    </mat-form-field>
-                </div>
+        
+        <div class="grid-container">
+            <div class="col-2">
+                <mat-form-field class="field">
+                    <mat-label>Código setor</mat-label>
+                    <input matInput formControlName="sectorId" (blur)="onBlurSectorId()">
+                    <mat-error *ngIf="movementForm.get('sectorId')?.invalid">
+                        {{ getErrorMessage('sectorId') }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-10">
+                <mat-form-field class="field">
+                    <mat-label>Setor</mat-label>
+                    <input matInput formControlName="sector" class="text-uppercase">
+                    <mat-error *ngIf="movementForm.get('sector')?.invalid">
+                        {{ getErrorMessage('sector') }}
+                    </mat-error>
+                </mat-form-field>
             </div>
         </div>
 
