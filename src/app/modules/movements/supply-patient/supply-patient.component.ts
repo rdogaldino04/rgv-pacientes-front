@@ -8,9 +8,11 @@ import { Company } from 'src/app/model/company';
 import { Item, Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
 import { Sector } from 'src/app/model/sector';
+import { Stock } from 'src/app/model/stock';
 import { CompanyService } from 'src/app/service/company.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { SectorService } from 'src/app/service/sector.service';
+import { StockService } from 'src/app/service/stock.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
@@ -43,9 +45,15 @@ export class SupplyPatientComponent implements OnInit {
     
   filteredOptionsSector$: Observable<Sector[]>;
   sectorsAll$ = this.sectorService.findByName('').pipe(
-    tap(() => {console.log('Fluxo inicial sctor')}),
+    tap(() => {console.log('Fluxo inicial sector')}),
   );
   sectors$: Observable<Sector[]>;
+
+  filteredOptionsStock$: Observable<Stock[]>;
+  stocksAll$ = this.stockService.findByName('').pipe(
+    tap(() => {console.log('Fluxo inicial stock')}),
+  );
+  stocks$: Observable<Stock[]>;
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -54,6 +62,7 @@ export class SupplyPatientComponent implements OnInit {
     private patientService: PatientService,
     private companyService: CompanyService,
     private sectorService: SectorService,
+    private stockService: StockService,
   ) { }
 
   ngOnInit(): void {    
@@ -61,6 +70,7 @@ export class SupplyPatientComponent implements OnInit {
     this.configAutocompletePatient();
     this.configAutocompleteCompany();
     this.configAutocompleteSector();
+    this.configAutocompleteStock();
   }
 
   ngOnDestroy(): void {
@@ -77,11 +87,9 @@ export class SupplyPatientComponent implements OnInit {
       companyCnpj: [movement?.company?.cnpj, [Validators.required]],
       company: [movement?.company, [Validators.required]],
       sectorId: [movement?.sector?.id, [Validators.required]],
-      sector: [movement?.sector?.name, [Validators.required]],
-      stock: this.formBuilder.group({
-        id: null,
-        name: ''
-      }),
+      sector: [movement?.sector, [Validators.required]],
+      stockId: [movement?.stock?.id, [Validators.required]],
+      stock: [movement?.stock, [Validators.required]],
       items: this.formBuilder.array(this.retrieveMedicaments(movement), Validators.required),
     });
   }
@@ -137,6 +145,10 @@ export class SupplyPatientComponent implements OnInit {
     return sector && sector.name ? sector.name : '';
   }
 
+  displayFnStock(stock: Stock) {
+    return stock && stock.name ? stock.name : '';
+  }
+
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
     const selectedItemPatient = event.option.value as Patient;
     this.movementForm.get('patientCpf').patchValue(formatCpf(selectedItemPatient.cpf));
@@ -150,6 +162,11 @@ export class SupplyPatientComponent implements OnInit {
   onOptionSelectedSector(event: MatAutocompleteSelectedEvent): void {
     const selectedItemSector = event.option.value as Sector;
     this.movementForm.get('sectorId').patchValue(selectedItemSector.id);
+  }
+
+  onOptionSelectedStock(event: MatAutocompleteSelectedEvent): void {
+    const selectedItemStock = event.option.value as Stock;
+    this.movementForm.get('stockId').patchValue(selectedItemStock.id);
   }
 
   onBlurPatientCpf(): void {
@@ -210,6 +227,26 @@ export class SupplyPatientComponent implements OnInit {
         });
   }
 
+  onBlurStockId() {
+    if (this.movementForm.get('stockId').value === '') {
+      this.movementForm.get('stock').reset();
+      return;
+    }
+
+    const id = Number(this.movementForm.get('stockId').getRawValue());
+    if (!id) {
+      return;
+    }
+
+    this.subscription = this.stockService.findById(id)
+      .subscribe(stock =>
+        this.movementForm.get('stock').patchValue(stock),
+        error => {
+          this.movementForm.get('stockId').reset();
+          this.movementForm.get('stock').reset();
+        });
+  }
+
   private configAutocompletePatient() {
     this.filteredOptionsPatients$ = this.movementForm.get('patient').valueChanges.pipe(
       takeUntil(this.destroyed$),
@@ -253,6 +290,22 @@ export class SupplyPatientComponent implements OnInit {
       switchMap(valueDigited => this.sectorService.findByName(valueDigited)),
     );
     this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(takeUntil(this.destroyed$), mergeAll());
+  }
+
+  private configAutocompleteStock() {
+    this.filteredOptionsStock$ = this.movementForm.get('stock').valueChanges.pipe(
+      takeUntil(this.destroyed$),
+      startWith(''),
+      debounceTime(EXPECTED_DIGITATION),
+      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
+      distinctUntilChanged(),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.name;
+        return name;        
+      }),
+      switchMap(valueDigited => this.stockService.findByName(valueDigited)),
+    );
+    this.stocks$ = of(this.stocksAll$, this.filteredOptionsStock$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
 
 }

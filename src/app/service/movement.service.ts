@@ -18,10 +18,11 @@ export class MovementService {
                 id: 1,
                 patient: {id: 15, cpf: 23268785409, name: 'ANA MARIA CHAVES' } as Patient,
                 company: {id: 1, cnpj: 71563285000117, name: 'Psicologia Inácio' },
-                sector: { id: 1, name: 'Setor 1' },
-                stock: { id: 1, name: 'Estoque 10' },
+                sector: { id: 1, name: 'SETOR 1' },
+                stock: { id: 1, name: 'Estoque 1' },
                 items: [
-                    {id: 1, name: 'A1', amount: 15}
+                    {id: 1, name: 'A1', amount: 15},
+                    {id: 2, name: 'A2', amount: 20}
                 ]
             }
         ] as Movement[];

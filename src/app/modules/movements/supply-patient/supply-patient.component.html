@@ -84,18 +84,30 @@
             </div>
         </div>
 
-        <div formGroupName="stock">
-            <div class="grid-container">
-                <div class="col-2">
-                    <mat-form-field class="field">
-                        <input matInput placeholder="Código" formControlName="id">
-                    </mat-form-field>
-                </div>
-                <div class="col-10">
-                    <mat-form-field class="field">
-                        <input matInput placeholder="Estoque" formControlName="name">
-                    </mat-form-field>
-                </div>
+        <div class="grid-container">
+            <div class="col-2">
+                <mat-form-field class="field">
+                    <mat-label>Código estoque</mat-label>
+                    <input matInput formControlName="stockId" (blur)="onBlurStockId()">
+                    <mat-error *ngIf="movementForm.get('stockId')?.invalid">
+                        {{ getErrorMessage('stockId') }}
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-10">
+                <mat-form-field class="field">
+                    <mat-label>Estoque</mat-label>
+                    <input matInput formControlName="stock" class="text-uppercase" [matAutocomplete]="autoCompStock">
+                    <mat-autocomplete #autoCompStock="matAutocomplete" [displayWith]="displayFnStock"
+                        (optionSelected)="onOptionSelectedStock($event)">
+                        <mat-option *ngFor="let stock of stocks$ | async" [value]="stock">
+                            {{ stock.name }}
+                        </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="movementForm.get('stock')?.invalid">
+                        {{ getErrorMessage('stock') }}
+                    </mat-error>
+                </mat-form-field>
             </div>
         </div>
 
