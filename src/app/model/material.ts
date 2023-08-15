@@ -1,4 +1,4 @@
-export interface Medicament {
+export interface Material {
 
   id: number;
   name: string;

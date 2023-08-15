@@ -17,14 +17,14 @@ export class CompanyService {
         { id: 4, cnpj: 16218879000182, name: 'Rodrigues Meyer Bar ME' },
     ];
 
+    constructor(private http: HttpClient) { }
+
     findByCnpj(cnpj: number): Observable<Company> {
         return of(this.companies.filter(c => c.cnpj === cnpj)[0]);
     }
 
-    constructor(private http: HttpClient) { }
-
     findByName(name: string): Observable<Company[]> {
-        const searchTerm = name.toLowerCase();        
+        const searchTerm = name.toLowerCase();
         const filteredCompanies = this.companies.filter(company =>
             company.name.toLowerCase().includes(searchTerm)
         );

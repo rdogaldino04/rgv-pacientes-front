@@ -125,17 +125,34 @@
         <div formArrayName="items" *ngFor="let item of getItemsFormArray(); let i = index">
             <div [formGroupName]="i">
                 <div class="grid-container">
-                    <div class="col-8">
+                    <div class="col-1">
                         <mat-form-field class="field">
-                            <mat-label>Nome</mat-label>
-                            <input matInput formControlName="name">
+                            <mat-label>Código material</mat-label>
+                            <input matInput formControlName="materialId" (blur)="onBlurMaterialId(i)">
                             <mat-error
-                                *ngIf="getItemsFormArray()[i].get('name')?.invalid"
+                                *ngIf="getItemsFormArray()[i].get('materialId')?.invalid"
                                 >{{
                                 formUtils.getFormArrayFieldErrorMessage(
                                     movementForm,
                                     "items",
-                                    "name",
+                                    "materialId",
+                                    i
+                                )
+                                }}</mat-error
+                            >
+                        </mat-form-field>
+                    </div>
+                    <div class="col-7">
+                        <mat-form-field class="field">
+                            <mat-label>Material</mat-label>
+                            <input matInput formControlName="material" class="text-uppercase">
+                            <mat-error
+                                *ngIf="getItemsFormArray()[i].get('material')?.invalid"
+                                >{{
+                                formUtils.getFormArrayFieldErrorMessage(
+                                    movementForm,
+                                    "items",
+                                    "material",
                                     i
                                 )
                                 }}</mat-error
@@ -160,7 +177,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div class="col-2">
+                    <div class="col-1">
                         <button mat-icon-button color="warn" (click)="removeItem(i)">
                             <mat-icon aria-label="Remover um item">delete</mat-icon>
                         </button>

@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Observable } from "rxjs";
-import { Medicament } from "src/app/model/madicament";
-import { MedicamentService } from "src/app/service/medicament.service";
+import { Material } from "src/app/model/material";
+import { MaterialService } from "src/app/service/material.service";
 
 @Component({
     selector: 'app-medicaments',
@@ -9,10 +9,10 @@ import { MedicamentService } from "src/app/service/medicament.service";
   })
 export class MedicamentComponent {
 
-  medicaments$: Observable<Medicament[]> | null = null;
+  materials$: Observable<Material[]> | null = null;
 
-  constructor(private medicamentService: MedicamentService) {
-    this.medicaments$ = this.medicamentService.getAll();
+  constructor(private materialService: MaterialService) {
+    this.materials$ = this.materialService.getAll();
   }
 
 }

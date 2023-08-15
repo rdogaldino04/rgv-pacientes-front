@@ -10,6 +10,7 @@ import { Patient } from 'src/app/model/patient';
 import { Sector } from 'src/app/model/sector';
 import { Stock } from 'src/app/model/stock';
 import { CompanyService } from 'src/app/service/company.service';
+import { MaterialService } from 'src/app/service/material.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { SectorService } from 'src/app/service/sector.service';
 import { StockService } from 'src/app/service/stock.service';
@@ -31,27 +32,27 @@ export class SupplyPatientComponent implements OnInit {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   filteredOptionsPatients$: Observable<Patient[]>;
-  patientsAll$ = this.patientService.getAllWithPaginate({size: SIZE}).pipe(
-    tap(() => {console.log('Fluxo inicial patient')}),
+  patientsAll$ = this.patientService.getAllWithPaginate({ size: SIZE }).pipe(
+    tap(() => { console.log('Fluxo inicial patient') }),
     map(o => o.content)
   );
   patients$: Observable<Patient[]>;
 
   filteredOptionsCompany$: Observable<Company[]>;
   companiesAll$ = this.companyService.findByName('').pipe(
-    tap(() => {console.log('Fluxo inicial company')}),
+    tap(() => { console.log('Fluxo inicial company') }),
   );
   companies$: Observable<Company[]>;
-    
+
   filteredOptionsSector$: Observable<Sector[]>;
   sectorsAll$ = this.sectorService.findByName('').pipe(
-    tap(() => {console.log('Fluxo inicial sector')}),
+    tap(() => { console.log('Fluxo inicial sector') }),
   );
   sectors$: Observable<Sector[]>;
 
   filteredOptionsStock$: Observable<Stock[]>;
   stocksAll$ = this.stockService.findByName('').pipe(
-    tap(() => {console.log('Fluxo inicial stock')}),
+    tap(() => { console.log('Fluxo inicial stock') }),
   );
   stocks$: Observable<Stock[]>;
 
@@ -63,9 +64,10 @@ export class SupplyPatientComponent implements OnInit {
     private companyService: CompanyService,
     private sectorService: SectorService,
     private stockService: StockService,
+    private materialService: MaterialService,
   ) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.subscription = this.route.data.subscribe((info: { movement: Movement }) => this.movementFormBuilder(info.movement || {} as Movement));
     this.configAutocompletePatient();
     this.configAutocompleteCompany();
@@ -104,10 +106,11 @@ export class SupplyPatientComponent implements OnInit {
     return items;
   }
 
-  private createItem(item: Item = { id: null, name: null, amount: null }) {
+  private createItem(item: Item = { id: null, material: null, amount: null }) {
     return this.formBuilder.group({
       id: [item.id],
-      name: [item.name, [Validators.required]],
+      materialId: [item?.material?.id, [Validators.required]],
+      material: [item?.material?.name, [Validators.required]],
       amount: [item.amount, [Validators.required]]
     });
   }
@@ -174,18 +177,18 @@ export class SupplyPatientComponent implements OnInit {
       this.movementForm.get('patient').reset();
       return;
     }
-    
+
     const cpf = Number(unformatCpf(this.movementForm.get('patientCpf').getRawValue()));
     if (!cpf) {
       return;
     }
     this.subscription = this.patientService.findByCpf(cpf)
-      .subscribe(patient => 
-        this.movementForm.get('patient').patchValue(patient), 
+      .subscribe(patient =>
+        this.movementForm.get('patient').patchValue(patient),
         error => {
           this.movementForm.get('patientCpf').reset();
           this.movementForm.get('patient').reset();
-      });
+        });
   }
 
   onBlurCompanyCnpj(): void {
@@ -193,18 +196,18 @@ export class SupplyPatientComponent implements OnInit {
       this.movementForm.get('company').reset();
       return;
     }
-    
+
     const cnpj = Number(this.movementForm.get('companyCnpj').getRawValue());
     if (!cnpj) {
       return;
     }
     this.subscription = this.companyService.findByCnpj(cnpj)
-      .subscribe(company => 
-        this.movementForm.get('company').patchValue(company), 
+      .subscribe(company =>
+        this.movementForm.get('company').patchValue(company),
         error => {
           this.movementForm.get('companyCnpj').reset();
           this.movementForm.get('company').reset();
-      });
+        });
   }
 
   onBlurSectorId() {
@@ -220,7 +223,7 @@ export class SupplyPatientComponent implements OnInit {
 
     this.subscription = this.sectorService.findById(id)
       .subscribe(sector =>
-        this.movementForm.get('sector').patchValue(sector.name),
+        this.movementForm.get('sector').patchValue(sector),
         error => {
           this.movementForm.get('sectorId').reset();
           this.movementForm.get('sector').reset();
@@ -247,6 +250,24 @@ export class SupplyPatientComponent implements OnInit {
         });
   }
 
+  onBlurMaterialId(index: number) {
+    const itemsForm = this.getItemsFormArray()[index];
+    const id = Number(itemsForm.get('materialId').getRawValue());
+    if (itemsForm.get('materialId').getRawValue() === '') {
+      itemsForm.get('material').reset();
+      return;
+    }
+
+    this.subscription = this.materialService.findById(id)
+      .subscribe(material => {
+        itemsForm.get('material').patchValue(material.name)
+      },
+        error => {
+          itemsForm.get('materialId').reset();
+          itemsForm.get('material').reset();
+        });
+  }
+
   private configAutocompletePatient() {
     this.filteredOptionsPatients$ = this.movementForm.get('patient').valueChanges.pipe(
       takeUntil(this.destroyed$),
@@ -269,7 +290,7 @@ export class SupplyPatientComponent implements OnInit {
       distinctUntilChanged(),
       map(value => {
         const name = typeof value === 'string' ? value : value?.name;
-        return name;        
+        return name;
       }),
       switchMap(valueDigited => this.companyService.findByName(valueDigited)),
     );
@@ -285,7 +306,7 @@ export class SupplyPatientComponent implements OnInit {
       distinctUntilChanged(),
       map(value => {
         const name = typeof value === 'string' ? value : value?.name;
-        return name;        
+        return name;
       }),
       switchMap(valueDigited => this.sectorService.findByName(valueDigited)),
     );
@@ -301,7 +322,7 @@ export class SupplyPatientComponent implements OnInit {
       distinctUntilChanged(),
       map(value => {
         const name = typeof value === 'string' ? value : value?.name;
-        return name;        
+        return name;
       }),
       switchMap(valueDigited => this.stockService.findByName(valueDigited)),
     );

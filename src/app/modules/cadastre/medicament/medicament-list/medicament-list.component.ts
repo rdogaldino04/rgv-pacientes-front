@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { Medicament } from "src/app/model/madicament";
+import { Material } from "src/app/model/material";
 
 @Component({
     selector: 'app-medicament-list',
@@ -8,7 +8,7 @@ import { Medicament } from "src/app/model/madicament";
 export class MedicamentListComponent {
 
     readonly displayedColumns = ['ID'];
-    @Input() medicaments: Medicament[] = [];
+    @Input() medicaments: Material[] = [];
 
     constructor() {
         console.log(this.medicaments)
