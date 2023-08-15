@@ -104,7 +104,7 @@ export class SupplyPatientComponent implements OnInit {
     return items;
   }
 
-  private createItem(item: Item = { id: null, name: '', amount: null }) {
+  private createItem(item: Item = { id: null, name: null, amount: null }) {
     return this.formBuilder.group({
       id: [item.id],
       name: [item.name, [Validators.required]],
@@ -306,6 +306,11 @@ export class SupplyPatientComponent implements OnInit {
       switchMap(valueDigited => this.stockService.findByName(valueDigited)),
     );
     this.stocks$ = of(this.stocksAll$, this.filteredOptionsStock$).pipe(takeUntil(this.destroyed$), mergeAll());
+  }
+
+  removeItem(index: number): void {
+    const items = this.movementForm.get('items') as UntypedFormArray;
+    items.removeAt(index);
   }
 
 }
