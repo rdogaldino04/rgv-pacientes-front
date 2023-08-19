@@ -6,12 +6,14 @@ import { ErrorDialogComponent } from './components/error-dialog/error-dialog.com
 import { CpfMaskDirective } from './directives/cpf-mask.directive';
 import { PhoneMaskDirective } from './directives/phone-mask.directive';
 import { FormDebugComponent } from './components/form-debug/form-debug.component';
+import { CnpjMaskDirective } from './directives/cnpj-mask.directive';
 
 @NgModule({
     declarations: [
         ConfirmationDialogComponent,
         ErrorDialogComponent,
         CpfMaskDirective,
+        CnpjMaskDirective,
         PhoneMaskDirective,
         FormDebugComponent
     ],
@@ -23,6 +25,7 @@ import { FormDebugComponent } from './components/form-debug/form-debug.component
         ConfirmationDialogComponent,
         ErrorDialogComponent,
         CpfMaskDirective,
+        CnpjMaskDirective,
         PhoneMaskDirective,
         FormDebugComponent
     ]

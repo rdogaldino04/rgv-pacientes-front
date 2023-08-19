@@ -34,7 +34,7 @@
             <div class="col-2">
                 <mat-form-field class="field">
                     <mat-label>CNPJ</mat-label>
-                    <input matInput formControlName="companyCnpj" (blur)="onBlurCompanyCnpj()">
+                    <input matInput formControlName="companyCnpj" (blur)="onBlurCompanyCnpj()" appCnpjMask maxlength="18">
                     <mat-error *ngIf="movementForm.get('companyCnpj')?.invalid">
                         {{ getErrorMessage('companyCnpj') }}
                     </mat-error>

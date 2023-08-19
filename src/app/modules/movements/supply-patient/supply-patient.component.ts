@@ -15,6 +15,7 @@ import { PatientService } from 'src/app/service/patient.service';
 import { SectorService } from 'src/app/service/sector.service';
 import { StockService } from 'src/app/service/stock.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
+import { formatCnpj } from 'src/app/shared/utils/cnpj-utils';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
 
@@ -86,7 +87,7 @@ export class SupplyPatientComponent implements OnInit {
       id: [movement?.id],
       patientCpf: [formatCpf(movement?.patient?.cpf), [Validators.required, FormValidations.cpfValidator, Validators.maxLength(14)]],
       patient: [movement.patient, [Validators.required]],
-      companyCnpj: [movement?.company?.cnpj, [Validators.required]],
+      companyCnpj: [formatCnpj(movement?.company?.cnpj), [Validators.required, Validators.maxLength(18)]],
       company: [movement?.company, [Validators.required]],
       sectorId: [movement?.sector?.id, [Validators.required]],
       sector: [movement?.sector, [Validators.required]],
@@ -159,7 +160,7 @@ export class SupplyPatientComponent implements OnInit {
 
   onOptionSelectedCompany(event: MatAutocompleteSelectedEvent): void {
     const selectedItemCompany = event.option.value as Company;
-    this.movementForm.get('companyCnpj').patchValue(selectedItemCompany.cnpj);
+    this.movementForm.get('companyCnpj').patchValue(formatCnpj(selectedItemCompany.cnpj));
   }
 
   onOptionSelectedSector(event: MatAutocompleteSelectedEvent): void {
