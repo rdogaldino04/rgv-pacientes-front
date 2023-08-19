@@ -23,7 +23,7 @@ export class MaterialService {
     }
 
     findById(id: number): Observable<Material> {
-        return of(this.materials.filter(material => material.id === id)[0]).pipe(tap(console.log));
+        return of(this.materials.filter(material => material.id === id)[0]);
     }
 
 }

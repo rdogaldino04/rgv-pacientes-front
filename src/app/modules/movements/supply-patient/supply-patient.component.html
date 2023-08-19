@@ -61,7 +61,7 @@
             <div class="col-2">
                 <mat-form-field class="field">
                     <mat-label>Código setor</mat-label>
-                    <input matInput formControlName="sectorId" (blur)="onBlurSectorId()">
+                    <input matInput formControlName="sectorId" (blur)="onBlurSectorId()" appNumericInput>
                     <mat-error *ngIf="movementForm.get('sectorId')?.invalid">
                         {{ getErrorMessage('sectorId') }}
                     </mat-error>
@@ -88,7 +88,7 @@
             <div class="col-2">
                 <mat-form-field class="field">
                     <mat-label>Código estoque</mat-label>
-                    <input matInput formControlName="stockId" (blur)="onBlurStockId()">
+                    <input matInput formControlName="stockId" (blur)="onBlurStockId()" appNumericInput>
                     <mat-error *ngIf="movementForm.get('stockId')?.invalid">
                         {{ getErrorMessage('stockId') }}
                     </mat-error>
@@ -128,7 +128,7 @@
                     <div class="col-1">
                         <mat-form-field class="field">
                             <mat-label>Código material</mat-label>
-                            <input matInput formControlName="materialId" (blur)="onBlurMaterialId(i)">
+                            <input matInput formControlName="materialId" (blur)="onBlurMaterialId(i)" appNumericInput>
                             <mat-error
                                 *ngIf="getItemsFormArray()[i].get('materialId')?.invalid"
                                 >{{

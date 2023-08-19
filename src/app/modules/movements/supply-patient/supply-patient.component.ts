@@ -261,7 +261,7 @@ export class SupplyPatientComponent implements OnInit {
 
     this.subscription = this.materialService.findById(id)
       .subscribe(material => {
-        itemsForm.get('material').patchValue(material.name)
+        itemsForm.get('material').patchValue(material?.name)
       },
         error => {
           itemsForm.get('materialId').reset();
