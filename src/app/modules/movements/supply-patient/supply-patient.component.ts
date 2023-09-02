@@ -40,7 +40,7 @@ export class SupplyPatientComponent implements OnInit {
   patients$: Observable<Patient[]>;
 
   filteredOptionsCompany$: Observable<Company[]>;
-  companiesAll$ = this.companyService.findByName('').pipe(
+  companiesAll$ = this.companyService.findByAll('').pipe(
     tap(() => { console.log('Fluxo inicial company') }),
   );
   companies$: Observable<Company[]>;
@@ -112,7 +112,7 @@ export class SupplyPatientComponent implements OnInit {
       id: [item.id],
       materialId: [item?.material?.id, [Validators.required]],
       material: [item?.material?.name, [Validators.required]],
-      amount: [item.amount, [Validators.required]]
+      amount: [item.amount, [Validators.required, Validators.maxLength(10)]]
     });
   }
 
@@ -180,14 +180,10 @@ export class SupplyPatientComponent implements OnInit {
     }
 
     const cpf = Number(unformatCpf(this.movementForm.get('patientCpf').getRawValue()));
-    if (!cpf) {
-      return;
-    }
     this.subscription = this.patientService.findByCpf(cpf)
       .subscribe(patient =>
         this.movementForm.get('patient').patchValue(patient),
         error => {
-          this.movementForm.get('patientCpf').reset();
           this.movementForm.get('patient').reset();
         });
   }
@@ -293,7 +289,7 @@ export class SupplyPatientComponent implements OnInit {
         const name = typeof value === 'string' ? value : value?.name;
         return name;
       }),
-      switchMap(valueDigited => this.companyService.findByName(valueDigited)),
+      switchMap(valueDigited => this.companyService.findByAll(valueDigited)),
     );
     this.companies$ = of(this.companiesAll$, this.filteredOptionsCompany$).pipe(takeUntil(this.destroyed$), mergeAll());
   }

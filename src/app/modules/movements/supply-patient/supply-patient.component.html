@@ -162,7 +162,7 @@
                     <div class="col-2">
                         <mat-form-field class="field">
                             <mat-label>Quantidade</mat-label>
-                            <input matInput formControlName="amount">
+                            <input matInput formControlName="amount" appNumericInput maxlength="10">
                             <mat-error
                                 *ngIf="getItemsFormArray()[i].get('amount')?.invalid"
                                 >{{
