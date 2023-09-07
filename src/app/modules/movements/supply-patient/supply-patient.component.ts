@@ -13,11 +13,11 @@ import { CompanyService } from 'src/app/service/company.service';
 import { MaterialService } from 'src/app/service/material.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { SectorService } from 'src/app/service/sector.service';
-import { StockService } from 'src/app/service/stock.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCnpj } from 'src/app/shared/utils/cnpj-utils';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
+import { MovementDataService } from '../movement-data.service';
 
 const EXPECTED_DIGITATION = 300;
 const SIZE = 50;
@@ -46,16 +46,15 @@ export class SupplyPatientComponent implements OnInit {
   companies$: Observable<Company[]>;
 
   filteredOptionsSector$: Observable<Sector[]>;
-  sectorsAll$ = this.sectorService.findByName('').pipe(
-    tap(() => { console.log('Fluxo inicial sector') }),
-  );
+  sectorsAll$ = this.sectorService.getAll('');
   sectors$: Observable<Sector[]>;
 
   filteredOptionsStock$: Observable<Stock[]>;
-  stocksAll$ = this.stockService.findByName('').pipe(
+  stocksAll$ = of([]).pipe(
     tap(() => { console.log('Fluxo inicial stock') }),
   );
   stocks$: Observable<Stock[]>;
+  stocks: Stock[] = [];
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -64,8 +63,8 @@ export class SupplyPatientComponent implements OnInit {
     private patientService: PatientService,
     private companyService: CompanyService,
     private sectorService: SectorService,
-    private stockService: StockService,
     private materialService: MaterialService,
+    private movementDataService: MovementDataService
   ) { }
 
   ngOnInit(): void {
@@ -74,12 +73,31 @@ export class SupplyPatientComponent implements OnInit {
     this.configAutocompleteCompany();
     this.configAutocompleteSector();
     this.configAutocompleteStock();
+    this.eventAtiveStock();
+    this.movementDataService.eventAtiveStock$.next(false);
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     this.destroyed$.next(true);
     this.destroyed$.complete();
+  }
+
+  private eventAtiveStock() {
+    this.movementDataService.eventAtiveStock$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((ative) => {
+        if (ative) {
+          this.movementForm.get('stockId').enable();
+          this.movementForm.get('stock').enable();
+          return;
+        }
+        this.movementForm.get('stockId').reset();
+        this.movementForm.get('stock').reset();
+        this.movementForm.get('stockId').disable();
+        this.movementForm.get('stock').disable();
+        this.stocks = [];
+      });
   }
 
   private movementFormBuilder(movement: Movement) {
@@ -166,6 +184,8 @@ export class SupplyPatientComponent implements OnInit {
   onOptionSelectedSector(event: MatAutocompleteSelectedEvent): void {
     const selectedItemSector = event.option.value as Sector;
     this.movementForm.get('sectorId').patchValue(selectedItemSector.id);
+    this.movementDataService.eventAtiveStock$.next(false);
+    this.movementDataService.eventAtiveStock$.next(true);
   }
 
   onOptionSelectedStock(event: MatAutocompleteSelectedEvent): void {
@@ -207,23 +227,23 @@ export class SupplyPatientComponent implements OnInit {
         });
   }
 
-  onBlurSectorId() {
+  onBlurSectorId(): void {
     if (this.movementForm.get('sectorId').value === '') {
       this.movementForm.get('sector').reset();
+      this.movementDataService.eventAtiveStock$.next(false);
       return;
     }
-
     const id = Number(this.movementForm.get('sectorId').getRawValue());
-    if (!id) {
-      return;
-    }
-
     this.subscription = this.sectorService.findById(id)
-      .subscribe(sector =>
-        this.movementForm.get('sector').patchValue(sector),
+      .subscribe(sector => {
+        this.movementForm.get('sector').patchValue(sector);
+        this.movementDataService.eventAtiveStock$.next(false);
+        this.movementDataService.eventAtiveStock$.next(true);
+      },
         error => {
           this.movementForm.get('sectorId').reset();
           this.movementForm.get('sector').reset();
+          this.movementDataService.eventAtiveStock$.next(false);
         });
   }
 
@@ -233,12 +253,15 @@ export class SupplyPatientComponent implements OnInit {
       return;
     }
 
-    const id = Number(this.movementForm.get('stockId').getRawValue());
-    if (!id) {
+    const stockId = Number(this.movementForm.get('stockId').getRawValue());
+    if (!stockId) {
       return;
     }
 
-    this.subscription = this.stockService.findById(id)
+    this.subscription = this.sectorService.stocksFindBySector(
+      this.movementForm.get('sectorId').value, { stockId }
+    )
+      .pipe(map(stocks => stocks[0]))
       .subscribe(stock =>
         this.movementForm.get('stock').patchValue(stock),
         error => {
@@ -298,6 +321,11 @@ export class SupplyPatientComponent implements OnInit {
     this.filteredOptionsSector$ = this.movementForm.get('sector').valueChanges.pipe(
       takeUntil(this.destroyed$),
       startWith(''),
+      tap(sector => {
+        if (!sector) {
+          this.movementDataService.eventAtiveStock$.next(false);
+        }
+      }),
       debounceTime(EXPECTED_DIGITATION),
       filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
       distinctUntilChanged(),
@@ -305,7 +333,7 @@ export class SupplyPatientComponent implements OnInit {
         const name = typeof value === 'string' ? value : value?.name;
         return name;
       }),
-      switchMap(valueDigited => this.sectorService.findByName(valueDigited)),
+      switchMap(valueDigited => this.sectorService.getAll(valueDigited)),
     );
     this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
@@ -321,9 +349,12 @@ export class SupplyPatientComponent implements OnInit {
         const name = typeof value === 'string' ? value : value?.name;
         return name;
       }),
-      switchMap(valueDigited => this.stockService.findByName(valueDigited)),
+      switchMap(valueDigited => this.sectorService.stocksFindBySector(this.movementForm.get('sectorId').value, { stockName: valueDigited })),
     );
     this.stocks$ = of(this.stocksAll$, this.filteredOptionsStock$).pipe(takeUntil(this.destroyed$), mergeAll());
+    this.stocks$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((stocks) => this.stocks = stocks)
   }
 
   removeItem(index: number): void {

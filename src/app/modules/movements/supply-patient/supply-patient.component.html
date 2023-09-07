@@ -100,7 +100,7 @@
                     <input matInput formControlName="stock" class="text-uppercase" [matAutocomplete]="autoCompStock">
                     <mat-autocomplete #autoCompStock="matAutocomplete" [displayWith]="displayFnStock"
                         (optionSelected)="onOptionSelectedStock($event)">
-                        <mat-option *ngFor="let stock of stocks$ | async" [value]="stock">
+                        <mat-option *ngFor="let stock of stocks" [value]="stock">
                             {{ stock.name }}
                         </mat-option>
                     </mat-autocomplete>

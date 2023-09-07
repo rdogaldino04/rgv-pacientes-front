@@ -1,34 +1,34 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Sector } from '../model/sector';
+import { Stock } from '../model/stock';
+import { SectorFilter } from '../model/sector-filter';
+import { tap } from 'rxjs/operators';
 
 const API = environment.ApiUrl;
 
 @Injectable({ providedIn: 'root' })
 export class SectorService {
 
-    private sectors: Sector[] = [
-        { id: 1, name: 'SETOR 1' },
-        { id: 2, name: 'SETOR 2' },
-        { id: 3, name: 'SETOR 3' },
-        { id: 4, name: 'SETOR 4' },
-    ];
+    private url = `${API}/sectors`;
 
     constructor(private http: HttpClient) { }
 
     findById(id: number): Observable<Sector> {
-        return of(this.sectors.filter(sector => sector.id === id)[0]);
+        return this.http.get<Sector>(`${this.url}/${id}`);
     }
 
-    findByName(name: string): Observable<Sector[]> {
-        const searchTerm = name.toLowerCase();
-        const filteredSectors = this.sectors.filter(sector =>
-            sector.name.toLowerCase().includes(searchTerm)
-        );
-        return of(filteredSectors).pipe(delay(500));
+    getAll(name: string): Observable<Sector[]> {
+        return this.http.get<Sector[]>(`${this.url}?name=${name}`);
+    }
+
+    stocksFindBySector(sectorId: number, sectorFilter: SectorFilter): Observable<Stock[]> {
+        const params = new HttpParams()
+          .append('stockName', sectorFilter.stockName ? sectorFilter.stockName : '')
+          .append('stockId', sectorFilter.stockId ? sectorFilter.stockId : '')
+        return this.http.get<Stock[]>(`${this.url}/${sectorId}/stocks`, { params }).pipe(tap(console.log));
     }
 
 }
