@@ -5,5 +5,6 @@ import { Subject } from 'rxjs';
 export class MovementDataService {
 
     eventAtiveStock$ = new Subject<boolean>();
+    eventAtiveCompanyCnpj$ = new Subject<boolean>();
 
 }

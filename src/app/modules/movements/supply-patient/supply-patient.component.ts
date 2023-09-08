@@ -33,26 +33,20 @@ export class SupplyPatientComponent implements OnInit {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
 
   filteredOptionsPatients$: Observable<Patient[]>;
-  patientsAll$ = this.patientService.getAllWithPaginate({ size: SIZE }).pipe(
-    tap(() => { console.log('Fluxo inicial patient') }),
-    map(o => o.content)
-  );
+  patientsAll$ = of([]);
   patients$: Observable<Patient[]>;
 
   filteredOptionsCompany$: Observable<Company[]>;
-  companiesAll$ = this.companyService.findByAll('').pipe(
-    tap(() => { console.log('Fluxo inicial company') }),
-  );
+  companiesAll$ = of([]);
   companies$: Observable<Company[]>;
 
   filteredOptionsSector$: Observable<Sector[]>;
-  sectorsAll$ = this.sectorService.getAll('');
+  sectorsAll$ = of([]);
   sectors$: Observable<Sector[]>;
+  sectors: Sector[] = [];
 
   filteredOptionsStock$: Observable<Stock[]>;
-  stocksAll$ = of([]).pipe(
-    tap(() => { console.log('Fluxo inicial stock') }),
-  );
+  stocksAll$ = of([]);
   stocks$: Observable<Stock[]>;
   stocks: Stock[] = [];
 
@@ -68,13 +62,16 @@ export class SupplyPatientComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.subscription = this.route.data.subscribe((info: { movement: Movement }) => this.movementFormBuilder(info.movement || {} as Movement));
+    this.subscription = this.route.data
+      .subscribe((info: { movement: Movement }) => this.movementFormBuilder(info.movement || {} as Movement));
     this.configAutocompletePatient();
     this.configAutocompleteCompany();
     this.configAutocompleteSector();
     this.configAutocompleteStock();
     this.eventAtiveStock();
     this.movementDataService.eventAtiveStock$.next(false);
+    this.eventAtiveCompanyCnpj();
+    this.movementDataService.eventAtiveCompanyCnpj$.next(false);
   }
 
   ngOnDestroy(): void {
@@ -100,6 +97,23 @@ export class SupplyPatientComponent implements OnInit {
       });
   }
 
+  private eventAtiveCompanyCnpj() {
+    this.movementDataService.eventAtiveCompanyCnpj$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((ative) => {
+        if (ative) {
+          this.movementForm.get('sectorId').enable();
+          this.movementForm.get('sector').enable();
+          return;
+        }
+        this.movementForm.get('sectorId').reset();
+        this.movementForm.get('sector').reset();
+        this.movementForm.get('sectorId').disable();
+        this.movementForm.get('sector').disable();
+        this.sectors = [];
+      });
+  }
+
   private movementFormBuilder(movement: Movement) {
     this.movementForm = this.formBuilder.group({
       id: [movement?.id],
@@ -113,6 +127,14 @@ export class SupplyPatientComponent implements OnInit {
       stock: [movement?.stock, [Validators.required]],
       items: this.formBuilder.array(this.retrieveMedicaments(movement), Validators.required),
     });
+
+    this.movementForm.get('companyCnpj').valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((companyCnpj) => this.movementDataService.eventAtiveCompanyCnpj$.next(!!companyCnpj));
+
+    this.movementForm.get('sectorId').valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((sectorId) => this.movementDataService.eventAtiveStock$.next(!!sectorId));
   }
 
   private retrieveMedicaments(movement: Movement) {
@@ -156,19 +178,19 @@ export class SupplyPatientComponent implements OnInit {
   }
 
   displayFnPatient(patient: Patient): string {
-    return patient && patient.name ? patient.name : '';
+    return patient?.name;
   }
 
   displayFnCompany(company: Company): string {
-    return company && company.name ? company.name : '';
+    return company?.name;
   }
 
   displayFnSector(sector: Sector) {
-    return sector && sector.name ? sector.name : '';
+    return sector?.name;
   }
 
   displayFnStock(stock: Stock) {
-    return stock && stock.name ? stock.name : '';
+    return stock?.name;
   }
 
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
@@ -184,8 +206,6 @@ export class SupplyPatientComponent implements OnInit {
   onOptionSelectedSector(event: MatAutocompleteSelectedEvent): void {
     const selectedItemSector = event.option.value as Sector;
     this.movementForm.get('sectorId').patchValue(selectedItemSector.id);
-    this.movementDataService.eventAtiveStock$.next(false);
-    this.movementDataService.eventAtiveStock$.next(true);
   }
 
   onOptionSelectedStock(event: MatAutocompleteSelectedEvent): void {
@@ -237,13 +257,10 @@ export class SupplyPatientComponent implements OnInit {
     this.subscription = this.sectorService.findById(id)
       .subscribe(sector => {
         this.movementForm.get('sector').patchValue(sector);
-        this.movementDataService.eventAtiveStock$.next(false);
-        this.movementDataService.eventAtiveStock$.next(true);
       },
         error => {
           this.movementForm.get('sectorId').reset();
           this.movementForm.get('sector').reset();
-          this.movementDataService.eventAtiveStock$.next(false);
         });
   }
 
@@ -293,7 +310,6 @@ export class SupplyPatientComponent implements OnInit {
       takeUntil(this.destroyed$),
       startWith(''),
       debounceTime(EXPECTED_DIGITATION),
-      //tap(console.log),
       filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
       distinctUntilChanged(),
       switchMap((valueDigited => this.patientService.getAllWithPaginate({ size: 50, name: valueDigited }).pipe(map(o => o.content))))
@@ -305,6 +321,7 @@ export class SupplyPatientComponent implements OnInit {
     this.filteredOptionsCompany$ = this.movementForm.get('company').valueChanges.pipe(
       takeUntil(this.destroyed$),
       startWith(''),
+      tap((company) => this.movementDataService.eventAtiveCompanyCnpj$.next(!!company)),
       debounceTime(EXPECTED_DIGITATION),
       filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
       distinctUntilChanged(),
@@ -321,11 +338,7 @@ export class SupplyPatientComponent implements OnInit {
     this.filteredOptionsSector$ = this.movementForm.get('sector').valueChanges.pipe(
       takeUntil(this.destroyed$),
       startWith(''),
-      tap(sector => {
-        if (!sector) {
-          this.movementDataService.eventAtiveStock$.next(false);
-        }
-      }),
+      tap(sector => this.movementDataService.eventAtiveStock$.next(!!sector)),
       debounceTime(EXPECTED_DIGITATION),
       filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
       distinctUntilChanged(),
@@ -336,6 +349,9 @@ export class SupplyPatientComponent implements OnInit {
       switchMap(valueDigited => this.sectorService.getAll(valueDigited)),
     );
     this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(takeUntil(this.destroyed$), mergeAll());
+    this.sectors$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((sectors) => this.sectors = sectors);
   }
 
   private configAutocompleteStock() {

@@ -73,7 +73,7 @@
                     <input matInput formControlName="sector" class="text-uppercase" [matAutocomplete]="autoCompSector">
                     <mat-autocomplete #autoCompSector="matAutocomplete" [displayWith]="displayFnSector"
                         (optionSelected)="onOptionSelectedSector($event)">
-                        <mat-option *ngFor="let sector of sectors$ | async" [value]="sector">
+                        <mat-option *ngFor="let sector of sectors" [value]="sector">
                             {{ sector.name }}
                         </mat-option>
                     </mat-autocomplete>
