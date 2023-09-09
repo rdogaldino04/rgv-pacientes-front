@@ -5,9 +5,9 @@ import { MaterialService } from "src/app/service/material.service";
 
 @Component({
     selector: 'app-medicaments',
-    templateUrl: './medicament.component.html',
+    templateUrl: './material.component.html',
   })
-export class MedicamentComponent {
+export class MaterialComponent {
 
   materials$: Observable<Material[]> | null = null;
 

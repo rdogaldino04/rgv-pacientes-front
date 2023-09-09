@@ -1,5 +1,5 @@
 import { Company } from "./company";
-import { Material } from "./material";
+import { MovimentItem } from "./movement-item";
 import { Patient } from "./patient";
 import { Sector } from "./sector";
 import { Stock } from "./stock";
@@ -11,14 +11,6 @@ export interface Movement {
     company?: Company;
     sector?: Sector;
     stock?: Stock;
-    items?: Item[];
-
-}
-
-export interface Item {
-
-    id: number;
-    material: Material;
-    amount: number;
+    items?: MovimentItem[];
 
 }

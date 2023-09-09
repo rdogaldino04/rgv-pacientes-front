@@ -1,8 +1,8 @@
-<mat-table [dataSource]="medicaments">
+<mat-table [dataSource]="materials">
     <!-- ID Column -->
     <ng-container matColumnDef="ID">
         <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-        <mat-cell *matCellDef="let medicament">{{medicament.id}}</mat-cell>
+        <mat-cell *matCellDef="let material">{{material.id}}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

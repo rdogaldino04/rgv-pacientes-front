@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { AppMaterialModule } from 'src/app/shared/app-material/app-material.module';
-import { MedicamentListComponent } from './medicament-list/medicament-list.component';
-import { MedicamentComponent } from './medicament.component';
-import { MedicamentRoutingModule } from './medicament.routing.module';
+import { MaterialListComponent } from './material-list/material-list.component';
+import { MaterialComponent } from './material.component';
+import { MaterialRoutingModule } from './material.routing.module';
 import { MaterialService } from 'src/app/service/material.service';
 
 @NgModule({
-    declarations: [MedicamentComponent, MedicamentListComponent],
+    declarations: [MaterialComponent, MaterialListComponent],
 
     imports: [
         CommonModule,
         AppMaterialModule,
-        MedicamentRoutingModule
+        MaterialRoutingModule
     ],
 
     providers: [MaterialService]
 
 })
-export class MedicamentModule { }
+export class MaterialModule { }

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MedicamentModule } from './medicament/medicament.module';
+import { MaterialModule } from './material/material.module';
 import { CadastreRoutingModule } from './cadastre.routing.modeule';
 
 @NgModule({
@@ -9,7 +9,7 @@ import { CadastreRoutingModule } from './cadastre.routing.modeule';
     imports: [
         CommonModule,
         CadastreRoutingModule,
-        MedicamentModule
+        MaterialModule
     ],
 
 })

@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, ReplaySubject, Subscription, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mergeAll, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Company } from 'src/app/model/company';
-import { Item, Movement } from 'src/app/model/movement';
+import { Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
 import { Sector } from 'src/app/model/sector';
 import { Stock } from 'src/app/model/stock';
@@ -18,6 +18,7 @@ import { formatCnpj, unformatCnpj } from 'src/app/shared/utils/cnpj-utils';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
 import { MovementDataService } from '../movement-data.service';
+import { MovimentItem } from 'src/app/model/movement-item';
 
 const EXPECTED_DIGITATION = 300;
 const SIZE = 50;
@@ -147,7 +148,7 @@ export class SupplyPatientComponent implements OnInit {
     return items;
   }
 
-  private createItem(item: Item = { id: null, material: null, amount: null }) {
+  private createItem(item: MovimentItem = { id: null, material: null, amount: null }) {
     return this.formBuilder.group({
       id: [item.id],
       materialId: [item?.material?.id, [Validators.required]],
