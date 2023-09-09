@@ -1,0 +1,14 @@
+<mat-form-field class="field">
+    <mat-label>{{ title }}</mat-label>
+    <input matInput type="text" formControlName="mControlName" class="text-uppercase" [matAutocomplete]="auto"
+        maxlength="200">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+        (optionSelected)="onOptionSelected($event)">
+        <mat-option *ngFor="let item of items" [value]="item">
+            {{ item.name }}
+        </mat-option>
+    </mat-autocomplete>
+    <!-- <mat-error *ngIf="movementForm.get('patient')?.invalid">
+        {{ getErrorMessage('patient.name') }}
+    </mat-error> -->
+</mat-form-field>
