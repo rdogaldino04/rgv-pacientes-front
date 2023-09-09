@@ -5,6 +5,11 @@
         <mat-cell *matCellDef="let material">{{material.id}}</mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="Nome">
+        <mat-header-cell *matHeaderCellDef>Nome</mat-header-cell>
+        <mat-cell *matCellDef="let material">{{material.name}}</mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 

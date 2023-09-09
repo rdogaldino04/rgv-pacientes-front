@@ -12,7 +12,7 @@ export class MaterialComponent {
   materials$: Observable<Material[]> | null = null;
 
   constructor(private materialService: MaterialService) {
-    this.materials$ = this.materialService.getAll();
+    this.materials$ = this.materialService.getAll('');
   }
 
 }

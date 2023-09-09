@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, ReplaySubject, Subscription, of } from 'rxjs';
@@ -19,6 +19,7 @@ import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
 import { MovementDataService } from '../movement-data.service';
 import { MovimentItem } from 'src/app/model/movement-item';
+import { Material } from 'src/app/model/material';
 
 const EXPECTED_DIGITATION = 300;
 const SIZE = 50;
@@ -50,6 +51,10 @@ export class SupplyPatientComponent implements OnInit {
   stocksAll$ = of([]);
   stocks$: Observable<Stock[]>;
   stocks: Stock[] = [];
+
+  filteredOptionsMaterials$: Observable<Material[]>;
+  materialAll$ = of([]);
+  materials$: Observable<Material[]>;
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -148,13 +153,14 @@ export class SupplyPatientComponent implements OnInit {
     return items;
   }
 
-  private createItem(item: MovimentItem = { id: null, material: null, amount: null }) {
-    return this.formBuilder.group({
+  private createItem(item: MovimentItem = { id: null, material: null, amount: null }): FormGroup {
+    const itemFormGroup = this.formBuilder.group({
       id: [item.id],
-      materialId: [item?.material?.id, [Validators.required]],
       material: [item?.material?.name, [Validators.required]],
       amount: [item.amount, [Validators.required, Validators.maxLength(10)]]
     });
+    this.configAutocompleteMaterial(itemFormGroup);
+    return itemFormGroup;
   }
 
   onSubmit(): void {
@@ -165,7 +171,7 @@ export class SupplyPatientComponent implements OnInit {
     }
   }
 
-  getItemsFormArray() {
+  getItemsFormArray(): AbstractControl<any, any>[] {
     return (<UntypedFormArray>this.movementForm.get('items')).controls;
   }
 
@@ -192,6 +198,10 @@ export class SupplyPatientComponent implements OnInit {
 
   displayFnStock(stock: Stock) {
     return stock?.name;
+  }
+
+  displayFnMaterial(material: Material) {
+    return material?.name;
   }
 
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
@@ -286,24 +296,6 @@ export class SupplyPatientComponent implements OnInit {
         });
   }
 
-  onBlurMaterialId(index: number) {
-    const itemsForm = this.getItemsFormArray()[index];
-    const id = Number(itemsForm.get('materialId').getRawValue());
-    if (itemsForm.get('materialId').getRawValue() === '') {
-      itemsForm.get('material').reset();
-      return;
-    }
-
-    this.subscription = this.materialService.findById(id)
-      .subscribe(material => {
-        itemsForm.get('material').patchValue(material?.name)
-      },
-        error => {
-          itemsForm.get('materialId').reset();
-          itemsForm.get('material').reset();
-        });
-  }
-
   private configAutocompletePatient() {
     this.filteredOptionsPatients$ = this.movementForm.get('patient').valueChanges.pipe(
       takeUntil(this.destroyed$),
@@ -372,6 +364,23 @@ export class SupplyPatientComponent implements OnInit {
     this.stocks$
       .pipe(takeUntil(this.destroyed$))
       .subscribe((stocks) => this.stocks = stocks)
+  }
+
+  private configAutocompleteMaterial(itemFormGroup: FormGroup) {
+    this.filteredOptionsMaterials$ = itemFormGroup.get('material').valueChanges.pipe(
+      tap(console.log),
+      takeUntil(this.destroyed$),
+      startWith(''),
+      debounceTime(EXPECTED_DIGITATION),
+      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
+      distinctUntilChanged(),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.name;
+        return name;
+      }),
+      switchMap(valueDigited => this.materialService.getAll(valueDigited))
+    );
+    this.materials$ = of(this.materialAll$, this.filteredOptionsMaterials$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
 
   removeItem(index: number): void {

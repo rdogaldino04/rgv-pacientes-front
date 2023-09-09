@@ -55,6 +55,12 @@ mat-card {
     margin-left: 10px;
 }
 
+.col-9 {
+    flex: 0 0 calc(75.00% - 32px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 .col-10 {
     flex: 0 0 calc(83.33% - 32px);    
     margin-right: 10px;

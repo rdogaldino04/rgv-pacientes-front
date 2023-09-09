@@ -7,7 +7,7 @@ import { Material } from "src/app/model/material";
 })
 export class MaterialListComponent {
 
-    readonly displayedColumns = ['ID'];
+    readonly displayedColumns = ['ID', 'Nome',];
     @Input() materials: Material[] = [];
 
     constructor() {
