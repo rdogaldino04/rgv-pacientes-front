@@ -14,7 +14,7 @@ import { MaterialService } from 'src/app/service/material.service';
 import { PatientService } from 'src/app/service/patient.service';
 import { SectorService } from 'src/app/service/sector.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
-import { formatCnpj } from 'src/app/shared/utils/cnpj-utils';
+import { formatCnpj, unformatCnpj } from 'src/app/shared/utils/cnpj-utils';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
 import { MovementDataService } from '../movement-data.service';
@@ -231,13 +231,11 @@ export class SupplyPatientComponent implements OnInit {
   onBlurCompanyCnpj(): void {
     if (this.movementForm.get('companyCnpj').value === '') {
       this.movementForm.get('company').reset();
+      this.movementDataService.eventAtiveCompanyCnpj$.next(false);
       return;
     }
 
-    const cnpj = Number(this.movementForm.get('companyCnpj').getRawValue());
-    if (!cnpj) {
-      return;
-    }
+    const cnpj = Number(unformatCnpj(this.movementForm.get('companyCnpj').getRawValue()));
     this.subscription = this.companyService.findByCnpj(cnpj)
       .subscribe(company =>
         this.movementForm.get('company').patchValue(company),
@@ -346,7 +344,7 @@ export class SupplyPatientComponent implements OnInit {
         const name = typeof value === 'string' ? value : value?.name;
         return name;
       }),
-      switchMap(valueDigited => this.sectorService.getAll(valueDigited)),
+      switchMap(valueDigited => this.sectorService.getAll({ name: valueDigited, companyId: this.movementForm.get('company').value.id })),
     );
     this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(takeUntil(this.destroyed$), mergeAll());
     this.sectors$
@@ -365,7 +363,9 @@ export class SupplyPatientComponent implements OnInit {
         const name = typeof value === 'string' ? value : value?.name;
         return name;
       }),
-      switchMap(valueDigited => this.sectorService.stocksFindBySector(this.movementForm.get('sectorId').value, { stockName: valueDigited })),
+      switchMap(valueDigited => this.sectorService.stocksFindBySector(
+        this.movementForm.get('sectorId').value, 
+        { stockName: valueDigited })),
     );
     this.stocks$ = of(this.stocksAll$, this.filteredOptionsStock$).pipe(takeUntil(this.destroyed$), mergeAll());
     this.stocks$
