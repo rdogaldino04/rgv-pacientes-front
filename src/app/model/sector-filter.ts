@@ -1,5 +1,6 @@
 export interface SectorFilter {
 
+  id?: number;
   name?: string;
   stockId?: number;
   stockName?: string;

@@ -49,7 +49,7 @@
                         [matAutocomplete]="autoCompany">
                     <mat-autocomplete #autoCompany="matAutocomplete" [displayWith]="displayFnCompany"
                         (optionSelected)="onOptionSelectedCompany($event)">
-                        <mat-option *ngFor="let company of companies$ | async" [value]="company">
+                        <mat-option *ngFor="let company of companies" [value]="company">
                             {{ company.name }}
                         </mat-option>
                     </mat-autocomplete>
@@ -116,7 +116,7 @@
 
         <mat-toolbar>
             <span>Itens</span>
-            <button mat-icon-button color="accent" (click)="addNewItem()">
+            <button mat-icon-button color="accent" (click)="addNewItem()" [disabled]="edit">
                 <mat-icon aria-label="Adicionar um novo item">add</mat-icon>
             </button>
         </mat-toolbar>
@@ -165,7 +165,7 @@
                     </div>
 
                     <div class="col-1">
-                        <button mat-icon-button color="warn" (click)="removeItem(i)">
+                        <button mat-icon-button color="warn" (click)="removeItem(i)" [disabled]="edit">
                             <mat-icon aria-label="Remover um item">delete</mat-icon>
                         </button>
                     </div>
@@ -175,7 +175,7 @@
     </form>
 
     <mat-card-actions class="actions-center">
-        <button mat-raised-button color="primary" (click)="onSubmit()">Salvar</button>
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="edit">Salvar</button>
     </mat-card-actions>
 
     <app-form-debug [form]="movementForm"></app-form-debug>

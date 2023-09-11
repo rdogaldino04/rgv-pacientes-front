@@ -66,4 +66,22 @@ export class FormUtilsService {
     return !formArray.valid && formArray.hasError('required') && formArray.touched;
   }
 
+  desableOrEnableFields(formGroup: UntypedFormGroup, enable: boolean, fieldNames: string[]) {
+    fieldNames.forEach((fieldName) => {
+      const field = formGroup.get(fieldName) as UntypedFormControl;
+      if (enable) {
+        field.enable({ onlySelf: enable });
+      } else {
+        field.disable({ onlySelf: enable });
+      }
+    });
+  }
+
+  resetFields(formGroup: UntypedFormGroup, fieldNames: string[]): void {
+    fieldNames.forEach((fieldName) => {
+      const field = formGroup.get(fieldName) as UntypedFormControl;
+      field.reset();
+    });
+  }
+
 }

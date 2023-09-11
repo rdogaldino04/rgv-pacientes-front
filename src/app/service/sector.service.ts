@@ -21,6 +21,7 @@ export class SectorService {
 
     getAll(sectorFilter: SectorFilter): Observable<Sector[]> {
         const params = new HttpParams()
+            .append('id', sectorFilter.id ? sectorFilter.id : '')
             .append('name', sectorFilter.name ? sectorFilter.name : '')
             .append("companyId", sectorFilter.companyId ? sectorFilter.companyId : '')
         return this.http.get<Sector[]>(`${this.url}`, { params });
