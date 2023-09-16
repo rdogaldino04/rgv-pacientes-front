@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Movement } from '../model/movement';
+import { first } from 'rxjs/operators';
+import { MovementInput } from '../model/movement-input';
 
 const API = environment.ApiUrl;
 
@@ -20,14 +22,18 @@ export class MovementService {
                 sector: { id: 1, name: 'SETOR_1' },
                 stock: { id: 1, name: 'ESTOQUE_1' },
                 items: [
-                    { id: 1, material: { id: 1, name: 'LOSARTANA POTÁSSICA 50 MG COMPRIMIDO ', expirationDate: null, registrationDate: null }, amount: 15 },
-                    { id: 2, material: { id: 2, name: 'METFORMINA, CLORIDRATO 500 MG COMPRIMIDO', expirationDate: null, registrationDate: null }, amount: 16 },
+                    { id: 1, material: { id: 1, name: 'LOSARTANA POTÁSSICA 50 MG COMPRIMIDO' }, amount: 15 },
+                    { id: 2, material: { id: 2, name: 'METFORMINA, CLORIDRATO 500 MG COMPRIMIDO' }, amount: 16 },
                 ]
             }
         ] as Movement[];
 
         const movement = movements.filter(m => m.id === id)[0];
         return of(movement);
+    }
+
+    save(movementInput: MovementInput): Observable<Movement> {
+        return this.http.post<Movement>(`${API}/movements`, movementInput).pipe(first());
     }
 
 }

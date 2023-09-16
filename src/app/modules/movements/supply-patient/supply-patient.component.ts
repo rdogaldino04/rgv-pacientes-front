@@ -17,9 +17,9 @@ import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCnpj, unformatCnpj } from 'src/app/shared/utils/cnpj-utils';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
-import { MovementDataService } from '../movement-data.service';
 import { MovimentItem } from 'src/app/model/movement-item';
 import { Material } from 'src/app/model/material';
+import { MovementService } from 'src/app/service/movement.service';
 
 const EXPECTED_DIGITATION = 300;
 const DISABLE = false;
@@ -68,7 +68,7 @@ export class SupplyPatientComponent implements OnInit {
     private companyService: CompanyService,
     private sectorService: SectorService,
     private materialService: MaterialService,
-    private movementDataService: MovementDataService
+    private movementService: MovementService
   ) { }
 
   ngOnInit(): void {
@@ -108,6 +108,24 @@ export class SupplyPatientComponent implements OnInit {
 
   }
 
+  onSubmit(): void {
+    if (this.movementForm.valid) {
+      console.log(this.movementForm.getRawValue())
+
+      this.movementService.save({
+        id: null,
+        patient: this.movementForm.get('patient').value,
+        company: this.movementForm.get('company').value,
+        sector: this.movementForm.get('sector').value,
+        stock: this.movementForm.get('stock').value,
+        items: this.movementForm.get('items').value
+      })      
+        .subscribe(m => console.log(m));
+    } else {
+      this.formUtils.validateAllFormFields(this.movementForm);
+    }
+  }
+
   private retrieveMedicaments(movement: Movement) {
     const items = [];
     if (movement?.items) {
@@ -126,14 +144,6 @@ export class SupplyPatientComponent implements OnInit {
     });
     this.configAutocompleteMaterial(itemFormGroup);
     return itemFormGroup;
-  }
-
-  onSubmit(): void {
-    if (this.movementForm.valid) {
-      console.log(this.movementForm.getRawValue())
-    } else {
-      this.formUtils.validateAllFormFields(this.movementForm);
-    }
   }
 
   getItemsFormArray(): AbstractControl<any, any>[] {

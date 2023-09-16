@@ -1,9 +1,12 @@
-import { Material } from "./material";
-
 export interface MovimentItem {
 
     id: number;
-    material: Material;
+    material: MaterialMovementItemInput;
     amount: number;
 
+}
+
+interface MaterialMovementItemInput {
+    id: number;
+    name: string;
 }

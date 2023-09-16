@@ -7,10 +7,11 @@ import { Stock } from "./stock";
 export interface Movement {
 
     id?: number;
-    patient?: Patient;
-    company?: Company;
-    sector?: Sector;
-    stock?: Stock;
-    items?: MovimentItem[];
+    patient: Patient;
+    company: Company;
+    sector: Sector;
+    stock: Stock;
+    items: MovimentItem[];
+    registrationDate?: Date;
 
 }
