@@ -105,7 +105,7 @@ export class SupplyPatientComponent implements OnInit {
     if (this.edit) {
       this.movementForm.disable();
     }
-
+    this.movementForm.get('id').disable();
   }
 
   onSubmit(): void {
@@ -119,8 +119,10 @@ export class SupplyPatientComponent implements OnInit {
         sector: this.movementForm.get('sector').value,
         stock: this.movementForm.get('stock').value,
         items: this.movementForm.get('items').value
-      })      
-        .subscribe(m => console.log(m));
+      })
+        .subscribe(m => {
+          this.movementForm.get('id').patchValue(m.id);
+        });
     } else {
       this.formUtils.validateAllFormFields(this.movementForm);
     }

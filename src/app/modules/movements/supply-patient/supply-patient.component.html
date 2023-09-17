@@ -5,6 +5,16 @@
         <div class="grid-container">
             <div class="col-2">
                 <mat-form-field class="field">
+                    <mat-label>Cód movimentação</mat-label>
+                    <input matInput appNumericInput formControlName="id">
+
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="col-2">
+                <mat-form-field class="field">
                     <mat-label>CPF</mat-label>
                     <input matInput type="text" formControlName="patientCpf" appCpfMask maxlength="14"
                         (blur)="onBlurPatientCpf()">
