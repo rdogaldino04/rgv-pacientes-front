@@ -5,14 +5,19 @@ import { MaterialListComponent } from './material-list/material-list.component';
 import { MaterialComponent } from './material.component';
 import { MaterialRoutingModule } from './material.routing.module';
 import { MaterialService } from 'src/app/service/material.service';
+import { MaterialFilterComponent } from './material-filter/material-filter.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-    declarations: [MaterialComponent, MaterialListComponent],
+    declarations: [MaterialComponent, MaterialListComponent, MaterialFilterComponent],
 
     imports: [
         CommonModule,
         AppMaterialModule,
-        MaterialRoutingModule
+        MaterialRoutingModule,
+        ReactiveFormsModule,
+        SharedModule
     ],
 
     providers: [MaterialService]

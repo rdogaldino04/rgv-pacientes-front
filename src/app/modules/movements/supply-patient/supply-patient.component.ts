@@ -110,8 +110,6 @@ export class SupplyPatientComponent implements OnInit {
 
   onSubmit(): void {
     if (this.movementForm.valid) {
-      console.log(this.movementForm.getRawValue())
-
       this.movementService.save({
         id: null,
         patient: this.movementForm.get('patient').value,
@@ -264,7 +262,6 @@ export class SupplyPatientComponent implements OnInit {
 
   private configAutocompleteMaterial(itemFormGroup: FormGroup) {
     this.filteredOptionsMaterials$ = itemFormGroup.get('material').valueChanges.pipe(
-      tap(console.log),
       takeUntil(this.destroyed$),
       startWith(''),
       debounceTime(EXPECTED_DIGITATION),

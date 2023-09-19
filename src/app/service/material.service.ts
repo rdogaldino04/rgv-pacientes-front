@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -13,8 +13,11 @@ export class MaterialService {
 
     constructor(private http: HttpClient) { }
 
-    getAll(name: string): Observable<Material[]> {
-        return this.http.get<Material[]>(`${this.url}?name=${name}`);
+    getAll(materialFilter: Material): Observable<Material[]> {
+        const params = new HttpParams()
+            .append('id', materialFilter.id ? materialFilter.id : '')
+            .append('name', materialFilter.name ? materialFilter.name : '');
+        return this.http.get<Material[]>(`${this.url}`, { params });
     }
 
 }

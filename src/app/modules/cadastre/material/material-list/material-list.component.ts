@@ -4,15 +4,11 @@ import { Material } from "src/app/model/material";
 @Component({
     selector: 'app-material-list',
     templateUrl: './material-list.component.html',
+    styleUrls: ['./material-list.component.scss']
 })
 export class MaterialListComponent {
 
-    readonly displayedColumns = ['ID', 'Nome',];
+    readonly displayedColumns = ['id', 'name',];
     @Input() materials: Material[] = [];
-
-    constructor() {
-        console.log(this.materials)
-    }
-    
     
 }

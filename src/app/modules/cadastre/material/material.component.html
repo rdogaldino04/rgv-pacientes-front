@@ -1,6 +1,8 @@
 <mat-card>
-    <h1>medicamentos..........</h1>
-    <app-material-list *ngIf="materials$ | async as materials" [materials]="materials">
+    
+    <app-material-filter [materialFilterform]="materialFilterform" (eventFilter$)="onFilter()"></app-material-filter>
 
+    <app-material-list *ngIf="materials$ | async as materials" [materials]="materials">
     </app-material-list>
+    
 </mat-card>

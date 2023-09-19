@@ -40,7 +40,6 @@ export class PatientsComponent implements OnInit {
     this.filter = filter;
     this.patientPage$ = this.patientService.getAllWithPaginate(this.filter)
       .pipe(catchError(error => {
-        console.log(error);
         return of(new PatientPage());
       }));
   }

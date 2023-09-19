@@ -1,8 +1,8 @@
 export interface Material {
 
-  id: number;
-  name: string;
-  expirationDate: Date;
-  registrationDate: Date;
+  id?: number;
+  name?: string;
+  expirationDate?: Date;
+  registrationDate?: Date;
 
 }

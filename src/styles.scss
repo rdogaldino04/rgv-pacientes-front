@@ -29,3 +29,80 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-toolbar {
     margin-bottom: 16px;
 }
+
+// begin trecho global
+/* Classe para o container do layout de grade */
+.grid-container {
+    display: flex;
+    /* Permite que os elementos "quebrem" para a próxima linha quando não couberem mais na mesma linha */
+    flex-wrap: wrap;
+}
+
+/* Classe para as colunas */
+.col-1 {
+    flex: 0 0 calc(8.33% - 10px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-2 {
+    /* Ocupa 16.67% do espaço total, menos 10px de margem */
+    flex: 0 0 calc(16.67% - 32px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-3 {
+    flex: 0 0 calc(25% - 32px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-4 {
+    flex: 0 0 calc(33.33% - 10px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-6 {    
+    flex: 0 0 calc(50% - 10px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-7 {
+    flex: 0 0 calc(58.33% - 10px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-8 {
+    flex: 0 0 calc(66.66% - 32px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-9 {
+    flex: 0 0 calc(75.00% - 32px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-10 {
+    flex: 0 0 calc(83.33% - 32px);    
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.col-12 {
+    flex: 0 0 calc(100% - 10px);
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+/* Classe para ajustar o tamanho dos campos dentro das colunas */
+.field {
+    /* Defina o tamanho dos campos para preencher a largura da coluna */
+    width: 100%;
+}
+// end trecho global
