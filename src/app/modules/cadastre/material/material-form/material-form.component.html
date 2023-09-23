@@ -1,0 +1,53 @@
+<mat-card>
+    <mat-toolbar color="primary" class="mat-toolbar">Cadastro de materiais</mat-toolbar>
+
+    <mat-card-content>
+
+        <form [formGroup]="form">
+
+            <div class="grid-container">
+
+                <div class="col-1">
+                    <mat-form-field class="field">
+                        <mat-label>Cód</mat-label>
+                        <input matInput appNumericInput formControlName="id" type="text" maxlength="14" />
+                    </mat-form-field>
+                </div>
+
+                <div class="col-8">
+                    <mat-form-field class="field">
+                        <mat-label>Nome</mat-label>
+                        <input matInput formControlName="name" type="text" [maxLength]="100"
+                            oninput="this.value = this.value.toUpperCase()" #name />
+                        <mat-hint align="end">{{ name.value.length }} / 100</mat-hint>
+                    </mat-form-field>
+                    <mat-error *ngIf="form.get('name')?.invalid && form.get('name').touched">
+                        {{ getErrorMessage('name') }}
+                    </mat-error>
+                </div>
+
+                <div class="col-1">
+                    <mat-form-field class="field">
+                        <mat-label>Validade</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="expirationDate" type="text"
+                            [maxLength]="100" class="text-uppercase" />
+                        <mat-hint>DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-error *ngIf="form.get('expirationDate')?.invalid && form.get('expirationDate').touched">
+                        {{ getErrorMessage('expirationDate') }}
+                    </mat-error>
+                </div>
+            </div>
+
+        </form>
+
+        <mat-card-actions [align]="'end'">
+            <button mat-raised-button color="primary" (click)="onSubmit()">Salvar</button>
+        </mat-card-actions>
+
+        <app-form-debug [form]="form"></app-form-debug>
+
+    </mat-card-content>
+</mat-card>

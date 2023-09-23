@@ -5,5 +5,11 @@ export interface Error {
     type: string;
     title: string;
     detail: string;
+    objects: Array<Object>;
 
+}
+
+interface Object {
+    name: string;
+    userMessage: string;
 }

@@ -51,6 +51,10 @@ export class FormUtilsService {
       return 'Campo CPF inválido';
     }
 
+    if (field?.hasError('futureDate')) {
+      return 'Deve ser uma data futura';
+    }
+
     return 'Campo inválido';
   }
 

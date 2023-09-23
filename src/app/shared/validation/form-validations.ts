@@ -13,4 +13,15 @@ export class FormValidations {
         return null;
     }
 
+    static futureDateValidator(control: UntypedFormControl) {
+        const dateSelected = new Date(control.value);
+        const today = new Date();
+
+        if (dateSelected <= today) {
+            return { futureDate: true };
+        }
+
+        return null;
+    }
+
 }

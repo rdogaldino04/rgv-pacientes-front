@@ -9,15 +9,31 @@ const API = environment.ApiUrl;
 @Injectable({ providedIn: 'root' })
 export class MaterialService {
 
-    private url = `${API}/materials`;
+  private url = `${API}/materials`;
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getAll(materialFilter: Material): Observable<Material[]> {
-        const params = new HttpParams()
-            .append('id', materialFilter.id ? materialFilter.id : '')
-            .append('name', materialFilter.name ? materialFilter.name : '');
-        return this.http.get<Material[]>(`${this.url}`, { params });
-    }
+  getAll(materialFilter: Material): Observable<Material[]> {
+    const params = new HttpParams()
+      .append('id', materialFilter.id ? materialFilter.id : '')
+      .append('name', materialFilter.name ? materialFilter.name : '');
+    return this.http.get<Material[]>(`${this.url}`, { params });
+  }
+
+  findById(id: number): Observable<Material> {
+    return this.http.get<Material>(`${this.url}/${id}`)
+  }
+
+  update(material: Material): Observable<Material> {
+    return this.http.put<Material>(`${this.url}/${material.id}`, material);
+  }
+
+  create(material: Material): Observable<Material> {
+    return this.http.post<Material>(`${this.url}`, material);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
+  }
 
 }

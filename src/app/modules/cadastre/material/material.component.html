@@ -2,7 +2,10 @@
     
     <app-material-filter [materialFilterform]="materialFilterform" (eventFilter$)="onFilter()"></app-material-filter>
 
-    <app-material-list *ngIf="materials$ | async as materials" [materials]="materials">
+    <app-material-list *ngIf="materials$ | async as materials" [materials]="materials" 
+      (eventCreate$)="onCreate()"
+      (eventUpdate$)="onUpdate($event)"
+      (eventDelete$)="onDelete($event)">
     </app-material-list>
     
 </mat-card>

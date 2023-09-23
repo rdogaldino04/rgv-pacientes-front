@@ -8,9 +8,15 @@ import { MaterialService } from 'src/app/service/material.service';
 import { MaterialFilterComponent } from './material-filter/material-filter.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MaterialFormComponent } from './material-form/material-form.component';
 
 @NgModule({
-    declarations: [MaterialComponent, MaterialListComponent, MaterialFilterComponent],
+    declarations: [
+        MaterialComponent, 
+        MaterialListComponent, 
+        MaterialFilterComponent,
+        MaterialFormComponent
+    ],
 
     imports: [
         CommonModule,
