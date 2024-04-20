@@ -22,13 +22,14 @@ export class MaterialListComponent {
   @Output() eventDelete$ = new EventEmitter();
   @Output() pageInfo = new EventEmitter(false);
 
-  length = 9;
-  pageSize = 6;
+  length = 0;
+  pageSize = 0;
   pageSizeOptions = [5, 10, 50, 100];
 
   hidePageSize = false;
   showPageSizeOptions = true;
   showFirstLastButtons = true;
+  disabled = false;
 
   onPageInfo(pageEvent: PageEvent): void {
     this.pageInfo.emit(pageEvent);

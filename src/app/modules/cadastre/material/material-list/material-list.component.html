@@ -70,6 +70,7 @@
 </table>
 
 <mat-paginator
+  (page)="onPageInfo($event)"
   [length]="materialPage.totalElements"
   [pageSize]="materialPage.size"
   [pageIndex]="materialPage.number"

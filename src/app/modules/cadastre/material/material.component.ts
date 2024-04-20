@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Material } from 'src/app/model/material';
+import { MaterialFilter } from 'src/app/model/material-filter';
 import { MaterialPage } from 'src/app/model/material-page';
 import { MaterialService } from 'src/app/service/material.service';
 
@@ -25,12 +26,14 @@ export class MaterialComponent implements OnInit {
     this.materialFilterform = this.formBuilder.group({
       id: [null],
       name: [null],
+      size: [null],
+      page: [null],
     });
   }
 
   onFilter(): void {
     this.materialPage$ = this.materialService.getAll(
-      this.materialFilterform.getRawValue() as Material
+      this.materialFilterform.getRawValue() as MaterialFilter
     );
   }
 
@@ -44,5 +47,13 @@ export class MaterialComponent implements OnInit {
 
   onDelete(id: number) {
     this.materialService.delete(id).subscribe(() => this.onFilter());
+  }
+
+  onPageInfo(pageEvent: PageEvent): void {
+    this.materialFilterform.get('size').setValue(pageEvent.pageSize);
+    this.materialFilterform.get('page').setValue(pageEvent.pageIndex);
+    this.materialPage$ = this.materialService.getAll(
+      this.materialFilterform.getRawValue() as MaterialFilter
+    );
   }
 }
