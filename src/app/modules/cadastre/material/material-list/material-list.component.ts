@@ -1,18 +1,36 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { Material } from "src/app/model/material";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { MaterialPage } from 'src/app/model/material-page';
 
 @Component({
-    selector: 'app-material-list',
-    templateUrl: './material-list.component.html',
-    styleUrls: ['./material-list.component.scss']
+  selector: 'app-material-list',
+  templateUrl: './material-list.component.html',
+  styleUrls: ['./material-list.component.scss'],
 })
 export class MaterialListComponent {
+  readonly displayedColumns = [
+    'id',
+    'name',
+    'expirationDate',
+    'registrationDate',
+    'ações',
+  ];
+  @Input() materialPage: MaterialPage = new MaterialPage();
 
-    readonly displayedColumns = ['id', 'name', 'expirationDate', 'registrationDate', 'ações'];
-    @Input() materials: Material[] = [];
+  @Output() eventCreate$ = new EventEmitter();
+  @Output() eventUpdate$ = new EventEmitter();
+  @Output() eventDelete$ = new EventEmitter();
+  @Output() pageInfo = new EventEmitter(false);
 
-    @Output() eventCreate$ = new EventEmitter();
-    @Output() eventUpdate$ = new EventEmitter();
-    @Output() eventDelete$ = new EventEmitter();
+  length = 9;
+  pageSize = 6;
+  pageSizeOptions = [5, 10, 50, 100];
 
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+
+  onPageInfo(pageEvent: PageEvent): void {
+    this.pageInfo.emit(pageEvent);
+  }
 }

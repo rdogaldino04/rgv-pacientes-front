@@ -1,9 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  UntypedFormArray,
+  Validators,
+} from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, ReplaySubject, Subscription, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, mergeAll, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  mergeAll,
+  startWith,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs/operators';
 import { Company } from 'src/app/model/company';
 import { Movement } from 'src/app/model/movement';
 import { Patient } from 'src/app/model/patient';
@@ -27,10 +43,9 @@ const ENABLE = true;
 
 @Component({
   templateUrl: './supply-patient.component.html',
-  styleUrls: ['./supply-patient.component.scss']
+  styleUrls: ['./supply-patient.component.scss'],
 })
 export class SupplyPatientComponent implements OnInit {
-
   movementForm!: FormGroup;
   subscription: Subscription;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);
@@ -69,16 +84,23 @@ export class SupplyPatientComponent implements OnInit {
     private sectorService: SectorService,
     private materialService: MaterialService,
     private movementService: MovementService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.subscription = this.route.data
-      .subscribe((info: { movement: Movement }) => this.movementFormBuilder(info.movement || {} as Movement));
+    this.subscription = this.route.data.subscribe(
+      (info: { movement: Movement }) =>
+        this.movementFormBuilder(info.movement || ({} as Movement))
+    );
     this.configAutocompletePatient();
     this.configAutocompleteCompany();
     this.configAutocompleteSector();
     this.configAutocompleteStock();
-    this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, ['sectorId', 'sector', 'stockId', 'stock']);
+    this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+      'sectorId',
+      'sector',
+      'stockId',
+      'stock',
+    ]);
   }
 
   ngOnDestroy(): void {
@@ -90,15 +112,28 @@ export class SupplyPatientComponent implements OnInit {
   private movementFormBuilder(movement: Movement) {
     this.movementForm = this.formBuilder.group({
       id: [movement?.id],
-      patientCpf: [formatCpf(movement?.patient?.cpf), [Validators.required, FormValidations.cpfValidator, Validators.maxLength(14)]],
+      patientCpf: [
+        formatCpf(movement?.patient?.cpf),
+        [
+          Validators.required,
+          FormValidations.cpfValidator,
+          Validators.maxLength(14),
+        ],
+      ],
       patient: [movement.patient, [Validators.required]],
-      companyCnpj: [formatCnpj(movement?.company?.cnpj), [Validators.required, Validators.maxLength(18)]],
+      companyCnpj: [
+        formatCnpj(movement?.company?.cnpj),
+        [Validators.required, Validators.maxLength(18)],
+      ],
       company: [movement?.company, [Validators.required]],
       sectorId: [movement?.sector?.id, [Validators.required]],
       sector: [movement?.sector, [Validators.required]],
       stockId: [movement?.stock?.id, [Validators.required]],
       stock: [movement?.stock, [Validators.required]],
-      items: this.formBuilder.array(this.retrieveMedicaments(movement), Validators.required),
+      items: this.formBuilder.array(
+        this.retrieveMedicaments(movement),
+        Validators.required
+      ),
     });
 
     this.edit = !!movement?.id;
@@ -110,15 +145,16 @@ export class SupplyPatientComponent implements OnInit {
 
   onSubmit(): void {
     if (this.movementForm.valid) {
-      this.movementService.save({
-        id: null,
-        patient: this.movementForm.get('patient').value,
-        company: this.movementForm.get('company').value,
-        sector: this.movementForm.get('sector').value,
-        stock: this.movementForm.get('stock').value,
-        items: this.movementForm.get('items').value
-      })
-        .subscribe(m => {
+      this.movementService
+        .save({
+          id: null,
+          patient: this.movementForm.get('patient').value,
+          company: this.movementForm.get('company').value,
+          sector: this.movementForm.get('sector').value,
+          stock: this.movementForm.get('stock').value,
+          items: this.movementForm.get('items').value,
+        })
+        .subscribe((m) => {
           this.movementForm.get('id').patchValue(m.id);
         });
     } else {
@@ -129,18 +165,20 @@ export class SupplyPatientComponent implements OnInit {
   private retrieveMedicaments(movement: Movement) {
     const items = [];
     if (movement?.items) {
-      movement.items.forEach(item => items.push(this.createItem(item)));
+      movement.items.forEach((item) => items.push(this.createItem(item)));
     } else {
       items.push(this.createItem());
     }
     return items;
   }
 
-  private createItem(item: MovimentItem = { id: null, material: null, amount: null }): FormGroup {
+  private createItem(
+    item: MovimentItem = { id: null, material: null, amount: null }
+  ): FormGroup {
     const itemFormGroup = this.formBuilder.group({
       id: [item?.id],
       material: [item?.material, [Validators.required]],
-      amount: [item?.amount, [Validators.required, Validators.maxLength(10)]]
+      amount: [item?.amount, [Validators.required, Validators.maxLength(10)]],
     });
     this.configAutocompleteMaterial(itemFormGroup);
     return itemFormGroup;
@@ -181,7 +219,9 @@ export class SupplyPatientComponent implements OnInit {
 
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
     const selectedItemPatient = event.option.value as Patient;
-    this.movementForm.get('patientCpf').patchValue(formatCpf(selectedItemPatient.cpf));
+    this.movementForm
+      .get('patientCpf')
+      .patchValue(formatCpf(selectedItemPatient.cpf));
   }
 
   onOptionSelectedStock(event: MatAutocompleteSelectedEvent): void {
@@ -195,13 +235,15 @@ export class SupplyPatientComponent implements OnInit {
       return;
     }
 
-    const cpf = Number(unformatCpf(this.movementForm.get('patientCpf').getRawValue()));
-    this.subscription = this.patientService.findByCpf(cpf)
-      .subscribe(patient =>
-        this.movementForm.get('patient').patchValue(patient),
-        () => {
-          this.movementForm.get('patient').reset();
-        });
+    const cpf = Number(
+      unformatCpf(this.movementForm.get('patientCpf').getRawValue())
+    );
+    this.subscription = this.patientService.findByCpf(cpf).subscribe(
+      (patient) => this.movementForm.get('patient').patchValue(patient),
+      () => {
+        this.movementForm.get('patient').reset();
+      }
+    );
   }
 
   onBlurStockId() {
@@ -215,65 +257,88 @@ export class SupplyPatientComponent implements OnInit {
       return;
     }
 
-    this.subscription = this.sectorService.stocksFindBySector(
-      this.movementForm.get('sectorId').value, { stockId }
-    )
-      .pipe(map(stocks => stocks[0]))
-      .subscribe(stock =>
-        this.movementForm.get('stock').patchValue(stock),
+    this.subscription = this.sectorService
+      .stocksFindBySector(this.movementForm.get('sectorId').value, { stockId })
+      .pipe(map((stocks) => stocks[0]))
+      .subscribe(
+        (stock) => this.movementForm.get('stock').patchValue(stock),
         () => {
           this.movementForm.get('stockId').reset();
           this.movementForm.get('stock').reset();
-        });
+        }
+      );
   }
 
   private configAutocompletePatient() {
-    this.filteredOptionsPatients$ = this.movementForm.get('patient').valueChanges.pipe(
+    this.filteredOptionsPatients$ = this.movementForm
+      .get('patient')
+      .valueChanges.pipe(
+        takeUntil(this.destroyed$),
+        startWith(''),
+        debounceTime(EXPECTED_DIGITATION),
+        filter(
+          (valueDigited) =>
+            valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
+        ),
+        distinctUntilChanged(),
+        switchMap((valueDigited) =>
+          this.patientService
+            .getAllWithPaginate({ size: 50, name: valueDigited })
+            .pipe(map((o) => o.content))
+        )
+      );
+    this.patients$ = of(this.patientsAll$, this.filteredOptionsPatients$).pipe(
       takeUntil(this.destroyed$),
-      startWith(''),
-      debounceTime(EXPECTED_DIGITATION),
-      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
-      distinctUntilChanged(),
-      switchMap((valueDigited => this.patientService.getAllWithPaginate({ size: 50, name: valueDigited }).pipe(map(o => o.content))))
+      mergeAll()
     );
-    this.patients$ = of(this.patientsAll$, this.filteredOptionsPatients$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
 
   private configAutocompleteStock() {
-    this.filteredOptionsStock$ = this.movementForm.get('stock').valueChanges.pipe(
+    this.filteredOptionsStock$ = this.movementForm
+      .get('stock')
+      .valueChanges.pipe(
+        takeUntil(this.destroyed$),
+        startWith(''),
+        debounceTime(EXPECTED_DIGITATION),
+        filter(
+          (valueDigited) =>
+            valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
+        ),
+        distinctUntilChanged(),
+        map((value) => {
+          const name = typeof value === 'string' ? value : value?.name;
+          return name;
+        }),
+        switchMap((valueDigited) =>
+          this.sectorService.stocksFindBySector(
+            this.movementForm.get('sectorId').value,
+            { stockName: valueDigited }
+          )
+        )
+      );
+    this.stocks$ = of(this.stocksAll$, this.filteredOptionsStock$).pipe(
       takeUntil(this.destroyed$),
-      startWith(''),
-      debounceTime(EXPECTED_DIGITATION),
-      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
-      distinctUntilChanged(),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name;
-      }),
-      switchMap(valueDigited => this.sectorService.stocksFindBySector(
-        this.movementForm.get('sectorId').value,
-        { stockName: valueDigited })),
+      mergeAll()
     );
-    this.stocks$ = of(this.stocksAll$, this.filteredOptionsStock$).pipe(takeUntil(this.destroyed$), mergeAll());
     this.stocks$
       .pipe(takeUntil(this.destroyed$))
-      .subscribe((stocks) => this.stocks = stocks)
+      .subscribe((stocks) => (this.stocks = stocks));
   }
 
   private configAutocompleteMaterial(itemFormGroup: FormGroup) {
-    this.filteredOptionsMaterials$ = itemFormGroup.get('material').valueChanges.pipe(
-      takeUntil(this.destroyed$),
-      startWith(''),
-      debounceTime(EXPECTED_DIGITATION),
-      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
-      distinctUntilChanged(),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name;
-      }),
-      switchMap(valueDigited => this.materialService.getAll(valueDigited))
-    );
-    this.materials$ = of(this.materialAll$, this.filteredOptionsMaterials$).pipe(takeUntil(this.destroyed$), mergeAll());
+    // this.filteredOptionsMaterials$ = itemFormGroup.get('material').valueChanges.pipe(
+    //   takeUntil(this.destroyed$),
+    //   startWith(''),
+    //   debounceTime(EXPECTED_DIGITATION),
+    //   filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
+    //   distinctUntilChanged(),
+    //   map(value => {
+    //     const name = typeof value === 'string' ? value : value?.name;
+    //     return name;
+    //   }),
+    //   switchMap(valueDigited => this.materialService.getAll(valueDigited))
+    // );
+    // this.materials$ = of(this.materialAll$, this.filteredOptionsMaterials$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
 
   removeItem(index: number): void {
@@ -284,56 +349,107 @@ export class SupplyPatientComponent implements OnInit {
   onBlurCompanyCnpj(): void {
     const companyCnpjEmpty = this.movementForm.get('companyCnpj').value === '';
     if (companyCnpjEmpty) {
-      this.formUtils.resetFields(this.movementForm, ['companyCnpj', 'company', 'sectorId', 'sector', 'stockId', 'stock']);
-      this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, ['sectorId', 'sector', 'stockId', 'stock']);
+      this.formUtils.resetFields(this.movementForm, [
+        'companyCnpj',
+        'company',
+        'sectorId',
+        'sector',
+        'stockId',
+        'stock',
+      ]);
+      this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+        'sectorId',
+        'sector',
+        'stockId',
+        'stock',
+      ]);
       this.sectors = [];
       return;
     }
 
-    const cnpj = Number(unformatCnpj(this.movementForm.get('companyCnpj').getRawValue()));
-    this.subscription = this.companyService.findByCnpj(cnpj)
-      .subscribe(company => {
+    const cnpj = Number(
+      unformatCnpj(this.movementForm.get('companyCnpj').getRawValue())
+    );
+    this.subscription = this.companyService.findByCnpj(cnpj).subscribe(
+      (company) => {
         this.movementForm.get('company').patchValue(company);
-        this.formUtils.desableOrEnableFields(this.movementForm, !!company, ['sectorId', 'sector']);
+        this.formUtils.desableOrEnableFields(this.movementForm, !!company, [
+          'sectorId',
+          'sector',
+        ]);
       },
-        () => {
-          this.formUtils.resetFields(this.movementForm, ['companyCnpj', 'company', 'sectorId', 'sector', 'stockId', 'stock']);
-          this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, ['sectorId', 'sector']);
-        });
+      () => {
+        this.formUtils.resetFields(this.movementForm, [
+          'companyCnpj',
+          'company',
+          'sectorId',
+          'sector',
+          'stockId',
+          'stock',
+        ]);
+        this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+          'sectorId',
+          'sector',
+        ]);
+      }
+    );
   }
 
   private configAutocompleteCompany(): void {
-    this.filteredOptionsCompany$ = this.movementForm.get('company').valueChanges.pipe(
+    this.filteredOptionsCompany$ = this.movementForm
+      .get('company')
+      .valueChanges.pipe(
+        takeUntil(this.destroyed$),
+        startWith(''),
+        debounceTime(EXPECTED_DIGITATION),
+        tap((value) => {
+          const company = typeof value === 'string' ? value : value?.name;
+          if (company !== '') {
+            return;
+          }
+          this.formUtils.resetFields(this.movementForm, [
+            'sectorId',
+            'sector',
+            'companyCnpj',
+            'stockId',
+            'stock',
+          ]);
+          this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+            'sectorId',
+            'sector',
+            'stockId',
+            'stock',
+          ]);
+        }),
+        filter(
+          (valueDigited) =>
+            valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
+        ),
+        distinctUntilChanged(),
+        map((value) => {
+          const name = typeof value === 'string' ? value : value?.name;
+          return name;
+        }),
+        switchMap((valueDigited) => this.companyService.findByAll(valueDigited))
+      );
+    this.companies$ = of(this.companiesAll$, this.filteredOptionsCompany$).pipe(
       takeUntil(this.destroyed$),
-      startWith(''),
-      debounceTime(EXPECTED_DIGITATION),
-      tap((value) => {
-        const company = typeof value === 'string' ? value : value?.name;
-        if (company !== '') {
-          return;
-        }
-        this.formUtils.resetFields(this.movementForm, ['sectorId', 'sector', 'companyCnpj', 'stockId', 'stock']);
-        this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, ['sectorId', 'sector', 'stockId', 'stock']);
-      }),
-      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
-      distinctUntilChanged(),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name;
-      }),
-      switchMap(valueDigited => this.companyService.findByAll(valueDigited)),
+      mergeAll()
     );
-    this.companies$ = of(this.companiesAll$, this.filteredOptionsCompany$).pipe(takeUntil(this.destroyed$), mergeAll());
-    this.companies$.pipe(takeUntil(this.destroyed$))
-      .subscribe((companies) => {
-        this.companies = companies;
-      });
+    this.companies$.pipe(takeUntil(this.destroyed$)).subscribe((companies) => {
+      this.companies = companies;
+    });
   }
 
   onOptionSelectedCompany(event: MatAutocompleteSelectedEvent): void {
     const selectedItemCompany = event.option.value as Company;
-    this.movementForm.get('companyCnpj').patchValue(formatCnpj(selectedItemCompany.cnpj));
-    this.formUtils.desableOrEnableFields(this.movementForm, ENABLE, ['sectorId', 'sector']);
+    this.movementForm
+      .get('companyCnpj')
+      .patchValue(formatCnpj(selectedItemCompany.cnpj));
+    this.formUtils.desableOrEnableFields(this.movementForm, ENABLE, [
+      'sectorId',
+      'sector',
+    ]);
     this.formUtils.resetFields(this.movementForm, ['sectorId', 'sector']);
   }
 
@@ -341,62 +457,90 @@ export class SupplyPatientComponent implements OnInit {
     const sectorIdEmpty = this.movementForm.get('sectorId').value === '';
     if (sectorIdEmpty) {
       this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-      this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, ['stockId', 'stock']);
+      this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+        'stockId',
+        'stock',
+      ]);
       return;
     }
 
     const sectorId = this.movementForm.get('sectorId').getRawValue();
     const company = this.movementForm.get('company').getRawValue() as Company;
-    this.subscription = this.sectorService.getAll({ id: sectorId, companyId: company.id })
-      .pipe(map(sectors => sectors[0]))
-      .subscribe(sector => {
-        this.movementForm.get('sector').patchValue(sector);
-        this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-        this.formUtils.desableOrEnableFields(this.movementForm, !!sector, ['stockId', 'stock']);
-      },
+    this.subscription = this.sectorService
+      .getAll({ id: sectorId, companyId: company.id })
+      .pipe(map((sectors) => sectors[0]))
+      .subscribe(
+        (sector) => {
+          this.movementForm.get('sector').patchValue(sector);
+          this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
+          this.formUtils.desableOrEnableFields(this.movementForm, !!sector, [
+            'stockId',
+            'stock',
+          ]);
+        },
         () => {
           this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-          this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, ['stockId', 'stock']);
-        });
+          this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+            'stockId',
+            'stock',
+          ]);
+        }
+      );
   }
 
   private configAutocompleteSector(): void {
-    this.filteredOptionsSector$ = this.movementForm.get('sector').valueChanges.pipe(
+    this.filteredOptionsSector$ = this.movementForm
+      .get('sector')
+      .valueChanges.pipe(
+        takeUntil(this.destroyed$),
+        startWith(''),
+        debounceTime(EXPECTED_DIGITATION),
+        tap((value) => {
+          const name = typeof value === 'string' ? value : value?.name;
+          if (name !== '') {
+            return;
+          }
+          this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
+          this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+            'stockId',
+            'stock',
+          ]);
+        }),
+        filter(
+          (valueDigited) =>
+            valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
+        ),
+        distinctUntilChanged(),
+        map((value) => {
+          const name = typeof value === 'string' ? value : value?.name;
+          return name;
+        }),
+        switchMap((valueDigited) => {
+          if (this.companies.length === 0) {
+            return of([]);
+          }
+          return this.sectorService.getAll({
+            name: valueDigited,
+            companyId: this.movementForm.get('company').value.id,
+          });
+        })
+      );
+    this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(
       takeUntil(this.destroyed$),
-      startWith(''),
-      debounceTime(EXPECTED_DIGITATION),
-      tap(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        if (name !== '') {
-          return;
-        }
-        this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-        this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, ['stockId', 'stock']);
-      }),
-      filter((valueDigited) => valueDigited && (valueDigited.length >= 3 || !valueDigited.length)),
-      distinctUntilChanged(),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.name;
-        return name;
-      }),
-      switchMap(valueDigited => {
-        if (this.companies.length === 0) {
-          return of([]);
-        }
-        return this.sectorService.getAll({ name: valueDigited, companyId: this.movementForm.get('company').value.id });
-      }),
+      mergeAll()
     );
-    this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(takeUntil(this.destroyed$), mergeAll());
     this.sectors$
       .pipe(takeUntil(this.destroyed$))
-      .subscribe((sectors) => this.sectors = sectors);
+      .subscribe((sectors) => (this.sectors = sectors));
   }
 
   onOptionSelectedSector(event: MatAutocompleteSelectedEvent): void {
     const selectedItemSector = event.option.value as Sector;
     this.movementForm.get('sectorId').patchValue(selectedItemSector.id);
     this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-    this.formUtils.desableOrEnableFields(this.movementForm, ENABLE, ['stockId', 'stock']);
+    this.formUtils.desableOrEnableFields(this.movementForm, ENABLE, [
+      'stockId',
+      'stock',
+    ]);
   }
-
 }
