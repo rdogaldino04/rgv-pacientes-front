@@ -14,7 +14,9 @@ export class MaterialService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(materialFilter: MaterialFilter): Observable<MaterialPage> {
+  getMaterialsByFilter(
+    materialFilter: MaterialFilter
+  ): Observable<MaterialPage> {
     const params = new HttpParams()
       .append('id', materialFilter.id ? materialFilter.id : '')
       .append('name', materialFilter.name ? materialFilter.name : '')

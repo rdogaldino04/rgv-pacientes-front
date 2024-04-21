@@ -22,7 +22,10 @@ export class MaterialComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.materialPage$ = this.materialService.getAll({ id: 0, name: '' });
+    this.materialPage$ = this.materialService.getMaterialsByFilter({
+      id: 0,
+      name: '',
+    });
     this.materialFilterform = this.formBuilder.group({
       id: [null],
       name: [null],
@@ -32,7 +35,7 @@ export class MaterialComponent implements OnInit {
   }
 
   onFilter(): void {
-    this.materialPage$ = this.materialService.getAll(
+    this.materialPage$ = this.materialService.getMaterialsByFilter(
       this.materialFilterform.getRawValue() as MaterialFilter
     );
   }
@@ -52,7 +55,7 @@ export class MaterialComponent implements OnInit {
   onPageInfo(pageEvent: PageEvent): void {
     this.materialFilterform.get('size').setValue(pageEvent.pageSize);
     this.materialFilterform.get('page').setValue(pageEvent.pageIndex);
-    this.materialPage$ = this.materialService.getAll(
+    this.materialPage$ = this.materialService.getMaterialsByFilter(
       this.materialFilterform.getRawValue() as MaterialFilter
     );
   }
