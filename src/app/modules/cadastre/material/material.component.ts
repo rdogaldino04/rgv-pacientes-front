@@ -25,6 +25,8 @@ export class MaterialComponent implements OnInit {
     this.materialPage$ = this.materialService.getMaterialsByFilter({
       id: 0,
       name: '',
+      page: 0,
+      size: 5,
     });
     this.materialFilterform = this.formBuilder.group({
       id: [null],

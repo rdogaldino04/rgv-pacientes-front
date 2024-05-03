@@ -20,8 +20,8 @@ export class MaterialService {
     const params = new HttpParams()
       .append('id', materialFilter.id ? materialFilter.id : '')
       .append('name', materialFilter.name ? materialFilter.name : '')
-      .append('size', materialFilter.size ? String(materialFilter.size) : '')
-      .append('page', materialFilter.size ? String(materialFilter.page) : '');
+      .append('size', materialFilter.size ? String(materialFilter.size) : '5')
+      .append('page', materialFilter.page ? String(materialFilter.page) : '0');
     return this.http.get<MaterialPage>(`${this.url}`, { params });
   }
 
