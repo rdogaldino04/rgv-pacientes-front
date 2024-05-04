@@ -1,8 +1,6 @@
-export interface MaterialFilter {
+export interface Product {
   id?: number;
   name?: string;
   expirationDate?: Date;
   registrationDate?: Date;
-  size?: number;
-  page?: number;
 }

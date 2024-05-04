@@ -1,0 +1,16 @@
+<mat-card>
+  <app-product-filter
+    [productFilterform]="productFilterform"
+    (eventFilter$)="onFilter()"
+  ></app-product-filter>
+
+  <app-product-list
+    *ngIf="productPage$ | async as productPage"
+    [productPage]="productPage"
+    (eventCreate$)="onCreate()"
+    (eventUpdate$)="onUpdate($event)"
+    (eventDelete$)="onDelete($event)"
+    (pageInfo)="onPageInfo($event)"
+  >
+  </app-product-list>
+</mat-card>

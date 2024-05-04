@@ -22,20 +22,20 @@ import {
 } from 'rxjs/operators';
 import { Company } from 'src/app/model/company';
 import { Movement } from 'src/app/model/movement';
+import { MovimentItem } from 'src/app/model/movement-item';
 import { Patient } from 'src/app/model/patient';
+import { Product } from 'src/app/model/product';
 import { Sector } from 'src/app/model/sector';
 import { Stock } from 'src/app/model/stock';
 import { CompanyService } from 'src/app/service/company.service';
-import { MaterialService } from 'src/app/service/material.service';
+import { MovementService } from 'src/app/service/movement.service';
 import { PatientService } from 'src/app/service/patient.service';
+import { ProductService } from 'src/app/service/product.service';
 import { SectorService } from 'src/app/service/sector.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCnpj, unformatCnpj } from 'src/app/shared/utils/cnpj-utils';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
-import { MovimentItem } from 'src/app/model/movement-item';
-import { Material } from 'src/app/model/material';
-import { MovementService } from 'src/app/service/movement.service';
 
 const EXPECTED_DIGITATION = 300;
 const DISABLE = false;
@@ -69,9 +69,9 @@ export class SupplyPatientComponent implements OnInit {
   stocks$: Observable<Stock[]>;
   stocks: Stock[] = [];
 
-  filteredOptionsMaterials$: Observable<Material[]>;
-  materialAll$ = of([]);
-  materials$: Observable<Material[]>;
+  filteredOptionsProducts$: Observable<Product[]>;
+  productAll$ = of([]);
+  products$: Observable<Product[]>;
 
   edit: boolean;
 
@@ -82,7 +82,7 @@ export class SupplyPatientComponent implements OnInit {
     private patientService: PatientService,
     private companyService: CompanyService,
     private sectorService: SectorService,
-    private materialService: MaterialService,
+    private productService: ProductService,
     private movementService: MovementService
   ) {}
 
@@ -173,14 +173,14 @@ export class SupplyPatientComponent implements OnInit {
   }
 
   private createItem(
-    item: MovimentItem = { id: null, material: null, amount: null }
+    item: MovimentItem = { id: null, product: null, amount: null }
   ): FormGroup {
     const itemFormGroup = this.formBuilder.group({
       id: [item?.id],
-      material: [item?.material, [Validators.required]],
+      product: [item?.product, [Validators.required]],
       amount: [item?.amount, [Validators.required, Validators.maxLength(10)]],
     });
-    this.configAutocompleteMaterial(itemFormGroup);
+    this.configAutocompleteProduct(itemFormGroup);
     return itemFormGroup;
   }
 
@@ -213,8 +213,8 @@ export class SupplyPatientComponent implements OnInit {
     return stock?.name;
   }
 
-  displayFnMaterial(material: Material) {
-    return material?.name;
+  displayFnProduct(product: Product) {
+    return product?.name;
   }
 
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
@@ -325,8 +325,8 @@ export class SupplyPatientComponent implements OnInit {
       .subscribe((stocks) => (this.stocks = stocks));
   }
 
-  private configAutocompleteMaterial(itemFormGroup: FormGroup) {
-    // this.filteredOptionsMaterials$ = itemFormGroup.get('material').valueChanges.pipe(
+  private configAutocompleteProduct(itemFormGroup: FormGroup) {
+    // this.filteredOptionsProducts$ = itemFormGroup.get('product').valueChanges.pipe(
     //   takeUntil(this.destroyed$),
     //   startWith(''),
     //   debounceTime(EXPECTED_DIGITATION),
@@ -336,9 +336,9 @@ export class SupplyPatientComponent implements OnInit {
     //     const name = typeof value === 'string' ? value : value?.name;
     //     return name;
     //   }),
-    //   switchMap(valueDigited => this.materialService.getAll(valueDigited))
+    //   switchMap(valueDigited => this.productService.getAll(valueDigited))
     // );
-    // this.materials$ = of(this.materialAll$, this.filteredOptionsMaterials$).pipe(takeUntil(this.destroyed$), mergeAll());
+    // this.products$ = of(this.productAll$, this.filteredOptionsProducts$).pipe(takeUntil(this.destroyed$), mergeAll());
   }
 
   removeItem(index: number): void {

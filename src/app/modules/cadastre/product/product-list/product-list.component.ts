@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MaterialPage } from 'src/app/model/material-page';
+import { ProductPage } from 'src/app/model/product-page';
 
 @Component({
-  selector: 'app-material-list',
-  templateUrl: './material-list.component.html',
-  styleUrls: ['./material-list.component.scss'],
+  selector: 'app-product-list',
+  templateUrl: './product-list.component.html',
+  styleUrls: ['./product-list.component.scss'],
 })
-export class MaterialListComponent {
+export class ProductListComponent {
   readonly displayedColumns = [
     'id',
     'name',
@@ -15,7 +15,7 @@ export class MaterialListComponent {
     'registrationDate',
     'ações',
   ];
-  @Input() materialPage: MaterialPage = new MaterialPage();
+  @Input() productPage: ProductPage = new ProductPage();
 
   @Output() eventCreate$ = new EventEmitter();
   @Output() eventUpdate$ = new EventEmitter();

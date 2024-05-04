@@ -1,16 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { MaterialModule } from './material/material.module';
+import { ProductModule } from './product/product.module';
 import { CadastreRoutingModule } from './cadastre.routing.modeule';
 
 @NgModule({
-    declarations: [],
+  declarations: [],
 
-    imports: [
-        CommonModule,
-        CadastreRoutingModule,
-        MaterialModule
-    ],
-
+  imports: [CommonModule, CadastreRoutingModule, ProductModule],
 })
-export class CadastreModule { }
+export class CadastreModule {}

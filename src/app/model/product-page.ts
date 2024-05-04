@@ -1,7 +1,8 @@
-import { Material } from './material';
 import { Page } from './page';
-export class MaterialPage implements Page {
-  content: Material[];
+import { Product } from './product';
+
+export class ProductPage implements Page {
+  content: Product[];
   totalElements: number;
   size: number;
   numberOfElements: number;
