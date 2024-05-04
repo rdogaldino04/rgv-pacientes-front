@@ -12,7 +12,7 @@ export class ProductListComponent {
     'id',
     'name',
     'expirationDate',
-    'registrationDate',
+    'createdAt',
     'ações',
   ];
   @Input() productPage: ProductPage = new ProductPage();

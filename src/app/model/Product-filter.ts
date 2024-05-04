@@ -2,7 +2,7 @@ export interface ProductFilter {
   id?: number;
   name?: string;
   expirationDate?: Date;
-  registrationDate?: Date;
+  createdAt?: Date;
   size?: number;
   page?: number;
 }
