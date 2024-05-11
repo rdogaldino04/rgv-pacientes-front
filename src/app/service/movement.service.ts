@@ -6,19 +6,19 @@ import { Movement } from '../model/movement';
 import { first } from 'rxjs/operators';
 import { MovementInput } from '../model/movement-input';
 
-const API = environment.ApiUrl;
+const API = environment.BASE_API;
 
 @Injectable({ providedIn: 'root' })
 export class MovementService {
+  constructor(private http: HttpClient) {}
 
-    constructor(private http: HttpClient) { }
+  findById(id: number): Observable<Movement> {
+    return this.http.get<Movement>(`${API}/movements/${id}`);
+  }
 
-    findById(id: number): Observable<Movement> {
-        return this.http.get<Movement>(`${API}/movements/${id}`);
-    }
-
-    save(movementInput: MovementInput): Observable<Movement> {
-        return this.http.post<Movement>(`${API}/movements`, movementInput).pipe(first());
-    }
-
+  save(movementInput: MovementInput): Observable<Movement> {
+    return this.http
+      .post<Movement>(`${API}/movements`, movementInput)
+      .pipe(first());
+  }
 }

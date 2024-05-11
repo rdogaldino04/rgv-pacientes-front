@@ -1,0 +1,35 @@
+<mat-card>
+  <mat-toolbar color="primary" class="mat-toolbar"
+    >Por favor, faça o login.</mat-toolbar
+  >
+
+  <mat-card-content>
+    <form [formGroup]="loginForm" class="min-width">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="username" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Senha</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          formControlName="password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <div class="rgv-button-row">
+        <button mat-flat-button color="primary" (click)="login()">Ok</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

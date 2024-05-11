@@ -6,7 +6,7 @@ import { ProductFilter } from '../model/Product-filter';
 import { Product } from '../model/product';
 import { ProductPage } from '../model/product-page';
 
-const API = environment.ApiUrl;
+const API = environment.BASE_API;
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {

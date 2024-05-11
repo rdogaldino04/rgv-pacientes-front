@@ -7,12 +7,11 @@ import { PatientPage } from '../model/patient-page';
 import { PatientFilter } from '../model/patient-filter';
 import { first } from 'rxjs/operators';
 
-const API = environment.ApiUrl;
+const API = environment.BASE_API;
 
 @Injectable({ providedIn: 'root' })
 export class PatientService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   findByCpf(cpf: number): Observable<Patient> {
     return this.http.get<Patient>(`${API}/patients/${cpf}`);
@@ -25,10 +24,19 @@ export class PatientService {
   getAllWithPaginate(patientFilter?: PatientFilter): Observable<PatientPage> {
     let params = new HttpParams();
     if (patientFilter) {
-      params = params.set('cpf', patientFilter.cpf ? String(patientFilter.cpf) : '');
+      params = params.set(
+        'cpf',
+        patientFilter.cpf ? String(patientFilter.cpf) : ''
+      );
       params = params.set('name', patientFilter.name ? patientFilter.name : '');
-      params = params.set('size', patientFilter.size ? String(patientFilter.size) : '');
-      params = params.set('page', patientFilter.size ? String(patientFilter.page) : '');
+      params = params.set(
+        'size',
+        patientFilter.size ? String(patientFilter.size) : ''
+      );
+      params = params.set(
+        'page',
+        patientFilter.size ? String(patientFilter.page) : ''
+      );
     }
     return this.http.get<PatientPage>(`${API}/patients`, { params });
   }
@@ -38,7 +46,8 @@ export class PatientService {
   }
 
   update(patient: Patient): Observable<Patient> {
-    return this.http.put<Patient>(`${API}/patients/${patient.id}`, patient).pipe(first());
+    return this.http
+      .put<Patient>(`${API}/patients/${patient.id}`, patient)
+      .pipe(first());
   }
-
 }

@@ -1,0 +1,28 @@
+mat-card {
+    max-width: 60%;
+    max-width: 60%;
+    margin: 18em auto;    
+    align-items: center;
+}
+
+mat-toolbar {
+    text-align: center;
+}
+
+.min-width {
+    width: 100%;
+    min-width: 150px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.btn-space {
+    margin-left: 5px;
+}
+
+.rgv-button-row {
+    display: flex;
+    justify-content: end;
+}
