@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 import { UserService } from 'src/app/service/user.service';
+import { TokenService } from './token.service';
 
 const API_URL = environment.BASE_API;
 
@@ -11,7 +12,11 @@ const API_URL = environment.BASE_API;
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient, private userService: UserService) {}
+  constructor(
+    private http: HttpClient,
+    private userService: UserService,
+    private tokenService: TokenService
+  ) {}
 
   authenticate(username: string, password: string): Observable<any> {
     const body = new URLSearchParams();
@@ -29,8 +34,11 @@ export class AuthService {
       tap((res) => {
         const authToken = res.acess_token;
         this.userService.setToken(authToken);
-        console.log(`User ${username} authenticated with token ${authToken}`);
       })
     );
+  }
+
+  logout(): void {
+    this.tokenService.removeToken();
   }
 }

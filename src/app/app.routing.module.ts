@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './core/auth/permissions-service';
 
 const routes: Routes = [
   {
@@ -15,6 +16,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+    canActivate: [AuthGuard],
   },
   {
     path: 'cadastros',
@@ -22,6 +24,7 @@ const routes: Routes = [
       import('./modules/cadastre/cadastre.module').then(
         (c) => c.CadastreModule
       ),
+    canActivate: [AuthGuard],
   },
   {
     path: 'movimentacoes',
@@ -29,6 +32,7 @@ const routes: Routes = [
       import('./modules/movements/movements.module').then(
         (c) => c.MovimentsModule
       ),
+    canActivate: [AuthGuard],
   },
 ];
 @NgModule({

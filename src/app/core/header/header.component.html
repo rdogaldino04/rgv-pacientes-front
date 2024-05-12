@@ -1,8 +1,22 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" *ngIf="showMenu">
   <ng-container *ngFor="let i of menus">
-    <button mat-button [matMenuTriggerFor]="aboveMenu" (click)="navegateTo(i)">{{i.name}}</button>
+    <button
+      mat-button
+      [matMenuTriggerFor]="hasSubMenus(i.subMenus) ? aboveMenu : null"
+      (click)="navegateTo(i)"
+    >
+      {{ i.name }}
+    </button>
     <mat-menu #aboveMenu="matMenu" yPosition="above">
-      <button mat-menu-item *ngFor="let ism of i.subMenus" (click)="navegateTo(ism)">{{ism.name}}</button>
+      <button
+        mat-menu-item
+        *ngFor="let ism of i.subMenus"
+        (click)="navegateTo(ism)"
+      >
+        {{ ism.name }}
+      </button>
     </mat-menu>
   </ng-container>
+  <button mat-button (click)="logout()">Sair</button>
+  <mat-menu> </mat-menu>
 </mat-toolbar>

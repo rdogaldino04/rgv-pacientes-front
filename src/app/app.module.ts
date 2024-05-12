@@ -7,7 +7,6 @@ import { CoreModule } from './core/core.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
-// import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +17,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     CoreModule,
     BrowserAnimationsModule,
     MatNativeDateModule,
-    // LoginModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

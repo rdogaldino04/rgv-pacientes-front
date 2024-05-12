@@ -7,24 +7,29 @@ import { LoadingModule } from '../shared/components/loading/loading.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './auth/request.interceptor';
 import { AppMaterialModule } from '../shared/app-material/app-material.module';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
-    declarations: [HeaderComponent],
-    exports: [HeaderComponent],
-    imports: [
-        CommonModule,
-        RouterModule,        
-        AlertModule,
-        LoadingModule,
-        AppMaterialModule
-    ],
-    providers: [
-      {
-          provide: HTTP_INTERCEPTORS,
-          useClass: RequestInterceptor,
-          multi: true
-      }
-  ]
-
+  declarations: [HeaderComponent],
+  exports: [HeaderComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    AlertModule,
+    LoadingModule,
+    AppMaterialModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
 })
-export class CoreModule { }
+export class CoreModule {}
