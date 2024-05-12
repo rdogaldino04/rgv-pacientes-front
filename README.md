@@ -33,3 +33,7 @@ https://valor-software.com/ngx-bootstrap/#/components
 ## angular material
 
 https://material.angular.io/guide/getting-started
+
+## jwt-decode
+
+https://www.npmjs.com/package/jwt-decode/v/3.1.2
