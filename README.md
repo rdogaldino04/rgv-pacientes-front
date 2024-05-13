@@ -37,3 +37,7 @@ https://material.angular.io/guide/getting-started
 ## jwt-decode
 
 https://www.npmjs.com/package/jwt-decode/v/3.1.2
+
+## npm i @angular/flex-layout
+
+https://www.npmjs.com/package/@angular/flex-layout?activeTab=readme
