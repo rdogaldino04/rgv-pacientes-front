@@ -20,12 +20,9 @@ import { PatientsRoutingModule } from './patients.routing.module';
     PatientFilterModule,
     PatientListModule,
     AppMaterialModule,
-    SharedModule
+    SharedModule,
   ],
 
-  providers: [PatientService, PatientResolver]
-
+  providers: [PatientService, PatientResolver],
 })
-export class PatientsModule {
-
-}
+export class PatientsModule {}

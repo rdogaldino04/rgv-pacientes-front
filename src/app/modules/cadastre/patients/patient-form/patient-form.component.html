@@ -2,59 +2,107 @@
   <mat-toolbar color="primary">Cadastro de pacientes</mat-toolbar>
 
   <mat-card-content>
+    <form [formGroup]="patientNewForm">
+      <div fxLayout="column" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-form-field appearance="fill" fxFlex="15%">
+            <mat-label>CPF</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="cpf"
+              appCpfMask
+              maxlength="14"
+            />
+            <mat-error *ngIf="patientNewForm.get('cpf')?.invalid">
+              {{ getErrorMessage("cpf") }}
+            </mat-error>
+          </mat-form-field>
 
-    <form [formGroup]="patientNewForm" class="min-width">
+          <mat-form-field appearance="fill" class="rgv-ml-8" fxFlex="70%">
+            <mat-label>Nome</mat-label>
+            <input
+              matInput
+              type="text"
+              [maxLength]="100"
+              formControlName="name"
+              #name
+              class="text-uppercase"
+            />
+            <mat-hint align="end">{{ name.value.length }} / 100</mat-hint>
+            <mat-error *ngIf="patientNewForm.get('name')?.invalid">
+              {{ getErrorMessage("name") }}
+            </mat-error>
+          </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>CPF</mat-label>
-        <input matInput type="text" formControlName="cpf" appCpfMask maxlength="14" />
-        <mat-error *ngIf="patientNewForm.get('cpf')?.invalid">
-          {{ getErrorMessage('cpf') }}
-        </mat-error>
-      </mat-form-field>
+          <mat-form-field appearance="fill" class="rgv-ml-8" fxFlex="15%">
+            <mat-label>Telefone</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="phone"
+              appPhoneMask
+              maxlength="15"
+            />
+            <mat-error *ngIf="patientNewForm.get('phone')?.invalid">
+              {{ getErrorMessage("phone") }}
+            </mat-error>
+          </mat-form-field>
+        </div>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Nome</mat-label>
-        <input matInput type="text" [maxLength]="100" formControlName="name" #name class="text-uppercase" />
-        <mat-hint align="end">{{ name.value.length }} / 100</mat-hint>
-        <mat-error *ngIf="patientNewForm.get('name')?.invalid">
-          {{ getErrorMessage('name') }}
-        </mat-error>
-      </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-form-field appearance="fill" fxFlex="75%">
+            <mat-label>Endereço</mat-label>
+            <input
+              matInput
+              type="text"
+              class="text-uppercase"
+              [maxLength]="200"
+              formControlName="addressName"
+            />
+          </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Telefone</mat-label>
-        <input matInput type="text" formControlName="phone" appPhoneMask maxlength="15" />
-        <mat-error *ngIf="patientNewForm.get('phone')?.invalid">
-          {{ getErrorMessage('phone') }}
-        </mat-error>
-      </mat-form-field>
+          <mat-form-field appearance="fill" class="rgv-ml-8" fxFlex="25%">
+            <mat-label>Número</mat-label>
+            <input
+              matInput
+              type="text"
+              [maxLength]="20"
+              formControlName="number"
+            />
+          </mat-form-field>
+        </div>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Endereço</mat-label>
-        <input matInput type="text" class="text-uppercase" [maxLength]="200" formControlName="addressName" />
-      </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-form-field appearance="fill" fxFlex="60%">
+            <mat-label>Bairro</mat-label>
+            <input
+              matInput
+              type="text"
+              class="text-uppercase"
+              [maxLength]="20"
+              formControlName="district"
+            />
+          </mat-form-field>
 
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Número</mat-label>
-        <input matInput type="text" [maxLength]="20" formControlName="number" />
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Bairro</mat-label>
-        <input matInput type="text" class="text-uppercase" [maxLength]="20" formControlName="district" />
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Complemento</mat-label>
-        <input matInput type="text" class="text-uppercase" [maxLength]="50" formControlName="complement" />
-      </mat-form-field>
-
+          <mat-form-field appearance="fill" class="rgv-ml-8" fxFlex="40%">
+            <mat-label>Complemento</mat-label>
+            <input
+              matInput
+              type="text"
+              class="text-uppercase"
+              [maxLength]="50"
+              formControlName="complement"
+            />
+          </mat-form-field>
+        </div>
+      </div>
     </form>
 
     <mat-card-actions class="actions-center">
-      <button mat-raised-button color="primary" (click)="onSave()">Salvar</button>
+      <button mat-raised-button color="primary" (click)="onSave()">
+        Salvar
+      </button>
     </mat-card-actions>
-
   </mat-card-content>
 </mat-card>

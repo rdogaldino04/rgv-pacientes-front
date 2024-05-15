@@ -4,13 +4,8 @@ mat-card {
     text-align: center;
 }
 
-.min-width {
-    width: 100%;
-    min-width: 150px;
-}
-
-.full-width {
-    width: 100%;
+.rgv-ml-8 {
+    margin-left: 8px;
 }
 
 .btn-space {
@@ -18,5 +13,5 @@ mat-card {
 }
 
 .actions-center {
-    justify-content: center;
+    justify-content: right;
 }
