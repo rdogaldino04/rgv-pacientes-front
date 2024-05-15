@@ -9,6 +9,7 @@ import { ProductFormComponent } from './product-form/product-form.component';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductComponent } from './product.component';
 import { ProductRoutingModule } from './product.routing.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { ProductRoutingModule } from './product.routing.module';
     ProductRoutingModule,
     ReactiveFormsModule,
     SharedModule,
+    FlexLayoutModule,
   ],
 
   providers: [ProductService],

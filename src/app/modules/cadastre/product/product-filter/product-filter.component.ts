@@ -6,6 +6,13 @@ import { Product } from 'src/app/model/product';
 @Component({
   selector: 'app-product-filter',
   templateUrl: './product-filter.component.html',
+  styles: [
+    `
+      .rgv-ml-8 {
+        margin-left: 8px;
+      }
+    `,
+  ],
 })
 export class ProductFilterComponent {
   @Input() productFilterform: UntypedFormGroup;
