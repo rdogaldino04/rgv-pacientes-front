@@ -10,12 +10,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatMenuModule } from '@angular/material/menu';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
@@ -37,11 +37,9 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatSidenavModule,
     MatGridListModule,
     MatAutocompleteModule,
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
 
-  providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'}
-  ]
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
-export class AppMaterialModule { }
+export class AppMaterialModule {}
