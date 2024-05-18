@@ -41,10 +41,6 @@ export class ProductFormComponent implements OnInit, OnDestroy {
     this.form = this.formBuilder.group({
       id: [product?.id],
       name: [product?.name, [Validators.required]],
-      expirationDate: [
-        product?.expirationDate,
-        [Validators.required, FormValidations.futureDateValidator],
-      ],
     });
     this.form.get('id').disable();
   }

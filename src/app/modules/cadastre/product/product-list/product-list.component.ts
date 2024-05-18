@@ -8,13 +8,7 @@ import { ProductPage } from 'src/app/model/product-page';
   styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent {
-  readonly displayedColumns = [
-    'id',
-    'name',
-    'expirationDate',
-    'createdAt',
-    'ações',
-  ];
+  readonly displayedColumns = ['id', 'name', 'createdAt', 'ações'];
   @Input() productPage: ProductPage = new ProductPage();
 
   @Output() eventCreate$ = new EventEmitter();

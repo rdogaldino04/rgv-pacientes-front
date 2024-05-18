@@ -9,19 +9,12 @@
   </ng-container>
 
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef style="width: 40%">Nome</th>
+    <th mat-header-cell *matHeaderCellDef style="width: 60%">Nome</th>
     <td mat-cell *matCellDef="let product">{{ product.name }}</td>
   </ng-container>
 
-  <ng-container matColumnDef="expirationDate">
-    <th mat-header-cell *matHeaderCellDef style="width: 10%">Validade</th>
-    <td mat-cell *matCellDef="let product">
-      {{ product.expirationDate | date : "dd/MM/yyyy" }}
-    </td>
-  </ng-container>
-
   <ng-container matColumnDef="createdAt">
-    <th mat-header-cell *matHeaderCellDef style="width: 10%">Cadastro</th>
+    <th mat-header-cell *matHeaderCellDef style="width: 20%">Cadastro</th>
     <td mat-cell *matCellDef="let product">
       {{ product.createdAt | date : "dd/MM/yyyy" }}
     </td>
