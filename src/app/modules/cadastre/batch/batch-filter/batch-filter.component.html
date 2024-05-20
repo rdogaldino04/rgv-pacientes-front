@@ -1,0 +1,39 @@
+<mat-toolbar color="primary" class="mat-toolbar"
+  >Pesquisa de medicamentos</mat-toolbar
+>
+
+<mat-card-content>
+  <form [formGroup]="batchFilterform">
+    <div fxLayout="column" fxLayoutGap="20px">
+      <div fxLayout="row" fxLayoutAlign="start">
+        <mat-form-field fxFlex="15%">
+          <mat-label>Cód</mat-label>
+          <input
+            matInput
+            appNumericInput
+            formControlName="id"
+            type="text"
+            maxlength="14"
+          />
+        </mat-form-field>
+
+        <mat-form-field fxFlex="85%" class="rgv-ml-8">
+          <mat-label>Número do lote</mat-label>
+          <input
+            matInput
+            formControlName="batchNumber"
+            type="text"
+            [maxLength]="100"
+            class="text-uppercase"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+
+  <mat-card-actions [align]="'end'">
+    <button mat-raised-button color="primary" (click)="search()">
+      Pesquisar
+    </button>
+  </mat-card-actions>
+</mat-card-content>

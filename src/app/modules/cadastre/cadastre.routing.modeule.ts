@@ -12,6 +12,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./product/product.module').then((m) => m.ProductModule),
   },
+  {
+    path: 'batchies',
+    loadChildren: () =>
+      import('./batch/batch.module').then((m) => m.BatchModule),
+  },
 ];
 
 @NgModule({

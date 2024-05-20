@@ -1,0 +1,77 @@
+<table mat-table [dataSource]="batchPage.content">
+  <caption *ngIf="false">
+    Lotes
+  </caption>
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef style="width: 10%">Código</th>
+    <td mat-cell *matCellDef="let batch">{{ batch.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="batchNumber">
+    <th mat-header-cell *matHeaderCellDef style="width: 20%">Nº Lote</th>
+    <td mat-cell *matCellDef="let batch">{{ batch.batchNumber }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="product">
+    <th mat-header-cell *matHeaderCellDef style="width: 50%">Produto</th>
+    <td mat-cell *matCellDef="let batch">{{ batch?.product?.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="manufactureDate">
+    <th mat-header-cell *matHeaderCellDef style="width: 30%">
+      Data de fabricação
+    </th>
+    <td mat-cell *matCellDef="let batch">
+      {{ batch.manufactureDate | date : "dd/MM/yyyy" }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="ações">
+    <mat-header-cell
+      *matHeaderCellDef
+      class="action-column"
+      style="height: 100px"
+    >
+      <button
+        mat-mini-fab
+        color="accent"
+        aria-label="Adicionar um paciente"
+        class="action-column-header"
+        (click)="eventCreate$.emit()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-header-cell>
+
+    <mat-cell *matCellDef="let batch" class="action-column">
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="Editar um paciente"
+        (click)="eventUpdate$.emit(batch.id)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button mat-icon-button color="warn" aria-label="Remover um paciente">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator
+  (page)="onPageInfo($event)"
+  [length]="batchPage.totalElements"
+  [pageSize]="batchPage.size"
+  [pageIndex]="batchPage.number"
+  [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+  [disabled]="false"
+  [showFirstLastButtons]="true"
+  [hidePageSize]="false"
+  aria-label="Select page"
+></mat-paginator>

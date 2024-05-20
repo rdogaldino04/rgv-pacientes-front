@@ -1,0 +1,16 @@
+<mat-card>
+  <app-batch-filter
+    [batchFilterform]="batchFilterform"
+    (eventFilter$)="onFilter()"
+  ></app-batch-filter>
+
+  <app-batch-list
+    *ngIf="batchPage$ | async as batchPage"
+    [batchPage]="batchPage"
+    (eventCreate$)="onCreate()"
+    (eventUpdate$)="onUpdate($event)"
+    (eventDelete$)="onDelete($event)"
+    (pageInfo)="onPageInfo($event)"
+  >
+  </app-batch-list>
+</mat-card>

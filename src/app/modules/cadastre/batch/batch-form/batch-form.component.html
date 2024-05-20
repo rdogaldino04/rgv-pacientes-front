@@ -1,0 +1,126 @@
+<mat-card>
+  <mat-toolbar color="primary" class="mat-toolbar"
+    >Cadastro de produtos</mat-toolbar
+  >
+
+  <mat-card-content>
+    <form [formGroup]="form">
+      <div fxLayout="column" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-form-field fxFlex="30%">
+            <mat-label>Número do lote</mat-label>
+            <input
+              matInput
+              formControlName="batchNumber"
+              type="text"
+              [maxLength]="100"
+              oninput="this.value = this.value.toUpperCase()"
+              #batchNumber
+            />
+            <mat-hint align="end"
+              >{{ batchNumber.value.length }} / 100</mat-hint
+            >
+          </mat-form-field>
+          <mat-error
+            *ngIf="
+              form.get('batchNumber')?.invalid &&
+              form.get('batchNumber').touched
+            "
+          >
+            {{ getErrorMessage("batchNumber") }}
+          </mat-error>
+
+          <mat-form-field fxFlex="70%" class="rgv-ml-8">
+            <mat-label>Produto</mat-label>
+            <input
+              matInput
+              formControlName="product"
+              type="text"
+              [maxLength]="100"
+              oninput="this.value = this.value.toUpperCase()"
+              [matAutocomplete]="autoCompProduct"
+            />
+            <mat-autocomplete
+              #autoCompProduct="matAutocomplete"
+              [displayWith]="displayFnProduct"
+            >
+              <mat-option
+                *ngFor="let product of products$ | async"
+                [value]="product"
+              >
+                {{ product.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-error
+            *ngIf="
+              form.get('productId')?.invalid && form.get('productId').touched
+            "
+          >
+            {{ getErrorMessage("productId") }}
+          </mat-error>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-form-field fxFlex="30%">
+            <mat-label>Fabricação</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              formControlName="manufactureDate"
+              type="text"
+              [maxLength]="100"
+              class="text-uppercase"
+            />
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-error
+            *ngIf="
+              form.get('manufactureDate')?.invalid &&
+              form.get('manufactureDate').touched
+            "
+          >
+            {{ getErrorMessage("manufactureDate") }}
+          </mat-error>
+
+          <mat-form-field fxFlex="30%" class="rgv-ml-8">
+            <mat-label>Validade</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker2"
+              formControlName="expiryDate"
+              type="text"
+              [maxLength]="100"
+              class="text-uppercase"
+            />
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+          <mat-error
+            *ngIf="
+              form.get('expiryDate')?.invalid && form.get('expiryDate').touched
+            "
+          >
+            {{ getErrorMessage("expiryDate") }}
+          </mat-error>
+        </div>
+      </div>
+    </form>
+
+    <mat-card-actions [align]="'end'">
+      <button mat-raised-button color="primary" (click)="onSubmit()">
+        Salvar
+      </button>
+    </mat-card-actions>
+  </mat-card-content>
+  <app-form-debug [form]="form"></app-form-debug>
+</mat-card>
