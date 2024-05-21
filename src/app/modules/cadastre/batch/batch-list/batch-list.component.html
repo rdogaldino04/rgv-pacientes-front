@@ -54,7 +54,12 @@
         <mat-icon>edit</mat-icon>
       </button>
 
-      <button mat-icon-button color="warn" aria-label="Remover um paciente">
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="Remover um paciente"
+        (click)="eventDelete$.emit(batch.id)"
+      >
         <mat-icon>delete</mat-icon>
       </button>
     </mat-cell>
