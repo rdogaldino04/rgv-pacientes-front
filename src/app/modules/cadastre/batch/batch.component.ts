@@ -34,6 +34,7 @@ export class BatchComponent implements OnInit {
       batchNumber: [null],
       size: [null],
       page: [null],
+      product: [null],
     });
   }
 

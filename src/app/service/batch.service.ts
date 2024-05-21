@@ -18,6 +18,7 @@ export class BatchService {
     batchNumber?: string;
     size: number;
     page: number;
+    product?: { id: number };
   }): Observable<BatchPage> {
     const params = new HttpParams()
       .append('id', bathFilter.id ? bathFilter.id : '')
@@ -26,7 +27,11 @@ export class BatchService {
         bathFilter.batchNumber ? bathFilter.batchNumber : ''
       )
       .append('size', bathFilter.size ? String(bathFilter.size) : '5')
-      .append('page', bathFilter.page ? String(bathFilter.page) : '0');
+      .append('page', bathFilter.page ? String(bathFilter.page) : '0')
+      .append(
+        'productId',
+        bathFilter.product?.id ? bathFilter?.product.id : ''
+      );
     return this.http.get<BatchPage>(`${this.url}`, { params });
   }
 

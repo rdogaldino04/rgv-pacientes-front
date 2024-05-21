@@ -4,7 +4,7 @@
   <form [formGroup]="batchFilterform">
     <div fxLayout="column" fxLayoutGap="20px">
       <div fxLayout="row" fxLayoutAlign="start">
-        <mat-form-field fxFlex="15%">
+        <mat-form-field fxFlex="10%">
           <mat-label>Cód</mat-label>
           <input
             matInput
@@ -15,7 +15,7 @@
           />
         </mat-form-field>
 
-        <mat-form-field fxFlex="85%" class="rgv-ml-8">
+        <mat-form-field fxFlex="45%" class="rgv-ml-8">
           <mat-label>Número do lote</mat-label>
           <input
             matInput
@@ -25,9 +25,32 @@
             class="text-uppercase"
           />
         </mat-form-field>
+        <mat-form-field fxFlex="45%" class="rgv-ml-8">
+          <mat-label>Produto</mat-label>
+          <input
+            matInput
+            formControlName="product"
+            type="text"
+            [maxLength]="100"
+            oninput="this.value = this.value.toUpperCase()"
+            [matAutocomplete]="autoCompProduct"
+          />
+          <mat-autocomplete
+            #autoCompProduct="matAutocomplete"
+            [displayWith]="displayFnProduct"
+          >
+            <mat-option
+              *ngFor="let product of products$ | async"
+              [value]="product"
+            >
+              {{ product.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
       </div>
     </div>
   </form>
+  <!-- <app-form-debug [form]="batchFilterform"></app-form-debug> -->
 
   <mat-card-actions [align]="'end'">
     <button mat-raised-button color="primary" (click)="search()">
