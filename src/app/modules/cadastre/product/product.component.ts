@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ProductFilter } from 'src/app/model/Product-filter';
@@ -18,7 +19,8 @@ export class ProductComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private formBuilder: UntypedFormBuilder,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +53,20 @@ export class ProductComponent implements OnInit {
   }
 
   onDelete(id: number) {
-    this.productService.delete(id).subscribe(() => this.onFilter());
+    this.productService.delete(id).subscribe(
+      () => {
+        this.onFilter();
+      },
+      (e) => {
+        if (e?.status === 400 || e?.status === 404) {
+          this.snackBar.open(e?.error?.userMessage, '', { duration: 5000 });
+        } else {
+          this.snackBar.open('Erro ao excluir o produto', '', {
+            duration: 5000,
+          });
+        }
+      }
+    );
   }
 
   onPageInfo(pageEvent: PageEvent): void {
