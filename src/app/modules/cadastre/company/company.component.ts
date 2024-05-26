@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { CompanyPage } from 'src/app/model/company-page';
 import { CompanyService } from 'src/app/service/company.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { unformatCnpj } from 'src/app/shared/utils/cnpj-utils';
 
 @Component({
@@ -24,7 +26,8 @@ export class CompanyComponent implements OnInit, OnDestroy {
     private formBuilder: UntypedFormBuilder,
     private companyService: CompanyService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -73,20 +76,28 @@ export class CompanyComponent implements OnInit, OnDestroy {
   }
 
   onDelete(id: number): void {
-    this.companyService.delete(id).subscribe(
-      () => {
-        this.onFilter();
-      },
-      (e) => {
-        if (e?.status === 400 || e?.status === 404) {
-          this.snackBar.open(e?.error?.userMessage, '', { duration: 5000 });
-        } else {
-          this.snackBar.open('Erro ao excluir a empresa', '', {
-            duration: 5000,
-          });
-        }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Tem certeza que deseja remover a empresa?',
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.companyService.delete(id).subscribe(
+          () => {
+            this.onFilter();
+          },
+          (e) => {
+            if (e?.status === 400 || e?.status === 404) {
+              this.snackBar.open(e?.error?.userMessage, '', { duration: 5000 });
+            } else {
+              this.snackBar.open('Erro ao excluir a empresa', '', {
+                duration: 5000,
+              });
+            }
+          }
+        );
       }
-    );
+    });
   }
 
   onCreate(): void {

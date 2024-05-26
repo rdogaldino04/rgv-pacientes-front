@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -7,6 +8,7 @@ import { Observable } from 'rxjs';
 import { ProductFilter } from 'src/app/model/Product-filter';
 import { ProductPage } from 'src/app/model/product-page';
 import { ProductService } from 'src/app/service/product.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   templateUrl: './product.component.html',
@@ -20,7 +22,8 @@ export class ProductComponent implements OnInit {
     private productService: ProductService,
     private formBuilder: UntypedFormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -53,20 +56,28 @@ export class ProductComponent implements OnInit {
   }
 
   onDelete(id: number) {
-    this.productService.delete(id).subscribe(
-      () => {
-        this.onFilter();
-      },
-      (e) => {
-        if (e?.status === 400 || e?.status === 404) {
-          this.snackBar.open(e?.error?.userMessage, '', { duration: 5000 });
-        } else {
-          this.snackBar.open('Erro ao excluir o produto', '', {
-            duration: 5000,
-          });
-        }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Tem certeza que deseja remover o medicamento?',
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.productService.delete(id).subscribe(
+          () => {
+            this.onFilter();
+          },
+          (e) => {
+            if (e?.status === 400 || e?.status === 404) {
+              this.snackBar.open(e?.error?.userMessage, '', { duration: 5000 });
+            } else {
+              this.snackBar.open('Erro ao excluir o produto', '', {
+                duration: 5000,
+              });
+            }
+          }
+        );
       }
-    );
+    });
   }
 
   onPageInfo(pageEvent: PageEvent): void {
