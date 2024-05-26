@@ -1,0 +1,47 @@
+<mat-card>
+  <mat-toolbar color="primary" class="mat-toolbar"
+    >Pesquisa de empresas</mat-toolbar
+  >
+
+  <mat-card-content>
+    <form [formGroup]="form">
+      <div fxLayout="column" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-form-field fxFlex="70%" class="rgv-ml-8">
+            <mat-label>Razão social</mat-label>
+            <input
+              matInput
+              formControlName="name"
+              type="text"
+              [maxLength]="100"
+              oninput="this.value = this.value.toUpperCase()"
+            />
+          </mat-form-field>
+          <mat-form-field fxFlex="30%" class="rgv-ml-8">
+            <mat-label>CNPJ</mat-label>
+            <input
+              matInput
+              appCnpjInput
+              formControlName="cnpj"
+              type="text"
+              maxlength="18"
+              appCnpjMask
+            />
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <!-- <app-form-debug [form]="form"></app-form-debug> -->
+
+    <mat-card-actions [align]="'end'">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onSubmit()"
+        [disabled]="form.valid === false"
+      >
+        Salvar
+      </button>
+    </mat-card-actions>
+  </mat-card-content>
+</mat-card>

@@ -396,49 +396,49 @@ export class SupplyPatientComponent implements OnInit {
   }
 
   private configAutocompleteCompany(): void {
-    this.filteredOptionsCompany$ = this.movementForm
-      .get('company')
-      .valueChanges.pipe(
-        takeUntil(this.destroyed$),
-        startWith(''),
-        debounceTime(EXPECTED_DIGITATION),
-        tap((value) => {
-          const company = typeof value === 'string' ? value : value?.name;
-          if (company !== '') {
-            return;
-          }
-          this.formUtils.resetFields(this.movementForm, [
-            'sectorId',
-            'sector',
-            'companyCnpj',
-            'stockId',
-            'stock',
-          ]);
-          this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
-            'sectorId',
-            'sector',
-            'stockId',
-            'stock',
-          ]);
-        }),
-        filter(
-          (valueDigited) =>
-            valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
-        ),
-        distinctUntilChanged(),
-        map((value) => {
-          const name = typeof value === 'string' ? value : value?.name;
-          return name;
-        }),
-        switchMap((valueDigited) => this.companyService.findByAll(valueDigited))
-      );
-    this.companies$ = of(this.companiesAll$, this.filteredOptionsCompany$).pipe(
-      takeUntil(this.destroyed$),
-      mergeAll()
-    );
-    this.companies$.pipe(takeUntil(this.destroyed$)).subscribe((companies) => {
-      this.companies = companies;
-    });
+    // this.filteredOptionsCompany$ = this.movementForm
+    //   .get('company')
+    //   .valueChanges.pipe(
+    //     takeUntil(this.destroyed$),
+    //     startWith(''),
+    //     debounceTime(EXPECTED_DIGITATION),
+    //     tap((value) => {
+    //       const company = typeof value === 'string' ? value : value?.name;
+    //       if (company !== '') {
+    //         return;
+    //       }
+    //       this.formUtils.resetFields(this.movementForm, [
+    //         'sectorId',
+    //         'sector',
+    //         'companyCnpj',
+    //         'stockId',
+    //         'stock',
+    //       ]);
+    //       this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+    //         'sectorId',
+    //         'sector',
+    //         'stockId',
+    //         'stock',
+    //       ]);
+    //     }),
+    //     filter(
+    //       (valueDigited) =>
+    //         valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
+    //     ),
+    //     distinctUntilChanged(),
+    //     map((value) => {
+    //       const name = typeof value === 'string' ? value : value?.name;
+    //       return name;
+    //     }),
+    //     switchMap((valueDigited) => this.companyService.getAll(valueDigited))
+    //   );
+    // this.companies$ = of(this.companiesAll$, this.filteredOptionsCompany$).pipe(
+    //   takeUntil(this.destroyed$),
+    //   mergeAll()
+    // );
+    // this.companies$.pipe(takeUntil(this.destroyed$)).subscribe((companies) => {
+    //   this.companies = companies;
+    // });
   }
 
   onOptionSelectedCompany(event: MatAutocompleteSelectedEvent): void {

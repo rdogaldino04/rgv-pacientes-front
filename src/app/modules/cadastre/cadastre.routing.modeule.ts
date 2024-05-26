@@ -17,6 +17,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./batch/batch.module').then((m) => m.BatchModule),
   },
+  {
+    path: 'companies',
+    loadChildren: () =>
+      import('./company/company.module').then((m) => m.CompanyModule),
+  },
 ];
 
 @NgModule({

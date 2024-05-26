@@ -1,0 +1,13 @@
+<mat-card>
+  <app-company-filter
+    [form]="companyFilterform"
+    (eventFilter$)="onFilter()"
+  ></app-company-filter>
+  <app-company-list
+    [companyPage]="companyPage"
+    (pageInfo)="onPageInfo($event)"
+    (eventCreate$)="onCreate()"
+    (eventUpdate$)="onUpdate($event)"
+    (eventDelete$)="onDelete($event)"
+  ></app-company-list>
+</mat-card>
