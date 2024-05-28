@@ -100,7 +100,7 @@
     </form>
 
     <mat-card-actions class="actions-center">
-      <button mat-raised-button color="primary" (click)="onSave()">
+      <button mat-raised-button color="primary" (click)="onSave()" [disabled]="patientNewForm.valid === false">
         Salvar
       </button>
     </mat-card-actions>
