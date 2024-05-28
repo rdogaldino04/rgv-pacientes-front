@@ -29,10 +29,13 @@ export class PatientsComponent implements OnInit {
     public dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
-    this.onRefresh(this.filter);
   }
 
   ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      console.log(data);
+      this.patientPage$ = of(data.patientPage);
+    });
     this.filter = {};
   }
 

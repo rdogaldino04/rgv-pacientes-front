@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PatientsComponent } from './patients.component';
 import { PatientFormComponent } from './patient-form/patient-form.component';
 import { PatientResolver } from './patient.resolver';
+import { PatientPageResolver } from './patient-page.resolver';
 
 
 const routes: Routes = [
@@ -12,6 +13,9 @@ const routes: Routes = [
     component: PatientsComponent,
     data: {
       title: 'Pesquisa de pacientes'
+    },
+    resolve: {
+      patientPage: PatientPageResolver
     }
   },
   {
