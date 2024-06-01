@@ -15,10 +15,9 @@ import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/err
 @Component({
   selector: 'app-patients',
   templateUrl: './patients.component.html',
-  styleUrls: ['./patients.component.scss']
+  styleUrls: ['./patients.component.scss'],
 })
 export class PatientsComponent implements OnInit {
-
   patientPage$: Observable<PatientPage> | null = null;
   filter?: PatientFilter;
 
@@ -28,12 +27,10 @@ export class PatientsComponent implements OnInit {
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      console.log(data);
+    this.route.data.subscribe((data) => {
       this.patientPage$ = of(data.patientPage);
     });
     this.filter = {};
@@ -41,10 +38,13 @@ export class PatientsComponent implements OnInit {
 
   onRefresh(filter?: PatientFilter): void {
     this.filter = filter;
-    this.patientPage$ = this.patientService.getAllWithPaginate(this.filter)
-      .pipe(catchError(error => {
-        return of(new PatientPage());
-      }));
+    this.patientPage$ = this.patientService
+      .getAllWithPaginate(this.filter)
+      .pipe(
+        catchError((error) => {
+          return of(new PatientPage());
+        })
+      );
   }
 
   onAdd(): void {
@@ -57,19 +57,21 @@ export class PatientsComponent implements OnInit {
 
   onRemove(patient: Patient): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: 'Tem certeza que deseja remover esse paciente?'
+      data: 'Tem certeza que deseja remover esse paciente?',
     });
 
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        this.patientService.delete(patient.cpf).subscribe(() => {
-          this.onRefresh(this.filter);
-          this.snackBar.open('Paciente removido com sucesso!', 'X', {
-            duration: 5000,
-            verticalPosition: 'top',
-            horizontalPosition: 'center'
-          });
-        }, () => this.onError('Erro ao tentar remover curso.')
+        this.patientService.delete(patient.cpf).subscribe(
+          () => {
+            this.onRefresh(this.filter);
+            this.snackBar.open('Paciente removido com sucesso!', 'X', {
+              duration: 5000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+            });
+          },
+          () => this.onError('Erro ao tentar remover curso.')
         );
       }
     });
@@ -77,7 +79,7 @@ export class PatientsComponent implements OnInit {
 
   onError(errorMsg: string): void {
     this.dialog.open(ErrorDialogComponent, {
-      data: errorMsg
+      data: errorMsg,
     });
   }
 
@@ -86,5 +88,4 @@ export class PatientsComponent implements OnInit {
     this.filter.page = pageEvent.pageIndex;
     this.onRefresh(this.filter);
   }
-
 }

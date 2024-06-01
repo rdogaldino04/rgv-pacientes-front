@@ -3,8 +3,8 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { BatchPage } from 'src/app/model/batch-page';
 import { BatchService } from 'src/app/service/batch.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -22,15 +22,13 @@ export class BatchComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.batchPage$ = this.batchService.findAll({
-      id: 0,
-      batchNumber: '',
-      page: 0,
-      size: 5,
+    this.activatedRoute.data.subscribe((data) => {
+      this.batchPage$ = of(data.batchPage);
     });
     this.batchFilterform = this.formBuilder.group({
       id: [null],

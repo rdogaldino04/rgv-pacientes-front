@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BatchComponent } from './batch.component';
 import { BatchFormComponent } from './batch-form/batch-form.component';
 import { BatchResolver } from './batch.resolver';
+import { BatchPageResolver } from './batch-page-resolver';
 
 const routes: Routes = [
   {
@@ -10,6 +11,9 @@ const routes: Routes = [
     component: BatchComponent,
     data: {
       title: 'Cadastro de lotes',
+    },
+    resolve: {
+      batchPage: BatchPageResolver,
     },
   },
   {
