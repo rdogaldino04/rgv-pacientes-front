@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Sector } from '../model/sector';
-import { Stock } from '../model/stock';
 import { SectorFilter } from '../model/sector-filter';
+import { SectorPage } from '../model/sector-page';
+import { Stock } from '../model/stock';
 
 const API = environment.BASE_API;
 
@@ -18,7 +19,7 @@ export class SectorService {
     return this.http.get<Sector>(`${this.url}/${id}`);
   }
 
-  getAll(sectorFilter: SectorFilter): Observable<Sector[]> {
+  getAll(sectorFilter: SectorFilter): Observable<SectorPage> {
     const params = new HttpParams()
       .append('id', sectorFilter.id ? sectorFilter.id : '')
       .append('name', sectorFilter.name ? sectorFilter.name : '')
@@ -26,7 +27,7 @@ export class SectorService {
         'companyId',
         sectorFilter.companyId ? sectorFilter.companyId : ''
       );
-    return this.http.get<Sector[]>(`${this.url}`, { params });
+    return this.http.get<SectorPage>(`${this.url}`, { params });
   }
 
   stocksFindBySector(

@@ -489,49 +489,49 @@ export class SupplyPatientComponent implements OnInit {
   }
 
   private configAutocompleteSector(): void {
-    this.filteredOptionsSector$ = this.movementForm
-      .get('sector')
-      .valueChanges.pipe(
-        takeUntil(this.destroyed$),
-        startWith(''),
-        debounceTime(EXPECTED_DIGITATION),
-        tap((value) => {
-          const name = typeof value === 'string' ? value : value?.name;
-          if (name !== '') {
-            return;
-          }
-          this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-          this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
-            'stockId',
-            'stock',
-          ]);
-        }),
-        filter(
-          (valueDigited) =>
-            valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
-        ),
-        distinctUntilChanged(),
-        map((value) => {
-          const name = typeof value === 'string' ? value : value?.name;
-          return name;
-        }),
-        switchMap((valueDigited) => {
-          if (this.companies.length === 0) {
-            return of([]);
-          }
-          return this.sectorService.getAll({
-            name: valueDigited,
-            companyId: this.movementForm.get('company').value.id,
-          });
-        })
-      );
-    this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(
-      takeUntil(this.destroyed$),
-      mergeAll()
-    );
-    this.sectors$
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((sectors) => (this.sectors = sectors));
+    // this.filteredOptionsSector$ = this.movementForm
+    //   .get('sector')
+    //   .valueChanges.pipe(
+    //     takeUntil(this.destroyed$),
+    //     startWith(''),
+    //     debounceTime(EXPECTED_DIGITATION),
+    //     tap((value) => {
+    //       const name = typeof value === 'string' ? value : value?.name;
+    //       if (name !== '') {
+    //         return;
+    //       }
+    //       this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
+    //       this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+    //         'stockId',
+    //         'stock',
+    //       ]);
+    //     }),
+    //     filter(
+    //       (valueDigited) =>
+    //         valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
+    //     ),
+    //     distinctUntilChanged(),
+    //     map((value) => {
+    //       const name = typeof value === 'string' ? value : value?.name;
+    //       return name;
+    //     }),
+    //     switchMap((valueDigited) => {
+    //       if (this.companies.length === 0) {
+    //         return of([]);
+    //       }
+    //       return this.sectorService.getAll({
+    //         name: valueDigited,
+    //         companyId: this.movementForm.get('company').value.id,
+    //       });
+    //     })
+    //   );
+    // this.sectors$ = of(this.sectorsAll$, this.filteredOptionsSector$).pipe(
+    //   takeUntil(this.destroyed$),
+    //   mergeAll()
+    // );
+    // this.sectors$
+    //   .pipe(takeUntil(this.destroyed$))
+    //   .subscribe((sectors) => (this.sectors = sectors));
   }
 
   onOptionSelectedSector(event: MatAutocompleteSelectedEvent): void {

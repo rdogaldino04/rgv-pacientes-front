@@ -1,0 +1,71 @@
+<table mat-table [dataSource]="stockPage.content">
+  <caption *ngIf="false">
+    Empresas
+  </caption>
+  <!-- ID Column -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef style="width: 10%">Código</th>
+    <td mat-cell *matCellDef="let stock">{{ stock.id }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef style="width: 45%">Nome</th>
+    <td mat-cell *matCellDef="let stock">{{ stock.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="sector">
+    <th mat-header-cell *matHeaderCellDef style="width: 45%">Setor</th>
+    <td mat-cell *matCellDef="let stock">{{ stock?.sector?.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="ações">
+    <mat-header-cell
+      *matHeaderCellDef
+      class="action-column"
+      style="height: 100px"
+      ><button
+        mat-mini-fab
+        color="accent"
+        aria-label="Adicionar uma empresa"
+        class="action-column-header"
+        (click)="eventCreate$.emit()"
+      >
+        <mat-icon>add</mat-icon>
+      </button></mat-header-cell
+    >
+    <mat-cell *matCellDef="let batch" class="action-column">
+      <button
+        mat-icon-button
+        color="primary"
+        aria-label="Editar uma empresa"
+        (click)="eventUpdate$.emit(batch.id)"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="Remover uma empresa"
+        (click)="eventDelete$.emit(batch.id)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator
+  (page)="onPageInfo($event)"
+  [length]="stockPage.totalElements"
+  [pageSize]="stockPage.size"
+  [pageIndex]="stockPage.number"
+  [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
+  [disabled]="false"
+  [showFirstLastButtons]="true"
+  [hidePageSize]="false"
+  aria-label="Select page"
+></mat-paginator>

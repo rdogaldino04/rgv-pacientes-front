@@ -1,0 +1,15 @@
+<mat-card>
+  <app-stock-filter
+    [stockFilterform]="stockFilterform"
+    (eventFilter$)="onFilter()"
+  ></app-stock-filter>
+
+  <app-stock-list
+    *ngIf="stockPage$ | async as stockPage"
+    [stockPage]="stockPage"
+    (pageInfo)="onPageInfo($event)"
+    (eventUpdate$)="onUpdate($event)"
+    (eventDelete$)="onDelete($event)"
+    (eventCreate$)="onCreate()"
+  ></app-stock-list>
+</mat-card>
