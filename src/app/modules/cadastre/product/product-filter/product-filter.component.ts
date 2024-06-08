@@ -19,7 +19,12 @@ export class ProductFilterComponent {
   @Output() eventFilter$ = new EventEmitter();
   products$: Observable<Product[]> | null = null;
 
-  search() {
+  search(): void {
+    this.eventFilter$.emit();
+  }
+
+  cancel(): void {
+    this.productFilterform.reset();
     this.eventFilter$.emit();
   }
 }

@@ -77,4 +77,9 @@ export class BatchFilterComponent implements OnInit {
       mergeAll()
     );
   }
+
+  cancel() {
+    this.batchFilterform.reset();
+    this.eventFilter$.emit();
+  }
 }
