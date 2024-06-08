@@ -20,10 +20,14 @@ export class SectorService {
   }
 
   getAll(sectorFilter: SectorFilter): Observable<SectorPage> {
+    console.log(sectorFilter);
     const params = new HttpParams()
       .append('id', sectorFilter.id ? sectorFilter.id : '')
       .append('name', sectorFilter.name ? sectorFilter.name : '')
-      .append('companyId', sectorFilter.companyId ? sectorFilter.companyId : '')
+      .append(
+        'companyId',
+        sectorFilter.company?.id ? sectorFilter.company?.id : ''
+      )
       .append('page', sectorFilter.page ? sectorFilter.page.toString() : '')
       .append('size', sectorFilter.size ? sectorFilter.size.toString() : '');
     return this.http.get<SectorPage>(`${this.url}`, { params });

@@ -1,9 +1,11 @@
+import { Company } from './company';
+
 export interface SectorFilter {
   id?: number;
   name?: string;
   stockId?: number;
   stockName?: string;
-  companyId?: number;
+  company?: Company;
   page?: number;
   size?: number;
 }

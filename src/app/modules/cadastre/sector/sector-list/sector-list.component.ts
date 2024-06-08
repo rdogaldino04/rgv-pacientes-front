@@ -8,7 +8,7 @@ import { SectorPage } from 'src/app/model/sector-page';
   styleUrls: ['./sector-list.component.scss'],
 })
 export class SectorListComponent implements OnInit {
-  readonly displayedColumns = ['id', 'name', 'actions'];
+  readonly displayedColumns = ['id', 'name', 'company', 'actions'];
 
   @Input() sectorPage: SectorPage;
 
