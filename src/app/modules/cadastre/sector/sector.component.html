@@ -1,1 +1,4 @@
-<app-sector-list></app-sector-list>
+<app-sector-list
+  [sectorPage]="sectorPage"
+  (pageInfo)="onPageInfo($event)"
+></app-sector-list>

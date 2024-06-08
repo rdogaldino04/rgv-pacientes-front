@@ -23,10 +23,9 @@ export class SectorService {
     const params = new HttpParams()
       .append('id', sectorFilter.id ? sectorFilter.id : '')
       .append('name', sectorFilter.name ? sectorFilter.name : '')
-      .append(
-        'companyId',
-        sectorFilter.companyId ? sectorFilter.companyId : ''
-      );
+      .append('companyId', sectorFilter.companyId ? sectorFilter.companyId : '')
+      .append('page', sectorFilter.page ? sectorFilter.page.toString() : '')
+      .append('size', sectorFilter.size ? sectorFilter.size.toString() : '');
     return this.http.get<SectorPage>(`${this.url}`, { params });
   }
 
