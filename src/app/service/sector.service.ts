@@ -20,7 +20,6 @@ export class SectorService {
   }
 
   getAll(sectorFilter: SectorFilter): Observable<SectorPage> {
-    console.log(sectorFilter);
     const params = new HttpParams()
       .append('id', sectorFilter.id ? sectorFilter.id : '')
       .append('name', sectorFilter.name ? sectorFilter.name : '')
@@ -41,5 +40,9 @@ export class SectorService {
       .append('stockName', sectorFilter.stockName ? sectorFilter.stockName : '')
       .append('stockId', sectorFilter.stockId ? sectorFilter.stockId : '');
     return this.http.get<Stock[]>(`${this.url}/${sectorId}/stocks`, { params });
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
 }

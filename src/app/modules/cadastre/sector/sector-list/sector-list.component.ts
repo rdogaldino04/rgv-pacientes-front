@@ -12,6 +12,9 @@ export class SectorListComponent implements OnInit {
 
   @Input() sectorPage: SectorPage;
 
+  @Output() eventCreate$ = new EventEmitter();
+  @Output() eventUpdate$ = new EventEmitter();
+  @Output() eventDelete$ = new EventEmitter();
   @Output() pageInfo = new EventEmitter(false);
 
   constructor() {}

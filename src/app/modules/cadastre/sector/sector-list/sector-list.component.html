@@ -35,12 +35,12 @@
       </button>
     </mat-header-cell>
 
-    <mat-cell *matCellDef="let batch" class="action-column">
+    <mat-cell *matCellDef="let sector" class="action-column">
       <button
         mat-icon-button
         color="primary"
         aria-label="Editar um setor"
-        (click)="eventUpdate$.emit(batch.id)"
+        (click)="eventUpdate$.emit(sector?.id)"
       >
         <mat-icon>edit</mat-icon>
       </button>
@@ -49,7 +49,7 @@
         mat-icon-button
         color="warn"
         aria-label="Remover um setor"
-        (click)="eventDelete$.emit(batch.id)"
+        (click)="eventDelete$.emit(sector?.id)"
       >
         <mat-icon>delete</mat-icon>
       </button>
