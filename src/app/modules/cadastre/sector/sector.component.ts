@@ -29,6 +29,7 @@ export class SectorComponent implements OnInit {
       name: [null],
       size: [null],
       page: [null],
+      company: [null],
     });
   }
 

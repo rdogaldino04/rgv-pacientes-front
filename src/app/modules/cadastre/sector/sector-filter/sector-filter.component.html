@@ -17,7 +17,7 @@
           />
         </mat-form-field>
 
-        <mat-form-field fxFlex="90%" class="rgv-ml-8">
+        <mat-form-field fxFlex="45%" class="rgv-ml-8">
           <mat-label>Nome</mat-label>
           <input
             matInput
@@ -26,6 +26,29 @@
             [maxLength]="100"
             class="text-uppercase"
           />
+        </mat-form-field>
+
+        <mat-form-field fxFlex="45%" class="rgv-ml-8">
+          <mat-label>Company</mat-label>
+          <input
+            matInput
+            formControlName="company"
+            type="text"
+            [maxLength]="100"
+            oninput="this.value = this.value.toUpperCase()"
+            [matAutocomplete]="autoCompCompany"
+          />
+          <mat-autocomplete
+            #autoCompCompany="matAutocomplete"
+            [displayWith]="displayFnCompany"
+          >
+            <mat-option
+              *ngFor="let company of companies$ | async"
+              [value]="company"
+            >
+              {{ company.name }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
       </div>
     </div>
