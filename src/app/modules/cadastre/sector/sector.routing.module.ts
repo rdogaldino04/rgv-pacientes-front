@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SectorPageResolver } from './sector-page-resolver';
 import { SectorComponent } from './sector.component';
 
 const routes: Routes = [
@@ -10,7 +11,7 @@ const routes: Routes = [
       title: 'Cadastro de setores',
     },
     resolve: {
-      // batchPage: BatchPageResolver,
+      sectorPage: SectorPageResolver,
     },
   },
   // {
