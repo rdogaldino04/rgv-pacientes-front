@@ -6,6 +6,8 @@
   <app-sector-list
     [sectorPage]="sectorPage"
     (pageInfo)="onPageInfo($event)"
+    (eventCreate$)="onCreate()"
+    (eventUpdate$)="onUpdate($event)"
     (eventDelete$)="onDelete($event)"
   ></app-sector-list>
 </mat-card>

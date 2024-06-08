@@ -8,9 +8,15 @@ import { SectorFilterComponent } from './sector-filter/sector-filter.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { SectorFormComponent } from './sector-form/sector-form.component';
 
 @NgModule({
-  declarations: [SectorComponent, SectorListComponent, SectorFilterComponent],
+  declarations: [
+    SectorComponent,
+    SectorListComponent,
+    SectorFilterComponent,
+    SectorFormComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,

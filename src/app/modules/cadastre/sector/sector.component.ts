@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SectorPage } from 'src/app/model/sector-page';
 import { SectorService } from 'src/app/service/sector.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
@@ -20,6 +20,7 @@ export class SectorComponent implements OnInit {
   constructor(
     private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private sectorService: SectorService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
@@ -79,5 +80,13 @@ export class SectorComponent implements OnInit {
         );
       }
     });
+  }
+
+  onCreate(): void {
+    this.router.navigate(['cadastros/sectors', 'new']);
+  }
+
+  onUpdate(id: number): void {
+    this.router.navigate(['cadastros/sectors', 'edit', id]);
   }
 }

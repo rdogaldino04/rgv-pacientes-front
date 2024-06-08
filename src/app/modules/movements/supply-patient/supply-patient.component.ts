@@ -454,38 +454,37 @@ export class SupplyPatientComponent implements OnInit {
   }
 
   onBlurSectorId(): void {
-    const sectorIdEmpty = this.movementForm.get('sectorId').value === '';
-    if (sectorIdEmpty) {
-      this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-      this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
-        'stockId',
-        'stock',
-      ]);
-      return;
-    }
-
-    const sectorId = this.movementForm.get('sectorId').getRawValue();
-    const company = this.movementForm.get('company').getRawValue() as Company;
-    this.subscription = this.sectorService
-      .getAll({ id: sectorId, companyId: company.id })
-      .pipe(map((sectors) => sectors[0]))
-      .subscribe(
-        (sector) => {
-          this.movementForm.get('sector').patchValue(sector);
-          this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-          this.formUtils.desableOrEnableFields(this.movementForm, !!sector, [
-            'stockId',
-            'stock',
-          ]);
-        },
-        () => {
-          this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
-          this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
-            'stockId',
-            'stock',
-          ]);
-        }
-      );
+    // const sectorIdEmpty = this.movementForm.get('sectorId').value === '';
+    // if (sectorIdEmpty) {
+    //   this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
+    //   this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+    //     'stockId',
+    //     'stock',
+    //   ]);
+    //   return;
+    // }
+    // const sectorId = this.movementForm.get('sectorId').getRawValue();
+    // const company = this.movementForm.get('company').getRawValue() as Company;
+    // this.subscription = this.sectorService
+    //   .getAll({ id: sectorId, companyId: company.id })
+    //   .pipe(map((sectors) => sectors[0]))
+    //   .subscribe(
+    //     (sector) => {
+    //       this.movementForm.get('sector').patchValue(sector);
+    //       this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
+    //       this.formUtils.desableOrEnableFields(this.movementForm, !!sector, [
+    //         'stockId',
+    //         'stock',
+    //       ]);
+    //     },
+    //     () => {
+    //       this.formUtils.resetFields(this.movementForm, ['stockId', 'stock']);
+    //       this.formUtils.desableOrEnableFields(this.movementForm, DISABLE, [
+    //         'stockId',
+    //         'stock',
+    //       ]);
+    //     }
+    //   );
   }
 
   private configAutocompleteSector(): void {

@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SectorPageResolver } from './sector-page-resolver';
 import { SectorComponent } from './sector.component';
+import { SectorFormComponent } from './sector-form/sector-form.component';
+import { SectorResolver } from './sector.resolver';
 
 const routes: Routes = [
   {
@@ -14,23 +16,23 @@ const routes: Routes = [
       sectorPage: SectorPageResolver,
     },
   },
-  // {
-  //   path: 'new',
-  //   component: BatchFormComponent,
-  //   data: {
-  //     title: 'Cadastro de lotes',
-  //   },
-  // },
-  // {
-  //   path: 'edit/:id',
-  //   component: BatchFormComponent,
-  //   resolve: {
-  //     batch: BatchResolver,
-  //   },
-  //   data: {
-  //     title: 'Cadastro de lotes',
-  //   },
-  // },
+  {
+    path: 'new',
+    component: SectorFormComponent,
+    data: {
+      title: 'Cadastro de setores',
+    },
+  },
+  {
+    path: 'edit/:id',
+    component: SectorFormComponent,
+    resolve: {
+      sector: SectorResolver,
+    },
+    data: {
+      title: 'Cadastro de setores',
+    },
+  },
 ];
 
 @NgModule({

@@ -45,4 +45,12 @@ export class SectorService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
+
+  create(sector: Sector): Observable<Sector> {
+    return this.http.post<Sector>(this.url, sector);
+  }
+
+  update(sector: Sector): Observable<Sector> {
+    return this.http.put<Sector>(`${this.url}/${sector?.id}`, sector);
+  }
 }

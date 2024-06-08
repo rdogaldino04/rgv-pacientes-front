@@ -13,8 +13,7 @@ import {
 } from 'rxjs/operators';
 import { Product } from 'src/app/model/product';
 import { ProductService } from 'src/app/service/product.service';
-
-const EXPECTED_DIGITATION = 300;
+import { EXPECTED_DIGITATION } from 'src/app/shared/utils/constants';
 
 @Component({
   selector: 'app-batch-filter',
