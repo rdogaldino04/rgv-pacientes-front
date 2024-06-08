@@ -1,4 +1,10 @@
-<app-sector-list
-  [sectorPage]="sectorPage"
-  (pageInfo)="onPageInfo($event)"
-></app-sector-list>
+<mat-card>
+  <app-sector-filter
+    [sectorFilterform]="sectorFilterform"
+    (eventFilter$)="onFilter()"
+  ></app-sector-filter>
+  <app-sector-list
+    [sectorPage]="sectorPage"
+    (pageInfo)="onPageInfo($event)"
+  ></app-sector-list>
+</mat-card>

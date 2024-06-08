@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { SectorPage } from 'src/app/model/sector-page';
 import { SectorService } from 'src/app/service/sector.service';
 
@@ -12,8 +12,10 @@ import { SectorService } from 'src/app/service/sector.service';
 })
 export class SectorComponent implements OnInit {
   sectorPage: SectorPage | null = null;
+  sectorFilterform: UntypedFormGroup;
 
   constructor(
+    private formBuilder: UntypedFormBuilder,
     private activatedRoute: ActivatedRoute,
     private sectorService: SectorService
   ) {}
@@ -22,13 +24,27 @@ export class SectorComponent implements OnInit {
     this.activatedRoute.data.subscribe((data) => {
       this.sectorPage = data.sectorPage;
     });
+    this.sectorFilterform = this.formBuilder.group({
+      id: [null],
+      name: [null],
+      size: [null],
+      page: [null],
+    });
   }
 
   onPageInfo(pageEvent: PageEvent): void {
-    // this.batchFilterform.get('size').setValue(pageEvent.pageSize);
-    // this.batchFilterform.get('page').setValue(pageEvent.pageIndex);
+    this.sectorFilterform.get('size').setValue(pageEvent.pageSize);
+    this.sectorFilterform.get('page').setValue(pageEvent.pageIndex);
     this.sectorService
       .getAll({ size: pageEvent.pageSize, page: pageEvent.pageIndex })
+      .subscribe((sectorPage) => {
+        this.sectorPage = sectorPage;
+      });
+  }
+
+  onFilter(): void {
+    this.sectorService
+      .getAll(this.sectorFilterform.getRawValue())
       .subscribe((sectorPage) => {
         this.sectorPage = sectorPage;
       });

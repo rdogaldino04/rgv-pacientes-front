@@ -1,0 +1,48 @@
+<mat-toolbar color="primary" class="mat-toolbar"
+  >Pesquisa de setores</mat-toolbar
+>
+
+<mat-card-content>
+  <form [formGroup]="sectorFilterform">
+    <div fxLayout="column" fxLayoutGap="20px">
+      <div fxLayout="row" fxLayoutAlign="start">
+        <mat-form-field fxFlex="10%">
+          <mat-label>Cód</mat-label>
+          <input
+            matInput
+            appNumericInput
+            formControlName="id"
+            type="text"
+            maxlength="14"
+          />
+        </mat-form-field>
+
+        <mat-form-field fxFlex="90%" class="rgv-ml-8">
+          <mat-label>Nome</mat-label>
+          <input
+            matInput
+            formControlName="name"
+            type="text"
+            [maxLength]="100"
+            class="text-uppercase"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+  <!-- <app-form-debug [form]="sectorFilterform"></app-form-debug> -->
+
+  <mat-card-actions [align]="'end'">
+    <button mat-raised-button color="primary" (click)="search()">
+      Pesquisar
+    </button>
+    <button
+      mat-raised-button
+      color="accent"
+      (click)="cancel()"
+      class="rgv-ml-8"
+    >
+      Cancelar
+    </button>
+  </mat-card-actions>
+</mat-card-content>
