@@ -18,8 +18,7 @@ import { Sector } from 'src/app/model/sector';
 import { Stock } from 'src/app/model/stock';
 import { SectorService } from 'src/app/service/sector.service';
 import { StockService } from 'src/app/service/stock.service';
-
-const EXPECTED_DIGITATION = 300;
+import { EXPECTED_DIGITATION } from 'src/app/shared/utils/constants';
 
 @Component({
   selector: 'app-stock-form',

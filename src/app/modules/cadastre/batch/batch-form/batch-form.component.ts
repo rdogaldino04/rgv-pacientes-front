@@ -20,8 +20,7 @@ import { Product } from 'src/app/model/product';
 import { BatchService } from 'src/app/service/batch.service';
 import { ProductService } from 'src/app/service/product.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
-
-const EXPECTED_DIGITATION = 300;
+import { EXPECTED_DIGITATION } from 'src/app/shared/utils/constants';
 
 @Component({
   templateUrl: './batch-form.component.html',

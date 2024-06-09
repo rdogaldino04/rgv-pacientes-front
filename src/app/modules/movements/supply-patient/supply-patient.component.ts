@@ -34,10 +34,10 @@ import { ProductService } from 'src/app/service/product.service';
 import { SectorService } from 'src/app/service/sector.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { formatCnpj, unformatCnpj } from 'src/app/shared/utils/cnpj-utils';
+import { EXPECTED_DIGITATION } from 'src/app/shared/utils/constants';
 import { formatCpf, unformatCpf } from 'src/app/shared/utils/cpf-utils';
 import { FormValidations } from 'src/app/shared/validation/form-validations';
 
-const EXPECTED_DIGITATION = 300;
 const DISABLE = false;
 const ENABLE = true;
 

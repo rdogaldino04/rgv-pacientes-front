@@ -13,8 +13,7 @@ import {
 } from 'rxjs/operators';
 import { Sector } from 'src/app/model/sector';
 import { SectorService } from 'src/app/service/sector.service';
-
-const EXPECTED_DIGITATION = 300;
+import { EXPECTED_DIGITATION } from 'src/app/shared/utils/constants';
 
 @Component({
   selector: 'app-stock-filter',
