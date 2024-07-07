@@ -19,15 +19,15 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
+import { Batch } from 'src/app/model/batch';
+import { BatchPage } from 'src/app/model/batch-page';
 import { Movement } from 'src/app/model/movement';
 import { MovimentItem } from 'src/app/model/movement-item';
 import { Patient } from 'src/app/model/patient';
-import { Product } from 'src/app/model/product';
-import { ProductPage } from 'src/app/model/product-page';
 import { Stock } from 'src/app/model/stock';
+import { BatchService } from 'src/app/service/batch.service';
 import { MovementService } from 'src/app/service/movement.service';
 import { PatientService } from 'src/app/service/patient.service';
-import { ProductService } from 'src/app/service/product.service';
 import { StockService } from 'src/app/service/stock.service';
 import { FormUtilsService } from 'src/app/shared/service/form-utils.service';
 import { EXPECTED_DIGITATION } from 'src/app/shared/utils/constants';
@@ -54,9 +54,9 @@ export class SupplyPatientComponent implements OnInit {
   stocks$: Observable<Stock[]>;
   stocks: Stock[] = [];
 
-  filteredOptionsProducts$: Observable<Product[]>;
-  productAll$ = of([]);
-  products$: Observable<Product[]>;
+  filteredBatchOptions$: Observable<Batch[]>;
+  batchAll$ = of([]);
+  batchies$: Observable<Batch[]>;
 
   edit: boolean;
 
@@ -65,7 +65,7 @@ export class SupplyPatientComponent implements OnInit {
     private route: ActivatedRoute,
     public formUtils: FormUtilsService,
     private patientService: PatientService,
-    private productService: ProductService,
+    private batchService: BatchService,
     private movementService: MovementService,
     private stockService: StockService
   ) {}
@@ -140,14 +140,17 @@ export class SupplyPatientComponent implements OnInit {
   }
 
   private createItem(
-    item: MovimentItem = { id: null, product: null, amount: null }
+    item: MovimentItem = { id: null, batch: null, quantity: null }
   ): FormGroup {
     const itemFormGroup = this.formBuilder.group({
       id: [item?.id],
-      product: [item?.product, [Validators.required]],
-      amount: [item?.amount, [Validators.required, Validators.maxLength(10)]],
+      batch: [item?.batch, [Validators.required]],
+      quantity: [
+        item?.quantity,
+        [Validators.required, Validators.maxLength(10)],
+      ],
     });
-    this.configAutocompleteProduct(itemFormGroup);
+    this.configAutocompleteBatch(itemFormGroup);
     return itemFormGroup;
   }
 
@@ -172,8 +175,8 @@ export class SupplyPatientComponent implements OnInit {
     return stock?.name;
   }
 
-  displayFnProduct(product: Product) {
-    return product?.name;
+  displayFnBatch(batch: Batch) {
+    return batch?.batchNumber;
   }
 
   onOptionSelectedPatient(event: MatAutocompleteSelectedEvent): void {
@@ -272,29 +275,27 @@ export class SupplyPatientComponent implements OnInit {
       .subscribe((stocks) => (this.stocks = stocks));
   }
 
-  private configAutocompleteProduct(itemFormGroup: FormGroup) {
-    this.filteredOptionsProducts$ = itemFormGroup
-      .get('product')
-      .valueChanges.pipe(
-        takeUntil(this.destroyed$),
-        startWith(''),
-        debounceTime(EXPECTED_DIGITATION),
-        filter(
-          (valueDigited) =>
-            valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
-        ),
-        distinctUntilChanged(),
-        map((value) => {
-          const name = typeof value === 'string' ? value : value?.name;
-          return name;
-        }),
-        switchMap((valueDigited) =>
-          this.productService
-            .getProductByFilter({ name: valueDigited })
-            .pipe(map((productPage: ProductPage) => productPage.content))
-        )
-      );
-    this.products$ = of(this.productAll$, this.filteredOptionsProducts$).pipe(
+  private configAutocompleteBatch(itemFormGroup: FormGroup) {
+    this.filteredBatchOptions$ = itemFormGroup.get('batch').valueChanges.pipe(
+      takeUntil(this.destroyed$),
+      startWith(''),
+      debounceTime(EXPECTED_DIGITATION),
+      filter(
+        (valueDigited) =>
+          valueDigited && (valueDigited.length >= 3 || !valueDigited.length)
+      ),
+      distinctUntilChanged(),
+      map((value) => {
+        const name = typeof value === 'string' ? value : value?.name;
+        return name;
+      }),
+      switchMap((valueDigited) =>
+        this.batchService
+          .findAll({ batchNumber: valueDigited })
+          .pipe(map((batchPage: BatchPage) => batchPage.content))
+      )
+    );
+    this.batchies$ = of(this.batchAll$, this.filteredBatchOptions$).pipe(
       takeUntil(this.destroyed$),
       mergeAll()
     );

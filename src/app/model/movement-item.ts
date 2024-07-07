@@ -1,10 +1,7 @@
-export interface MovimentItem {
-  id: number;
-  product: ProductMovementItemInput;
-  amount: number;
-}
+import { Batch } from './batch';
 
-interface ProductMovementItemInput {
-  id: number;
-  name: string;
+export interface MovimentItem {
+  id?: number;
+  batch: { id: null };
+  quantity: number;
 }

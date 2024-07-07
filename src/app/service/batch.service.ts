@@ -16,8 +16,8 @@ export class BatchService {
   findAll(bathFilter: {
     id?: number;
     batchNumber?: string;
-    size: number;
-    page: number;
+    size?: number;
+    page?: number;
     product?: { id: number };
   }): Observable<BatchPage> {
     const params = new HttpParams()

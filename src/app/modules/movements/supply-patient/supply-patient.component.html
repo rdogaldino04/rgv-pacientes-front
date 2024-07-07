@@ -125,35 +125,32 @@
         <div class="grid-container">
           <div class="col-9">
             <mat-form-field class="field">
-              <mat-label>Produto</mat-label>
+              <mat-label>Lote</mat-label>
               <input
                 matInput
-                formControlName="product"
+                formControlName="batch"
                 class="text-uppercase"
-                [matAutocomplete]="autoCompProduct"
+                [matAutocomplete]="autoCompBatch"
               />
               <mat-autocomplete
-                #autoCompProduct="matAutocomplete"
-                [displayWith]="displayFnProduct"
+                #autoCompBatch="matAutocomplete"
+                [displayWith]="displayFnBatch"
               >
                 <mat-option
-                  *ngFor="let product of products$ | async"
-                  [value]="product"
+                  *ngFor="let batch of batchies$ | async"
+                  [value]="batch"
                 >
-                  {{ product.name }}
+                  {{ batch.batchNumber }}
                 </mat-option>
               </mat-autocomplete>
-              <mat-error
-                *ngIf="getItemsFormArray()[i].get('product')?.invalid"
-                >{{
-                  formUtils.getFormArrayFieldErrorMessage(
-                    movementForm,
-                    "items",
-                    "product",
-                    i
-                  )
-                }}</mat-error
-              >
+              <mat-error *ngIf="getItemsFormArray()[i].get('batch')?.invalid">{{
+                formUtils.getFormArrayFieldErrorMessage(
+                  movementForm,
+                  "items",
+                  "batch",
+                  i
+                )
+              }}</mat-error>
             </mat-form-field>
           </div>
           <div class="col-2">
@@ -161,17 +158,17 @@
               <mat-label>Quantidade</mat-label>
               <input
                 matInput
-                formControlName="amount"
+                formControlName="quantity"
                 appNumericInput
                 maxlength="10"
               />
               <mat-error
-                *ngIf="getItemsFormArray()[i].get('amount')?.invalid"
+                *ngIf="getItemsFormArray()[i].get('quantity')?.invalid"
                 >{{
                   formUtils.getFormArrayFieldErrorMessage(
                     movementForm,
                     "items",
-                    "amount",
+                    "quantity",
                     i
                   )
                 }}</mat-error
