@@ -22,11 +22,8 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </div>
-
-    <div class="grid-container">
-      <div class="col-2">
-        <mat-form-field class="field">
+      <div fxLayout="row" fxLayoutAlign="start">
+        <mat-form-field fxFlex="10%">
           <mat-label>CPF</mat-label>
           <input
             matInput
@@ -40,9 +37,8 @@
             {{ getErrorMessage("patient.cpf") }}
           </mat-error>
         </mat-form-field>
-      </div>
-      <div class="col-10">
-        <mat-form-field class="field">
+
+        <mat-form-field class="rgv-ml-8" fxFlex="90%">
           <mat-label>Nome</mat-label>
           <input
             matInput
@@ -51,6 +47,7 @@
             class="text-uppercase"
             [matAutocomplete]="autoPatient"
             maxlength="200"
+            (blur)="onBlurPatient()"
           />
           <mat-autocomplete
             #autoPatient="matAutocomplete"
@@ -71,44 +68,42 @@
       </div>
     </div>
 
-    <div class="grid-container">
-      <div class="col-2">
-        <mat-form-field class="field">
-          <mat-label>Código estoque</mat-label>
-          <input
-            matInput
-            formControlName="stockId"
-            (blur)="onBlurStockId()"
-            appNumericInput
-          />
-          <mat-error *ngIf="movementForm.get('stockId')?.invalid">
-            {{ getErrorMessage("stockId") }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-10">
-        <mat-form-field class="field">
-          <mat-label>Estoque</mat-label>
-          <input
-            matInput
-            formControlName="stock"
-            class="text-uppercase"
-            [matAutocomplete]="autoCompStock"
-          />
-          <mat-autocomplete
-            #autoCompStock="matAutocomplete"
-            [displayWith]="displayFnStock"
-            (optionSelected)="onOptionSelectedStock($event)"
-          >
-            <mat-option *ngFor="let stock of stocks" [value]="stock">
-              {{ stock.name }}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error *ngIf="movementForm.get('stock')?.invalid">
-            {{ getErrorMessage("stock") }}
-          </mat-error>
-        </mat-form-field>
-      </div>
+    <div fxLayout="row" fxLayoutAlign="start">
+      <mat-form-field fxFlex="10%">
+        <mat-label>Código estoque</mat-label>
+        <input
+          matInput
+          formControlName="stockId"
+          (blur)="onBlurStockId()"
+          appNumericInput
+        />
+        <mat-error *ngIf="movementForm.get('stockId')?.invalid">
+          {{ getErrorMessage("stockId") }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="rgv-ml-8" fxFlex="90%">
+        <mat-label>Estoque</mat-label>
+        <input
+          matInput
+          formControlName="stock"
+          class="text-uppercase"
+          [matAutocomplete]="autoCompStock"
+          (blur)="onBlurStock()"
+        />
+        <mat-autocomplete
+          #autoCompStock="matAutocomplete"
+          [displayWith]="displayFnStock"
+          (optionSelected)="onOptionSelectedStock($event)"
+        >
+          <mat-option *ngFor="let stock of stocks" [value]="stock">
+            {{ stock.name }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="movementForm.get('stock')?.invalid">
+          {{ getErrorMessage("stock") }}
+        </mat-error>
+      </mat-form-field>
     </div>
 
     <mat-toolbar>
@@ -134,59 +129,58 @@
       *ngFor="let item of getItemsFormArray(); let i = index"
     >
       <div [formGroupName]="i">
-        <div class="grid-container">
-          <div class="col-9">
-            <mat-form-field class="field">
-              <mat-label>Lote</mat-label>
-              <input
-                matInput
-                formControlName="batch"
-                class="text-uppercase"
-                [matAutocomplete]="autoCompBatch"
-              />
-              <mat-autocomplete
-                #autoCompBatch="matAutocomplete"
-                [displayWith]="displayFnBatch"
+        <div fxLayout="row" fxLayoutAlign="start">
+          <mat-form-field appearance="fill" fxFlex="15%">
+            <mat-label>Lote</mat-label>
+            <input
+              matInput
+              formControlName="batch"
+              class="text-uppercase"
+              [matAutocomplete]="autoCompBatch"
+              (blur)="onBlurBatch(item)"
+            />
+            <mat-autocomplete
+              #autoCompBatch="matAutocomplete"
+              [displayWith]="displayFnBatch"
+              (optionSelected)="onOptionSelectedBatch($event, i)"
+            >
+              <mat-option
+                *ngFor="let batch of batchies$ | async"
+                [value]="batch"
               >
-                <mat-option
-                  *ngFor="let batch of batchies$ | async"
-                  [value]="batch"
-                >
-                  {{ batch.batchNumber }}
-                </mat-option>
-              </mat-autocomplete>
-              <mat-error *ngIf="getItemsFormArray()[i].get('batch')?.invalid">{{
+                {{ batch.batchNumber }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="getItemsFormArray()[i].get('batch')?.invalid">{{
+              formUtils.getFormArrayFieldErrorMessage(
+                movementForm,
+                "items",
+                "batch",
+                i
+              )
+            }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="rgv-ml-8" fxFlex="15%">
+            <mat-label>Quantidade</mat-label>
+            <input
+              matInput
+              formControlName="quantity"
+              appNumericInput
+              maxlength="10"
+            />
+            <mat-error
+              *ngIf="getItemsFormArray()[i].get('quantity')?.invalid"
+              >{{
                 formUtils.getFormArrayFieldErrorMessage(
                   movementForm,
                   "items",
-                  "batch",
+                  "quantity",
                   i
                 )
-              }}</mat-error>
-            </mat-form-field>
-          </div>
-          <div class="col-2">
-            <mat-form-field class="field">
-              <mat-label>Quantidade</mat-label>
-              <input
-                matInput
-                formControlName="quantity"
-                appNumericInput
-                maxlength="10"
-              />
-              <mat-error
-                *ngIf="getItemsFormArray()[i].get('quantity')?.invalid"
-                >{{
-                  formUtils.getFormArrayFieldErrorMessage(
-                    movementForm,
-                    "items",
-                    "quantity",
-                    i
-                  )
-                }}</mat-error
-              >
-            </mat-form-field>
-          </div>
+              }}</mat-error
+            >
+          </mat-form-field>
 
           <div class="col-1">
             <button

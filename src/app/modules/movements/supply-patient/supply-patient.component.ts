@@ -48,15 +48,18 @@ export class SupplyPatientComponent implements OnInit {
   filteredOptionsPatients$: Observable<Patient[]>;
   patientsAll$ = of([]);
   patients$: Observable<Patient[]>;
+  patientSelected = false;
 
   filteredOptionsStock$: Observable<Stock[]>;
   stocksAll$ = of([]);
   stocks$: Observable<Stock[]>;
   stocks: Stock[] = [];
+  stockSelected = false;
 
   filteredBatchOptions$: Observable<Batch[]>;
   batchAll$ = of([]);
   batchies$: Observable<Batch[]>;
+  batchSelected = false;
 
   edit: boolean;
 
@@ -193,39 +196,92 @@ export class SupplyPatientComponent implements OnInit {
     this.movementForm
       .get('patientCpf')
       .patchValue(formatCpf(selectedItemPatient.cpf));
+    this.patientSelected = true;
   }
 
   onOptionSelectedStock(event: MatAutocompleteSelectedEvent): void {
     const selectedItemStock = event.option.value as Stock;
     this.movementForm.get('stockId').patchValue(selectedItemStock.id);
+    this.stockSelected = true;
+  }
+
+  onOptionSelectedBatch(
+    event: MatAutocompleteSelectedEvent,
+    index: number
+  ): void {
+    const selectedItemBatch = event.option.value as Batch;
+    // itemFormGroup.get('batch').patchValue(selectedItemBatch);
+    this.movementForm.get('items').value[index].batch = selectedItemBatch;
+    this.batchSelected = true;
   }
 
   onBlurPatientCpf(): void {
-    if (this.movementForm.get('patientCpf').value === '') {
-      this.movementForm.get('patient').reset();
-      return;
-    }
-
     const cpf = Number(
       unformatCpf(this.movementForm.get('patientCpf').getRawValue())
     );
     this.subscription = this.patientService.findByCpf(cpf).subscribe(
-      (patient) => this.movementForm.get('patient').patchValue(patient),
+      (patient) => {
+        this.movementForm.get('patient').patchValue(patient);
+        this.patientSelected = true;
+      },
       () => {
+        this.movementForm.get('patientCpf').reset();
         this.movementForm.get('patient').reset();
       }
     );
   }
 
-  onBlurStockId() {
-    if (!this.movementForm.get('stockId').value) {
-      this.movementForm.get('stock').reset();
-      return;
+  onBlurPatient(): void {
+    if (
+      !this.movementForm.get('patient').value ||
+      typeof this.movementForm.get('patient').value === 'string'
+    ) {
+      this.patientSelected = false;
     }
+    if (this.patientSelected === false) {
+      this.movementForm.get('patient').reset();
+      this.movementForm.get('patientCpf').reset();
+    }
+  }
 
+  onBlurStockId() {
     this.subscription = this.stockService
       .findById(this.movementForm.get('stockId').value)
-      .subscribe((stock) => this.movementForm.get('stock').patchValue(stock));
+      .subscribe(
+        (stock) => {
+          this.movementForm.get('stock').patchValue(stock);
+          this.stockSelected = true;
+        },
+        () => {
+          this.movementForm.get('stockId').reset();
+          this.movementForm.get('stock').reset();
+        }
+      );
+  }
+
+  onBlurStock() {
+    if (
+      !this.movementForm.get('stock').value ||
+      typeof this.movementForm.get('stock').value === 'string'
+    ) {
+      this.stockSelected = false;
+    }
+    if (this.stockSelected === false) {
+      this.movementForm.get('stock').reset();
+      this.movementForm.get('stockId').reset();
+    }
+  }
+
+  onBlurBatch(itemFormGroup: FormGroup, index: number) {
+    if (
+      !itemFormGroup.get('batch').value ||
+      typeof itemFormGroup.get('batch').value === 'string'
+    ) {
+      this.batchSelected = false;
+    }
+    if (this.batchSelected === false) {
+      itemFormGroup.get('batch').reset();
+    }
   }
 
   private configAutocompletePatient() {
