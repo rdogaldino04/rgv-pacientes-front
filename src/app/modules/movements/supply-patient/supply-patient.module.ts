@@ -6,20 +6,18 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { MovementResolver } from '../movement.resolver';
 import { SupplyPatientComponent } from './supply-patient.component';
 import { SupplyPatientRoutingModule } from './supply-patient.routing.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
-  declarations: [
-    SupplyPatientComponent
-  ],
+  declarations: [SupplyPatientComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     AppMaterialModule,
     SupplyPatientRoutingModule,
-    SharedModule
+    FlexLayoutModule,
+    SharedModule,
   ],
-  providers: [
-    MovementResolver
-  ]
+  providers: [MovementResolver],
 })
-export class SupplyPatientModule { }
+export class SupplyPatientModule {}

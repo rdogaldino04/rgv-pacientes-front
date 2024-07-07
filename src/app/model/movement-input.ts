@@ -5,6 +5,7 @@ export interface MovementInput {
   patient: PatientMovementInput;
   stock: StockMovementInput;
   items: MovimentItem[];
+  movementType: string;
 }
 
 interface PatientMovementInput {

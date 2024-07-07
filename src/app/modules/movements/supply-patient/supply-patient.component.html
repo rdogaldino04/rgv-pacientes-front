@@ -3,11 +3,23 @@
     >Saída para paciente</mat-toolbar
   >
   <form [formGroup]="movementForm">
-    <div class="grid-container">
-      <div class="col-2">
-        <mat-form-field class="field">
-          <mat-label>Cód movimentação</mat-label>
+    <div fxLayout="column" fxLayoutGap="20px">
+      <div fxLayout="row" fxLayoutAlign="start">
+        <mat-form-field fxFlex="10%">
+          <mat-label>Código</mat-label>
           <input matInput appNumericInput formControlName="id" />
+        </mat-form-field>
+
+        <mat-form-field fxFlex="20%" class="rgv-ml-8">
+          <mat-label>Selecione um tipo de movimento</mat-label>
+          <mat-select
+            [(value)]="movementTypeSelected"
+            formControlName="movementType"
+          >
+            <mat-option *ngFor="let type of movementTypes" [value]="type.value">
+              {{ type.label }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
     </div>

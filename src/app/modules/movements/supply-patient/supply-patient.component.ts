@@ -60,6 +60,13 @@ export class SupplyPatientComponent implements OnInit {
 
   edit: boolean;
 
+  movementTypeSelected = '';
+  movementTypes = [
+    { value: '', label: 'Nenhum' },
+    { value: 'INPUT', label: 'Entrada' },
+    { value: 'OUTPUT', label: 'Saída' },
+  ];
+
   constructor(
     private formBuilder: NonNullableFormBuilder,
     private route: ActivatedRoute,
@@ -103,6 +110,7 @@ export class SupplyPatientComponent implements OnInit {
         this.retrieveMedicaments(movement),
         Validators.required
       ),
+      movementType: [movement?.movementType, [Validators.required]],
     });
 
     this.edit = !!movement?.id;
@@ -120,6 +128,7 @@ export class SupplyPatientComponent implements OnInit {
           patient: this.movementForm.get('patient').value,
           stock: this.movementForm.get('stock').value,
           items: this.movementForm.get('items').value,
+          movementType: this.movementForm.get('movementType').value,
         })
         .subscribe((m) => {
           this.movementForm.get('id').patchValue(m.id);
