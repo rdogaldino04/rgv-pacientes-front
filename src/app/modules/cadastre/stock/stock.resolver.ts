@@ -14,6 +14,6 @@ export class StockResolver {
   ): Stock | Observable<Stock> | Promise<Stock> {
     const key = 'id';
     const id = route.params[key];
-    return this.stockService.findByIdWithSector(id);
+    return this.stockService.findById(id);
   }
 }

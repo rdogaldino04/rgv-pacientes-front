@@ -62,88 +62,6 @@
     <div class="grid-container">
       <div class="col-2">
         <mat-form-field class="field">
-          <mat-label>CNPJ</mat-label>
-          <input
-            matInput
-            formControlName="companyCnpj"
-            (blur)="onBlurCompanyCnpj()"
-            appCnpjMask
-            maxlength="18"
-          />
-          <mat-error *ngIf="movementForm.get('companyCnpj')?.invalid">
-            {{ getErrorMessage("companyCnpj") }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-10">
-        <mat-form-field class="field">
-          <mat-label>Empresa</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="company"
-            class="text-uppercase"
-            [matAutocomplete]="autoCompany"
-          />
-          <mat-autocomplete
-            #autoCompany="matAutocomplete"
-            [displayWith]="displayFnCompany"
-            (optionSelected)="onOptionSelectedCompany($event)"
-          >
-            <mat-option *ngFor="let company of companies" [value]="company">
-              {{ company.name }}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error *ngIf="movementForm.get('company')?.invalid">
-            {{ getErrorMessage("company") }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="grid-container">
-      <div class="col-2">
-        <mat-form-field class="field">
-          <mat-label>Código setor</mat-label>
-          <input
-            matInput
-            formControlName="sectorId"
-            (blur)="onBlurSectorId()"
-            appNumericInput
-          />
-          <mat-error *ngIf="movementForm.get('sectorId')?.invalid">
-            {{ getErrorMessage("sectorId") }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-10">
-        <mat-form-field class="field">
-          <mat-label>Setor</mat-label>
-          <input
-            matInput
-            formControlName="sector"
-            class="text-uppercase"
-            [matAutocomplete]="autoCompSector"
-          />
-          <mat-autocomplete
-            #autoCompSector="matAutocomplete"
-            [displayWith]="displayFnSector"
-            (optionSelected)="onOptionSelectedSector($event)"
-          >
-            <mat-option *ngFor="let sector of sectors" [value]="sector">
-              {{ sector.name }}
-            </mat-option>
-          </mat-autocomplete>
-          <mat-error *ngIf="movementForm.get('sector')?.invalid">
-            {{ getErrorMessage("sector") }}
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="grid-container">
-      <div class="col-2">
-        <mat-form-field class="field">
           <mat-label>Código estoque</mat-label>
           <input
             matInput
@@ -287,5 +205,5 @@
     </button>
   </mat-card-actions>
 
-  <!-- <app-form-debug [form]="movementForm"></app-form-debug> -->
+  <app-form-debug [form]="movementForm"></app-form-debug>
 </mat-card>

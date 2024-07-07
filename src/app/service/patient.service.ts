@@ -41,6 +41,28 @@ export class PatientService {
     return this.http.get<PatientPage>(`${API}/patients`, { params });
   }
 
+  getAllWithPaginateResume(
+    patientFilter?: PatientFilter
+  ): Observable<Patient[]> {
+    let params = new HttpParams();
+    if (patientFilter) {
+      params = params.set(
+        'cpf',
+        patientFilter.cpf ? String(patientFilter.cpf) : ''
+      );
+      params = params.set('name', patientFilter.name ? patientFilter.name : '');
+      params = params.set(
+        'size',
+        patientFilter.size ? String(patientFilter.size) : ''
+      );
+      params = params.set(
+        'page',
+        patientFilter.size ? String(patientFilter.page) : ''
+      );
+    }
+    return this.http.get<Patient[]>(`${API}/patients/search/`, { params });
+  }
+
   delete(cpf: number): Observable<void> {
     return this.http.delete<void>(`${API}/patients/${cpf}`).pipe(first());
   }

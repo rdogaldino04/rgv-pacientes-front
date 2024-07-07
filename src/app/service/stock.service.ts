@@ -17,8 +17,8 @@ export class StockService {
     id?: number;
     name?: string;
     sector?: { id: number };
-    size: number;
-    page: number;
+    size?: number;
+    page?: number;
   }): Observable<StockPage> {
     const params = new HttpParams()
       .append('id', stockFilter.id ? stockFilter.id : '')
@@ -32,7 +32,7 @@ export class StockService {
     return this.http.get<StockPage>(`${this.url}`, { params });
   }
 
-  findByIdWithSector(id: number): Observable<Stock> {
+  findById(id: number): Observable<Stock> {
     return this.http.get<Stock>(`${this.url}/${id}`);
   }
 
