@@ -37,10 +37,10 @@ import { FormValidations } from 'src/app/shared/validation/form-validations';
 const ENABLE = true;
 
 @Component({
-  templateUrl: './supply-patient.component.html',
-  styleUrls: ['./supply-patient.component.scss'],
+  templateUrl: './inventory.component.html',
+  styleUrls: ['./inventory.component.scss'],
 })
-export class SupplyPatientComponent implements OnInit {
+export class InventoryTransactionComponent implements OnInit {
   movementForm!: FormGroup;
   subscription: Subscription;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject(1);

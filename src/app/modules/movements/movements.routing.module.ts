@@ -1,17 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-
 const routes: Routes = [
-    {
-        path: 'saida-para-pacientes',
-        loadChildren: () => import('./supply-patient/supply-patient.module').then(p => p.SupplyPatientModule)
-    }
+  {
+    path: 'inventory',
+    loadChildren: () =>
+      import('./inventory/inventory.module').then((p) => p.InventoryModule),
+  },
 ];
 
 @NgModule({
-    imports: [
-        RouterModule.forChild(routes)
-    ]
+  imports: [RouterModule.forChild(routes)],
 })
-export class MovementsRoutingModule { }
+export class MovementsRoutingModule {}

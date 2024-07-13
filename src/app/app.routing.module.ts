@@ -27,7 +27,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'movimentacoes',
+    path: 'movement',
     loadChildren: () =>
       import('./modules/movements/movements.module').then(
         (c) => c.MovimentsModule
